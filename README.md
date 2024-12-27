@@ -7,7 +7,7 @@
 
 - 👯 I’m looking to collaborate on **NextJs, React, Nodejs, All things JS 💜**
 
-- 👨‍💻 All of my projects are available at [https://delightsheriff.vercel.app/](https://delightsheriff.vercel.app/)
+- 👨‍💻 All of my projects are available at [https://delightsheriff.tech/](https://delightsheriff.tech/)
 
 - 📫 How to reach me **delightsheriff@gmail.com**
 
