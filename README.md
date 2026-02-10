@@ -3,7 +3,7 @@
   <p>I build digital products with intention and identity.</p>
   
   <p>
-    <a href="https://www.delightsheriff.tech/" target="_blank">
+    <a href="https://www.delightsheriff.com/" target="_blank">
       <strong>🚀 My Portfolio</strong>
     </a>
       |  
