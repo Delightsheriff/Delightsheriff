@@ -11,7 +11,7 @@
       <strong>LinkedIn</strong>
     </a>
       |  
-    <a href="https://twitter.com/quietandstuff" target="_blank">
+    <a href="https://x.com/delightsheriff" target="_blank">
       <strong>Twitter/X</strong>
     </a>
       |  
