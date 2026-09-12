@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
+  <h1>Amadi-Sheriff Delight</h1>
+  <p>Turning ideas into shipped products — web, mobile, and everything in between.</p>
+  <p>
+    <a href="https://www.delightsheriff.com/"><strong>Portfolio</strong></a> &nbsp;|&nbsp;
+    <a href="https://linkedin.com/in/delightsheriff"><strong>LinkedIn</strong></a> &nbsp;|&nbsp;
+    <a href="https://x.com/delightsheriff"><strong>Twitter/X</strong></a> &nbsp;|&nbsp;
+    <a href="mailto:delightsheriff@gmail.com"><strong>delightsheriff@gmail.com</strong></a>
+  </p>
+</div>
 
-## Getting Started
+---
 
-First, run the development server:
+Full-Stack & Mobile Engineer focused on building reliable, user-centric products end-to-end — from architecture decisions to polished UI. Comfortable across the entire product lifecycle: ideation, design, development, and deployment.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### What I'm focusing on
+- 📱 Building cross-platform mobile experiences with React Native & Expo
+- 🌐 Crafting performant web applications with Next.js and modern design patterns
+- 🔧 Deepening expertise in system design, cloud infrastructure, and scalable architecture
+- 💡 Open to collaborating on innovative open-source projects
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### My digital toolkit
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Frontend | Mobile | Backend | Data & CMS | Tooling |
+|---|---|---|---|---|
+| React | React Native | Node.js | MongoDB | Git / GitHub |
+| Next.js | Expo SDK | Express.js | Supabase | Vercel / Docker |
+| TypeScript | NativeWind | | PostgreSQL | Figma / Postman |
+| Tailwind CSS | | | Sanity CMS | |
+| Shadcn UI | | | | |
+| Framer Motion | | | | |
 
-## Learn More
+<br/>
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+<div align="center">
+  <img src="https://github-readme-stats.vercel.app/api?username=delightsheriff&show_icons=true&theme=tokyonight&hide_border=true&count_private=true" />
+  <br/>
+  <img src="https://github-readme-streak-stats.herokuapp.com/?user=delightsheriff&theme=tokyonight&hide_border=true" />
+</div>
