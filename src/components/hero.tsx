@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { NowPlaying } from "@/components/now-playing";
 import { getSiteSettings } from "@/sanity/queries";
 
@@ -54,7 +55,9 @@ export async function Hero() {
         )}
       </nav>
 
-      <NowPlaying />
+      <Suspense fallback={null}>
+        <NowPlaying />
+      </Suspense>
     </section>
   );
 }
