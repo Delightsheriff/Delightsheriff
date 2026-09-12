@@ -42,6 +42,16 @@ export async function Hero() {
         >
           LinkedIn
         </a>
+        {settings.resumeUrl && (
+          <a
+            href={settings.resumeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-muted-foreground underline decoration-border underline-offset-4 transition-colors hover:text-foreground hover:decoration-foreground"
+          >
+            Resume
+          </a>
+        )}
       </nav>
 
       <NowPlaying />

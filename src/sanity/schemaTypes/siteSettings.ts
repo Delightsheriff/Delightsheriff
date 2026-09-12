@@ -14,6 +14,12 @@ export const siteSettings = defineType({
     defineField({ name: "githubUrl", title: "Contact — GitHub URL", type: "url" }),
     defineField({ name: "linkedinUrl", title: "Contact — LinkedIn URL", type: "url" }),
     defineField({
+      name: "resumeFile",
+      title: "Resume (PDF)",
+      type: "file",
+      options: { accept: "application/pdf" },
+    }),
+    defineField({
       name: "bio",
       title: "Bio paragraphs",
       type: "array",

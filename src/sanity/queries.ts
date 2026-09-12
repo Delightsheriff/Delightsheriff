@@ -90,12 +90,14 @@ export type SiteSettings = {
   bio: string[];
   skillGroups: SkillGroup[];
   footerLine: string;
+  resumeUrl?: string;
 };
 
 const SITE_SETTINGS_QUERY = /* groq */ `
   *[_type == "siteSettings"][0] {
     heroName, heroTitle, openToWorkLabel, tagline, email, githubUrl, linkedinUrl,
-    bio, skillGroups, footerLine
+    bio, skillGroups, footerLine,
+    "resumeUrl": resumeFile.asset->url
   }
 `;
 
