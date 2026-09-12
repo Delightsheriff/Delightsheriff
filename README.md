@@ -39,3 +39,23 @@ Full-Stack & Mobile Engineer focused on building reliable, user-centric products
   <br/>
   <img src="https://github-readme-streak-stats.herokuapp.com/?user=delightsheriff&theme=tokyonight&hide_border=true" />
 </div>
+
+---
+
+## About this repo
+
+This repo doubles as my [GitHub profile](https://github.com/Delightsheriff) and the source for
+my personal portfolio site, [www.delightsheriff.com](https://www.delightsheriff.com).
+
+**Stack:** Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4 + shadcn/ui, Sanity CMS
+(content — projects, work history, bio, skills — is editable in Studio without a redeploy).
+Deployed on Vercel.
+
+### Local development
+
+```bash
+pnpm install
+pnpm dev
+```
+
+Requires a few environment variables (GitHub, Spotify, Sanity) — see `.env.local.example`.
