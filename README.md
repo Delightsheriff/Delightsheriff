@@ -38,8 +38,6 @@ Full-Stack & Mobile Engineer focused on building reliable, user-centric products
   <img src="https://github-readme-stats.vercel.app/api?username=delightsheriff&show_icons=true&theme=tokyonight&hide_border=true&count_private=true" />
   <br/>
   <img src="https://github-readme-streak-stats.herokuapp.com/?user=delightsheriff&theme=tokyonight&hide_border=true" />
-  <br/>
-  <img src="https://github-readme-activity-graph.vercel.app/graph?username=delightsheriff&theme=tokyo-night&hide_border=true&year=2026" />
 </div>
 
 ---
