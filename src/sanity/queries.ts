@@ -96,8 +96,7 @@ export type SiteSettings = {
 const SITE_SETTINGS_QUERY = /* groq */ `
   *[_type == "siteSettings"][0] {
     heroName, heroTitle, openToWorkLabel, tagline, email, githubUrl, linkedinUrl,
-    bio, skillGroups, footerLine,
-    "resumeUrl": resumeFile.asset->url
+    bio, skillGroups, footerLine, resumeUrl
   }
 `;
 

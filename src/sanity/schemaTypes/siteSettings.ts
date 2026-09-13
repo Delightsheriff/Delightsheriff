@@ -14,10 +14,13 @@ export const siteSettings = defineType({
     defineField({ name: "githubUrl", title: "Contact — GitHub URL", type: "url" }),
     defineField({ name: "linkedinUrl", title: "Contact — LinkedIn URL", type: "url" }),
     defineField({
-      name: "resumeFile",
-      title: "Resume (PDF)",
-      type: "file",
-      options: { accept: "application/pdf" },
+      name: "resumeUrl",
+      title: "Resume — Google Docs export link",
+      type: "url",
+      description:
+        "Use the doc's live export URL (docs.google.com/document/d/FILE_ID/export?format=pdf), " +
+        "not an uploaded file — the doc must stay shared as \"Anyone with the link: Viewer\" for " +
+        "this to work. Editing the doc updates the resume everywhere automatically.",
     }),
     defineField({
       name: "bio",
