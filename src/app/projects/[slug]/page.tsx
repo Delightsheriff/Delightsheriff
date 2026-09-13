@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { PortableText } from "@portabletext/react";
 import { getProjectBySlug } from "@/sanity/queries";
 import { urlFor } from "@/sanity/image";
+import { NavLink } from "@/components/nav-link";
 
 type PageProps = { params: Promise<{ slug: string }> };
 
@@ -28,12 +28,9 @@ export default async function ProjectDetailPage({ params }: PageProps) {
   return (
     <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-10 px-6 py-20 sm:py-28">
       <div className="flex flex-col gap-4">
-        <Link
-          href="/projects"
-          className="w-fit text-xs text-muted-foreground underline decoration-border underline-offset-4 transition-colors hover:text-foreground hover:decoration-foreground"
-        >
-          ← All projects
-        </Link>
+        <NavLink href="/projects" direction="back">
+          All projects
+        </NavLink>
 
         <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
           <h1 className="font-heading text-3xl font-semibold tracking-tight">{project.name}</h1>

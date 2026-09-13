@@ -1,6 +1,6 @@
-import Link from "next/link";
 import { getFeaturedProjects } from "@/sanity/queries";
 import { ProjectRow } from "@/components/project-row";
+import { NavLink } from "@/components/nav-link";
 
 export async function Projects() {
   const projects = await getFeaturedProjects();
@@ -11,12 +11,9 @@ export async function Projects() {
         <h2 className="font-heading text-sm uppercase tracking-wide text-muted-foreground">
           Projects
         </h2>
-        <Link
-          href="/projects"
-          className="text-xs text-muted-foreground underline decoration-border underline-offset-4 transition-colors hover:text-foreground hover:decoration-foreground"
-        >
-          View all →
-        </Link>
+        <NavLink href="/projects" direction="forward">
+          View all
+        </NavLink>
       </div>
 
       <div className="mt-6 flex flex-col">
