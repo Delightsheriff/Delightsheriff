@@ -15,12 +15,13 @@ export const siteSettings = defineType({
     defineField({ name: "linkedinUrl", title: "Contact — LinkedIn URL", type: "url" }),
     defineField({
       name: "resumeUrl",
-      title: "Resume — Google Docs export link",
+      title: "Resume — Google Docs preview link",
       type: "url",
       description:
-        "Use the doc's live export URL (docs.google.com/document/d/FILE_ID/export?format=pdf), " +
-        "not an uploaded file — the doc must stay shared as \"Anyone with the link: Viewer\" for " +
-        "this to work. Editing the doc updates the resume everywhere automatically.",
+        "Use the doc's live preview URL (docs.google.com/document/d/FILE_ID/preview) so it opens " +
+        "as a page instead of downloading — the export URL forces a download even in a new tab. " +
+        "The doc must stay shared as \"Anyone with the link: Viewer\". Editing the doc updates the " +
+        "resume everywhere automatically.",
     }),
     defineField({
       name: "bio",
