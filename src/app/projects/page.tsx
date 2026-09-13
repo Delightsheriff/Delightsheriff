@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { getAllProjects } from "@/sanity/queries";
 import { ProjectRow } from "@/components/project-row";
+import { NavLink } from "@/components/nav-link";
 
 const CATEGORY_LABELS: Record<string, string> = {
   web: "Web",
@@ -11,7 +11,7 @@ const CATEGORY_LABELS: Record<string, string> = {
 
 export const metadata: Metadata = {
   title: "Projects",
-  description: "Full-stack web and mobile projects — real production systems, not demos.",
+  description: "Full-stack web and mobile projects. Real production systems, not demos.",
 };
 
 export default async function ProjectsPage() {
@@ -25,12 +25,9 @@ export default async function ProjectsPage() {
   return (
     <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-16 px-6 py-20 sm:py-28">
       <div className="flex flex-col gap-4">
-        <Link
-          href="/"
-          className="w-fit text-xs text-muted-foreground underline decoration-border underline-offset-4 transition-colors hover:text-foreground hover:decoration-foreground"
-        >
-          ← Back
-        </Link>
+        <NavLink href="/" direction="back">
+          Back
+        </NavLink>
         <h1 className="font-heading text-3xl font-semibold tracking-tight">All Projects</h1>
       </div>
 

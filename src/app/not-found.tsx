@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { NavLink } from "@/components/nav-link";
 
 export default function NotFound() {
   return (
@@ -10,12 +10,9 @@ export default function NotFound() {
       <p className="max-w-md text-base leading-relaxed text-foreground/80">
         Whatever you were looking for doesn&apos;t exist, or moved.
       </p>
-      <Link
-        href="/"
-        className="text-sm text-muted-foreground underline decoration-border underline-offset-4 transition-colors hover:text-foreground hover:decoration-foreground"
-      >
-        ← Back home
-      </Link>
+      <NavLink href="/" direction="back">
+        Back home
+      </NavLink>
     </main>
   );
 }
