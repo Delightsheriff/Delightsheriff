@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 const SITE_DESCRIPTION =
-  "Full-stack and mobile software engineer based in Nigeria — chat, payments, and encrypted systems, shipped in production.";
+  "Full-stack and mobile software engineer based in Nigeria, building chat, payments, and encrypted systems, shipped in production.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.delightsheriff.com"),
