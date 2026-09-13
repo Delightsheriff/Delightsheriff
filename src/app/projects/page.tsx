@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getAllProjects } from "@/sanity/queries";
 import { ProjectRow } from "@/components/project-row";
 import { NavLink } from "@/components/nav-link";
+import { groupByCategory } from "@/lib/group-by-category";
 
 const CATEGORY_LABELS: Record<string, string> = {
   web: "Web",
@@ -24,10 +25,7 @@ export const metadata: Metadata = {
 export default async function ProjectsPage() {
   const projects = await getAllProjects();
 
-  const grouped = projects.reduce<Record<string, typeof projects>>((acc, project) => {
-    (acc[project.category] ??= []).push(project);
-    return acc;
-  }, {});
+  const grouped = groupByCategory(projects);
 
   const itemListJsonLd = {
     "@context": "https://schema.org",
