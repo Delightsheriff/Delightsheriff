@@ -41,3 +41,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 BUILD_PLAN.md
+
+# one-off local scripts (may contain personal/content data)
+scripts/
