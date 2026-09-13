@@ -9,7 +9,7 @@ export type SanityProject = {
   year: number;
   description: string;
   tags: string[];
-  links: { source?: string; live?: string };
+  links: { source?: string; live?: string; appStore?: string; playStore?: string };
   order: number;
 };
 
