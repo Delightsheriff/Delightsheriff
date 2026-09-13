@@ -13,10 +13,23 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const project = await getProjectBySlug(slug);
   if (!project) return {};
 
+  const url = `/projects/${slug}`;
+
   return {
     title: project.name,
     description: project.description,
-    openGraph: { title: project.name, description: project.description },
+    alternates: { canonical: url },
+    openGraph: {
+      title: `${project.name} — Delight Amadi Sheriff`,
+      description: project.description,
+      url,
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${project.name} — Delight Amadi Sheriff`,
+      description: project.description,
+    },
   };
 }
 
@@ -25,8 +38,29 @@ export default async function ProjectDetailPage({ params }: PageProps) {
   const project = await getProjectBySlug(slug);
   if (!project) notFound();
 
+  const projectJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareSourceCode",
+    name: project.name,
+    description: project.description,
+    url: `https://www.delightsheriff.com/projects/${slug}`,
+    datePublished: String(project.year),
+    programmingLanguage: project.tags,
+    author: {
+      "@type": "Person",
+      name: "Delight Amadi Sheriff",
+      url: "https://www.delightsheriff.com",
+    },
+    ...(project.links?.source && { codeRepository: project.links.source }),
+  };
+
   return (
     <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-10 px-6 py-20 sm:py-28">
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(projectJsonLd) }}
+      />
       <div className="flex flex-col gap-4">
         <NavLink href="/projects" direction="back">
           All projects

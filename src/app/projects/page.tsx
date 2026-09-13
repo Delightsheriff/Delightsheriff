@@ -12,6 +12,13 @@ const CATEGORY_LABELS: Record<string, string> = {
 export const metadata: Metadata = {
   title: "Projects",
   description: "Full-stack web and mobile projects. Real production systems, not demos.",
+  alternates: { canonical: "/projects" },
+  openGraph: {
+    title: "Projects — Delight Amadi Sheriff",
+    description: "Full-stack web and mobile projects. Real production systems, not demos.",
+    url: "/projects",
+    type: "website",
+  },
 };
 
 export default async function ProjectsPage() {
@@ -22,8 +29,24 @@ export default async function ProjectsPage() {
     return acc;
   }, {});
 
+  const itemListJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: projects.map((project, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: project.name,
+      url: `https://www.delightsheriff.com/projects/${project.slug}`,
+    })),
+  };
+
   return (
     <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-16 px-6 py-20 sm:py-28">
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}
+      />
       <div className="flex flex-col gap-4">
         <NavLink href="/" direction="back">
           Back
