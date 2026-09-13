@@ -57,6 +57,8 @@ export const project = defineType({
       fields: [
         { name: "source", title: "Source (GitHub)", type: "url" },
         { name: "live", title: "Live", type: "url" },
+        { name: "appStore", title: "App Store", type: "url" },
+        { name: "playStore", title: "Play Store", type: "url" },
       ],
     }),
     defineField({

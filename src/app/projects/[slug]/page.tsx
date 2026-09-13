@@ -46,27 +46,25 @@ export default async function ProjectDetailPage({ params }: PageProps) {
           {project.description}
         </p>
 
-        <div className="flex gap-5 text-sm">
-          {project.links?.live && (
-            <a
-              href={project.links.live}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-muted-foreground underline decoration-border underline-offset-4 transition-colors hover:text-foreground hover:decoration-foreground"
-            >
-              Live
-            </a>
-          )}
-          {project.links?.source && (
-            <a
-              href={project.links.source}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-muted-foreground underline decoration-border underline-offset-4 transition-colors hover:text-foreground hover:decoration-foreground"
-            >
-              Source
-            </a>
-          )}
+        <div className="flex flex-wrap gap-5 text-sm">
+          {[
+            { label: "Live", href: project.links?.live },
+            { label: "App Store", href: project.links?.appStore },
+            { label: "Play Store", href: project.links?.playStore },
+            { label: "Source", href: project.links?.source },
+          ]
+            .filter((link) => link.href)
+            .map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground underline decoration-border underline-offset-4 transition-colors hover:text-foreground hover:decoration-foreground"
+              >
+                {link.label}
+              </a>
+            ))}
         </div>
       </div>
 
