@@ -1,6 +1,6 @@
 import Image from "next/image";
-import Link from "next/link";
 import { urlFor } from "@/sanity/image";
+import { TrackedLink } from "@/components/tracked-link";
 
 type ProjectRowProps = {
   index: number;
@@ -56,13 +56,15 @@ export function ProjectRow({ index, name, description, role, impact, thumbnail, 
   const className =
     "group flex items-start gap-4 border-t border-border py-6 first:border-t-0 first:pt-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background sm:gap-6";
 
-  return external ? (
-    <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
+  return (
+    <TrackedLink
+      href={href}
+      external={external}
+      eventName="project_open"
+      data={{ project: name, destination: external ? "external" : "detail" }}
+      className={className}
+    >
       {content}
-    </a>
-  ) : (
-    <Link href={href} className={className}>
-      {content}
-    </Link>
+    </TrackedLink>
   );
 }
