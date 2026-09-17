@@ -1,6 +1,8 @@
 import { ImageResponse } from "next/og";
 import { getProjectBySlug } from "@/sanity/queries";
 
+const CATEGORY_LABELS: Record<string, string> = { web: "Web", mobile: "Mobile", api: "API" };
+
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -18,7 +20,9 @@ export default async function OpengraphImage({ params }: { params: Promise<{ slu
           flexDirection: "column",
           justifyContent: "space-between",
           padding: 80,
-          background: "#090b0c",
+           backgroundColor: "#090b0c",
+           backgroundImage: "linear-gradient(#ffffff08 1px, transparent 1px), linear-gradient(90deg, #ffffff08 1px, transparent 1px)",
+           backgroundSize: "40px 40px",
         }}
       >
         <div
@@ -41,7 +45,7 @@ export default async function OpengraphImage({ params }: { params: Promise<{ slu
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           {project && (
             <div style={{ display: "flex", fontSize: 24, color: "#9a9aa0" }}>
-              {project.category} · {project.year}
+              {CATEGORY_LABELS[project.category] ?? project.category} · {project.year}
             </div>
           )}
           <div style={{ display: "flex", fontSize: 64, fontWeight: 700, color: "#eff6ff" }}>
@@ -53,6 +57,11 @@ export default async function OpengraphImage({ params }: { params: Promise<{ slu
           {project?.tags && project.tags.length > 0 && (
             <div style={{ display: "flex", fontSize: 20, color: "#7a7a80", marginTop: 8 }}>
               {project.tags.join(" · ")}
+            </div>
+          )}
+          {project?.impact && (
+            <div style={{ display: "flex", fontSize: 20, color: "#75e0ae", marginTop: 8 }}>
+              {project.impact}
             </div>
           )}
         </div>

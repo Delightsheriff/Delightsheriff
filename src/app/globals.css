@@ -132,6 +132,41 @@
 }
 
 @layer components {
+  .page-shell > section {
+    animation: section-enter 500ms cubic-bezier(0.23, 1, 0.32, 1) both;
+  }
+
+  .page-shell > section:nth-child(2) {
+    animation-delay: 50ms;
+  }
+
+  .page-shell > section:nth-child(3) {
+    animation-delay: 100ms;
+  }
+
+  .page-shell > section:nth-child(4) {
+    animation-delay: 150ms;
+  }
+
+  .page-shell > section:nth-child(5) {
+    animation-delay: 200ms;
+  }
+
+  .page-shell > section:nth-child(6) {
+    animation-delay: 250ms;
+  }
+
+  @keyframes section-enter {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   .hero-shell {
     position: relative;
     isolation: isolate;
@@ -169,6 +204,10 @@
 
   .pressable {
     transition: color 150ms ease, background-color 150ms ease, border-color 150ms ease;
+  }
+
+  .page-shell > section {
+    animation: none;
   }
 }
 
