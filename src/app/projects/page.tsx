@@ -3,6 +3,7 @@ import { getAllProjects } from "@/sanity/queries";
 import { ProjectRow } from "@/components/project-row";
 import { NavLink } from "@/components/nav-link";
 import { groupByCategory } from "@/lib/group-by-category";
+import { EmptyState } from "@/components/empty-state";
 
 const CATEGORY_LABELS: Record<string, string> = {
   web: "Web",
@@ -51,7 +52,7 @@ export default async function ProjectsPage() {
         <h1 className="font-heading text-3xl font-semibold tracking-tight">All Projects</h1>
       </div>
 
-      {Object.entries(grouped).map(([category, items]) => (
+      {Object.entries(grouped).length > 0 ? Object.entries(grouped).map(([category, items]) => (
         <section key={category} className="flex flex-col border-t border-border pt-10">
           <h2 className="font-heading text-sm uppercase tracking-wide text-muted-foreground">
             {CATEGORY_LABELS[category] ?? category}
@@ -72,7 +73,7 @@ export default async function ProjectsPage() {
             ))}
           </div>
         </section>
-      ))}
+      )) : <section className="border-t border-border pt-10"><EmptyState title="No projects published yet" description="Projects will appear here once they are ready to share." /></section>}
     </main>
   );
 }

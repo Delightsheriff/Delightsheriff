@@ -1,5 +1,6 @@
 import { getWorkEntries } from "@/sanity/queries";
 import { formatDateRange } from "@/lib/format";
+import { EmptyState } from "@/components/empty-state";
 
 export async function Work() {
   const entries = await getWorkEntries();
@@ -10,7 +11,7 @@ export async function Work() {
       <h2 className="font-heading text-sm uppercase tracking-wide text-muted-foreground">Work</h2>
 
       <div className="flex flex-col gap-10">
-        {sorted.map((entry) => (
+        {sorted.length > 0 ? sorted.map((entry) => (
           <div key={`${entry.company}-${entry.startDate}`} className="flex flex-col gap-2">
             <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
               <p className="font-heading text-base font-medium">
@@ -33,7 +34,7 @@ export async function Work() {
               </ul>
             )}
           </div>
-        ))}
+        )) : <EmptyState title="Work history is unavailable" description="The experience timeline could not be loaded right now." />}
       </div>
     </section>
   );
