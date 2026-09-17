@@ -80,11 +80,12 @@ export type SanityWorkEntry = {
   endDate?: string;
   present: boolean;
   bio: string;
+  achievements?: string[];
 };
 
 const WORK_ENTRIES_QUERY = /* groq */ `
   *[_type == "workEntry"] | order(order asc) {
-    company, role, location, startDate, endDate, present, bio
+    company, role, location, startDate, endDate, present, bio, achievements
   }
 `;
 
