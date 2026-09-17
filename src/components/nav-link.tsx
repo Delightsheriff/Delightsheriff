@@ -13,7 +13,7 @@ export function NavLink({ href, direction, children, className }: NavLinkProps) 
   const arrow = (
     <span
       aria-hidden
-      className={`text-sm font-semibold transition-transform ${
+      className={`text-sm font-semibold text-foreground/80 transition-transform ${
         direction === "back" ? "group-hover:-translate-x-0.5" : "group-hover:translate-x-0.5"
       }`}
     >
