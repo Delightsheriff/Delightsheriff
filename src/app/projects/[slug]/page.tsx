@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { PortableText } from "@portabletext/react";
-import { getProjectBySlug } from "@/sanity/queries";
+import { getProjectBySlug, getProjectNavigation } from "@/sanity/queries";
 import { urlFor } from "@/sanity/image";
 import { NavLink } from "@/components/nav-link";
 
@@ -43,6 +43,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
   const { slug } = await params;
   const project = await getProjectBySlug(slug);
   if (!project) notFound();
+  const navigation = await getProjectNavigation(slug);
 
   const projectJsonLd = {
     "@context": "https://schema.org",
@@ -181,6 +182,25 @@ export default async function ProjectDetailPage({ params }: PageProps) {
           <p className="mt-3 text-sm text-muted-foreground">{project.tags.join(" · ")}</p>
         </section>
       )}
+
+      <nav aria-label="Project navigation" className="grid grid-cols-2 gap-4 border-t border-border pt-6">
+        {navigation.previous ? (
+          <NavLink href={`/projects/${navigation.previous.slug}`} direction="back">
+            <span className="flex flex-col items-start gap-1">
+              <span>Previous</span>
+              <span className="text-foreground/80">{navigation.previous.name}</span>
+            </span>
+          </NavLink>
+        ) : <span />}
+        {navigation.next ? (
+          <NavLink href={`/projects/${navigation.next.slug}`} direction="forward">
+            <span className="flex flex-col items-end gap-1 text-right">
+              <span>Next</span>
+              <span className="text-foreground/80">{navigation.next.name}</span>
+            </span>
+          </NavLink>
+        ) : <span />}
+      </nav>
     </main>
   );
 }
