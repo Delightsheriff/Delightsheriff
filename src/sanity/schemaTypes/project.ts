@@ -58,6 +58,13 @@ export const project = defineType({
       description: "Two or three concise achievements for the detail page",
     }),
     defineField({
+      name: "thumbnail",
+      title: "Thumbnail",
+      type: "image",
+      options: { hotspot: true },
+      fields: [{ name: "alt", title: "Alt text", type: "string" }],
+    }),
+    defineField({
       name: "body",
       title: "Body (detail page — flowing prose)",
       type: "array",

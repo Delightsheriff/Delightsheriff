@@ -39,7 +39,7 @@ export default async function ProjectsPage() {
   };
 
   return (
-    <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-16 px-6 py-20 sm:py-28">
+    <main className="page-shell mx-auto flex w-full max-w-2xl flex-1 flex-col gap-16 px-6 py-20 sm:py-28">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd).replace(/</g, "\\u003c") }}
@@ -65,6 +65,7 @@ export default async function ProjectsPage() {
                   description={project.description}
                   role={project.role}
                   impact={project.impact}
+                  thumbnail={project.thumbnail}
                   tags={project.tags}
                 href={`/projects/${project.slug}`}
               />

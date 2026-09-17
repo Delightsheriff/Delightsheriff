@@ -12,6 +12,7 @@ export type SanityProject = {
   role?: string;
   impact?: string;
   highlights?: string[];
+  thumbnail?: { asset: SanityImageSource; alt?: string };
   tags: string[];
   links: { source?: string; live?: string; appStore?: string; playStore?: string };
   order: number;
@@ -31,6 +32,7 @@ const PROJECT_FIELDS = /* groq */ `
   role,
   impact,
   highlights,
+  thumbnail,
   tags,
   links,
   order
