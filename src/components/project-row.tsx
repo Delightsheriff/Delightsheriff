@@ -10,13 +10,8 @@ type ProjectRowProps = {
 };
 
 export function ProjectRow({ index, name, description, role, impact, tags, href, external }: ProjectRowProps) {
-  return (
-    <a
-      href={href}
-      target={external ? "_blank" : undefined}
-      rel={external ? "noopener noreferrer" : undefined}
-      className="group flex items-start gap-4 border-t border-border py-6 first:border-t-0 first:pt-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background sm:gap-6"
-    >
+  const content = (
+    <>
       <span className="font-heading text-sm text-muted-foreground/90 tabular-nums">
         {String(index).padStart(2, "0")}
       </span>
@@ -36,10 +31,24 @@ export function ProjectRow({ index, name, description, role, impact, tags, href,
 
       <span
         aria-hidden
-        className="mt-1 shrink-0 text-muted-foreground opacity-0 transition-all duration-200 group-hover:translate-x-1 group-hover:text-foreground group-hover:opacity-100"
+        className="project-arrow mt-1 shrink-0 text-muted-foreground transition-[color,opacity,transform] duration-150 ease-out group-hover:text-foreground group-hover:opacity-100"
       >
         →
       </span>
+    </>
+  );
+
+  const className =
+    "group flex items-start gap-4 border-t border-border py-6 first:border-t-0 first:pt-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background sm:gap-6";
+
+  return external ? (
+    <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
+      {content}
     </a>
+  ) : (
+    <Link href={href} className={className}>
+      {content}
+    </Link>
   );
 }
+import Link from "next/link";

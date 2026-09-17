@@ -150,6 +150,10 @@
   .pressable:active {
     transform: scale(0.96);
   }
+
+  .project-arrow {
+    opacity: 0.55;
+  }
 }
 
 @media (min-width: 640px) {
@@ -165,5 +169,15 @@
 
   .pressable {
     transition: color 150ms ease, background-color 150ms ease, border-color 150ms ease;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .project-arrow {
+    opacity: 0;
+  }
+
+  .group:hover .project-arrow {
+    transform: translateX(0.25rem);
   }
 }
