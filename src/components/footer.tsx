@@ -18,6 +18,23 @@ export async function Footer() {
         Let&apos;s build something useful <span aria-hidden className="ml-2">↗</span>
       </a>
 
+      <nav aria-label="Footer links" className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
+        <a href={`mailto:${settings.email}`} className="text-muted-foreground transition-colors hover:text-foreground">
+          Email
+        </a>
+        <a href={settings.githubUrl} target="_blank" rel="noopener noreferrer" className="text-muted-foreground transition-colors hover:text-foreground">
+          GitHub
+        </a>
+        <a href={settings.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-muted-foreground transition-colors hover:text-foreground">
+          LinkedIn
+        </a>
+        {settings.resumeUrl && (
+          <a href={settings.resumeUrl} target="_blank" rel="noopener noreferrer" className="text-muted-foreground transition-colors hover:text-foreground">
+            Resume
+          </a>
+        )}
+      </nav>
+
       <p className="text-xs text-muted-foreground">© {year} · {settings.heroName}</p>
     </footer>
   );
