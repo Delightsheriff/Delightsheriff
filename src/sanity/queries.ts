@@ -9,6 +9,9 @@ export type SanityProject = {
   category: string;
   year: number;
   description: string;
+  challenge?: string;
+  contribution?: string;
+  outcome?: string;
   role?: string;
   impact?: string;
   highlights?: string[];
@@ -29,6 +32,9 @@ const PROJECT_FIELDS = /* groq */ `
   category,
   year,
   description,
+  challenge,
+  contribution,
+  outcome,
   role,
   impact,
   highlights,
