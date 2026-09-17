@@ -40,8 +40,10 @@ export async function ContributionGraph() {
             {week.map((day) => (
               <div
                 key={day.date}
+                role="img"
+                aria-label={`${day.count} contributions on ${day.date}`}
                 title={`${day.count} contributions on ${day.date}`}
-                className={`h-[10px] w-[10px] rounded-[2px] ${LEVEL_CLASSES[levelFor(day.count)]}`}
+                className={`h-[10px] w-[10px] rounded-[2px] outline outline-1 -outline-offset-1 outline-white/5 ${LEVEL_CLASSES[levelFor(day.count)]}`}
               />
             ))}
           </div>

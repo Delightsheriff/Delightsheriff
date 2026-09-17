@@ -22,7 +22,7 @@ export function NavLink({ href, direction, children }: NavLinkProps) {
   return (
     <Link
       href={href}
-      className="group inline-flex w-fit items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
+      className="group inline-flex w-fit items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background"
     >
       {direction === "back" && arrow}
       <span className="underline decoration-border underline-offset-4 group-hover:decoration-foreground">
