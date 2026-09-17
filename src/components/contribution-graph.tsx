@@ -45,7 +45,7 @@ export async function ContributionGraph() {
         </div>
       </div>
 
-      {data ? <div className="contribution-scroll flex gap-[3px] overflow-x-auto pb-1" aria-label="GitHub contribution activity">
+      {data ? <div className="contribution-scroll flex gap-[3px] overflow-x-auto pb-1" role="region" tabIndex={0} aria-label="GitHub contribution activity">
         {data.weeks.map((week, i) => (
           <div key={i} className="flex flex-col gap-[3px]">
             {week.map((day) => (
@@ -63,8 +63,8 @@ export async function ContributionGraph() {
 
       {data && <div className="flex items-center justify-end gap-2 text-[11px] text-muted-foreground">
         <span>Less</span>
-        {LEVEL_CLASSES.map((level, index) => (
-          <span key={level} aria-label={`${index} contributions`} className={`h-[10px] w-[10px] rounded-[2px] outline outline-1 -outline-offset-1 outline-white/5 ${level}`} />
+        {LEVEL_CLASSES.map((level) => (
+          <span key={level} aria-hidden className={`h-[10px] w-[10px] rounded-[2px] outline outline-1 -outline-offset-1 outline-white/5 ${level}`} />
         ))}
         <span>More</span>
       </div>}
