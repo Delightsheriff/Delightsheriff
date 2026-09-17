@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, DM_Sans, Outfit } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { getSiteSettings } from "@/sanity/queries";
+import { SiteHeader } from "@/components/site-header";
 
 const outfitHeading = Outfit({subsets:['latin'],variable:'--font-heading'});
 
@@ -109,6 +110,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd).replace(/</g, "\\u003c") }}
         />
+        <SiteHeader name={settings?.heroName} email={settings?.email} resumeUrl={settings?.resumeUrl} />
         {children}
       </body>
     </html>
