@@ -1,4 +1,5 @@
 import { getContributions } from "@/lib/github";
+import { getSiteSettings } from "@/sanity/queries";
 
 function levelFor(count: number): number {
   if (count === 0) return 0;
@@ -18,6 +19,7 @@ const LEVEL_CLASSES = [
 
 export async function ContributionGraph() {
   const data = await getContributions();
+  const settings = await getSiteSettings();
 
   // No token configured, or the request failed — skip the section rather
   // than show broken/fake data.
@@ -29,12 +31,24 @@ export async function ContributionGraph() {
         <h2 className="font-heading text-sm uppercase tracking-wide text-muted-foreground">
           Contributions
         </h2>
-        <p className="text-sm text-muted-foreground">
-          {data.totalContributions.toLocaleString()} in the last year
-        </p>
+        <div className="flex items-center gap-4">
+          <p className="text-sm text-muted-foreground">
+            {data.totalContributions.toLocaleString()} in the last year
+          </p>
+          {settings?.githubUrl && (
+            <a
+              href={settings.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-muted-foreground underline decoration-border underline-offset-4 transition-colors hover:text-foreground hover:decoration-foreground"
+            >
+              GitHub
+            </a>
+          )}
+        </div>
       </div>
 
-      <div className="flex gap-[3px] overflow-x-auto pb-1">
+      <div className="contribution-scroll flex gap-[3px] overflow-x-auto pb-1" aria-label="GitHub contribution activity">
         {data.weeks.map((week, i) => (
           <div key={i} className="flex flex-col gap-[3px]">
             {week.map((day) => (
@@ -48,6 +62,14 @@ export async function ContributionGraph() {
             ))}
           </div>
         ))}
+      </div>
+
+      <div className="flex items-center justify-end gap-2 text-[11px] text-muted-foreground">
+        <span>Less</span>
+        {LEVEL_CLASSES.map((level, index) => (
+          <span key={level} aria-label={`${index} contributions`} className={`h-[10px] w-[10px] rounded-[2px] outline outline-1 -outline-offset-1 outline-white/5 ${level}`} />
+        ))}
+        <span>More</span>
       </div>
     </section>
   );
