@@ -1,6 +1,7 @@
 import { getFeaturedProjects } from "@/sanity/queries";
 import { ProjectRow } from "@/components/project-row";
 import { NavLink } from "@/components/nav-link";
+import { EmptyState } from "@/components/empty-state";
 
 export async function Projects() {
   const projects = await getFeaturedProjects();
@@ -17,7 +18,7 @@ export async function Projects() {
       </div>
 
       <div className="mt-6 flex flex-col">
-        {projects.map((project, i) => (
+        {projects.length > 0 ? projects.map((project, i) => (
           <ProjectRow
             key={project.slug}
             index={i + 1}
@@ -29,7 +30,7 @@ export async function Projects() {
             tags={project.tags}
             href={`/projects/${project.slug}`}
           />
-        ))}
+        )) : <EmptyState title="Projects are being refreshed" description="Selected work will be back shortly. In the meantime, get in touch to talk through recent builds." />}
       </div>
     </section>
   );

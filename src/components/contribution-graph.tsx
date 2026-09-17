@@ -1,5 +1,6 @@
 import { getContributions } from "@/lib/github";
 import { getSiteSettings } from "@/sanity/queries";
+import { EmptyState } from "@/components/empty-state";
 
 function levelFor(count: number): number {
   if (count === 0) return 0;
@@ -21,10 +22,6 @@ export async function ContributionGraph() {
   const data = await getContributions();
   const settings = await getSiteSettings();
 
-  // No token configured, or the request failed — skip the section rather
-  // than show broken/fake data.
-  if (!data) return null;
-
   return (
     <section className="flex flex-col gap-4 border-t border-border pt-10">
       <div className="flex items-baseline justify-between">
@@ -33,7 +30,7 @@ export async function ContributionGraph() {
         </h2>
         <div className="flex items-center gap-4">
           <p className="text-sm text-muted-foreground">
-            {data.totalContributions.toLocaleString()} in the last year
+            {data ? `${data.totalContributions.toLocaleString()} in the last year` : "Activity unavailable"}
           </p>
           {settings?.githubUrl && (
             <a
@@ -48,7 +45,7 @@ export async function ContributionGraph() {
         </div>
       </div>
 
-      <div className="contribution-scroll flex gap-[3px] overflow-x-auto pb-1" aria-label="GitHub contribution activity">
+      {data ? <div className="contribution-scroll flex gap-[3px] overflow-x-auto pb-1" aria-label="GitHub contribution activity">
         {data.weeks.map((week, i) => (
           <div key={i} className="flex flex-col gap-[3px]">
             {week.map((day) => (
@@ -62,15 +59,15 @@ export async function ContributionGraph() {
             ))}
           </div>
         ))}
-      </div>
+      </div> : <EmptyState title="GitHub activity is unavailable" description="Contribution activity will appear here when the GitHub connection is available." />}
 
-      <div className="flex items-center justify-end gap-2 text-[11px] text-muted-foreground">
+      {data && <div className="flex items-center justify-end gap-2 text-[11px] text-muted-foreground">
         <span>Less</span>
         {LEVEL_CLASSES.map((level, index) => (
           <span key={level} aria-label={`${index} contributions`} className={`h-[10px] w-[10px] rounded-[2px] outline outline-1 -outline-offset-1 outline-white/5 ${level}`} />
         ))}
         <span>More</span>
-      </div>
+      </div>}
     </section>
   );
 }
