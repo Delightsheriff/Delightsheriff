@@ -23,6 +23,8 @@ export async function Projects() {
             index={i + 1}
             name={project.name}
             description={project.description}
+            role={project.role}
+            impact={project.impact}
             tags={project.tags}
             href={`/projects/${project.slug}`}
           />

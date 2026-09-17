@@ -1,5 +1,6 @@
 import type { PortableTextBlock } from "@portabletext/react";
 import type { SanityImageSource } from "@sanity/image-url";
+import { cache } from "react";
 import { client } from "./client";
 
 export type SanityProject = {
@@ -8,6 +9,9 @@ export type SanityProject = {
   category: string;
   year: number;
   description: string;
+  role?: string;
+  impact?: string;
+  highlights?: string[];
   tags: string[];
   links: { source?: string; live?: string; appStore?: string; playStore?: string };
   order: number;
@@ -24,6 +28,9 @@ const PROJECT_FIELDS = /* groq */ `
   category,
   year,
   description,
+  role,
+  impact,
+  highlights,
   tags,
   links,
   order
@@ -100,6 +107,6 @@ const SITE_SETTINGS_QUERY = /* groq */ `
   }
 `;
 
-export async function getSiteSettings(): Promise<SiteSettings | null> {
+export const getSiteSettings = cache(async (): Promise<SiteSettings | null> => {
   return client.fetch(SITE_SETTINGS_QUERY, {}, { next: { revalidate: 60 } });
-}
+});

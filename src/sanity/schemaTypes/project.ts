@@ -39,6 +39,25 @@ export const project = defineType({
       validation: (rule) => rule.required().max(220),
     }),
     defineField({
+      name: "role",
+      title: "Role",
+      type: "string",
+      description: "Your contribution, for example: Product engineer",
+    }),
+    defineField({
+      name: "impact",
+      title: "Impact",
+      type: "string",
+      description: "The clearest result or outcome of the work",
+    }),
+    defineField({
+      name: "highlights",
+      title: "Highlights",
+      type: "array",
+      of: [{ type: "string" }],
+      description: "Two or three concise achievements for the detail page",
+    }),
+    defineField({
       name: "body",
       title: "Body (detail page — flowing prose)",
       type: "array",
