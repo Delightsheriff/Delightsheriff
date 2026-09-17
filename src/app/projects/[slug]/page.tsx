@@ -121,8 +121,26 @@ export default async function ProjectDetailPage({ params }: PageProps) {
         </div>
       </div>
 
+      {(project.challenge || project.contribution || project.outcome) && (
+        <div className="flex max-w-xl flex-col gap-8 border-y border-border py-8">
+          {[
+            ["Challenge", project.challenge],
+            ["Contribution", project.contribution],
+            ["Outcome", project.outcome],
+          ].map(([label, text]) =>
+            text ? (
+              <section key={label} className="flex flex-col gap-2">
+                <h2 className="font-heading text-xs uppercase tracking-[0.16em] text-muted-foreground">{label}</h2>
+                <p className="text-base leading-relaxed text-foreground/80">{text}</p>
+              </section>
+            ) : null,
+          )}
+        </div>
+      )}
+
       {project.body && project.body.length > 0 && (
         <div className="flex max-w-xl flex-col gap-4 text-base leading-relaxed text-foreground/80 [&_p]:leading-relaxed">
+          <h2 className="font-heading text-xs uppercase tracking-[0.16em] text-muted-foreground">Details</h2>
           <PortableText value={project.body} />
         </div>
       )}
@@ -158,9 +176,10 @@ export default async function ProjectDetailPage({ params }: PageProps) {
       )}
 
       {project.tags && project.tags.length > 0 && (
-        <p className="border-t border-border pt-6 text-sm text-muted-foreground">
-          {project.tags.join(" · ")}
-        </p>
+        <section className="border-t border-border pt-6">
+          <h2 className="font-heading text-xs uppercase tracking-[0.16em] text-muted-foreground">Stack</h2>
+          <p className="mt-3 text-sm text-muted-foreground">{project.tags.join(" · ")}</p>
+        </section>
       )}
     </main>
   );

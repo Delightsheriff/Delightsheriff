@@ -39,6 +39,27 @@ export const project = defineType({
       validation: (rule) => rule.required().max(220),
     }),
     defineField({
+      name: "challenge",
+      title: "Challenge",
+      type: "text",
+      rows: 4,
+      description: "What problem, need, or constraint did the project address?",
+    }),
+    defineField({
+      name: "contribution",
+      title: "Contribution",
+      type: "text",
+      rows: 4,
+      description: "What did you own or build?",
+    }),
+    defineField({
+      name: "outcome",
+      title: "Outcome",
+      type: "text",
+      rows: 4,
+      description: "What changed as a result? Include evidence where possible.",
+    }),
+    defineField({
       name: "role",
       title: "Role",
       type: "string",
