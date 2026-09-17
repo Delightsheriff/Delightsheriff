@@ -17,7 +17,9 @@ export default async function OpengraphImage() {
           flexDirection: "column",
           justifyContent: "space-between",
           padding: 80,
-          background: "#090b0c",
+           backgroundColor: "#090b0c",
+           backgroundImage: "linear-gradient(#ffffff08 1px, transparent 1px), linear-gradient(90deg, #ffffff08 1px, transparent 1px)",
+           backgroundSize: "40px 40px",
         }}
       >
         <div
@@ -26,7 +28,7 @@ export default async function OpengraphImage() {
             width: 48,
             height: 48,
             borderRadius: 10,
-            background: "#193cb8",
+             background: "#193cb8",
             color: "#eff6ff",
             alignItems: "center",
             justifyContent: "center",
