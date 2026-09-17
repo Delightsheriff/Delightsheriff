@@ -1,5 +1,6 @@
 import type { PortableTextBlock } from "@portabletext/react";
 import type { SanityImageSource } from "@sanity/image-url";
+import { cache } from "react";
 import { client } from "./client";
 
 export type SanityProject = {
@@ -8,6 +9,13 @@ export type SanityProject = {
   category: string;
   year: number;
   description: string;
+  challenge?: string;
+  contribution?: string;
+  outcome?: string;
+  role?: string;
+  impact?: string;
+  highlights?: string[];
+  thumbnail?: { asset: SanityImageSource; alt?: string };
   tags: string[];
   links: { source?: string; live?: string; appStore?: string; playStore?: string };
   order: number;
@@ -24,6 +32,13 @@ const PROJECT_FIELDS = /* groq */ `
   category,
   year,
   description,
+  challenge,
+  contribution,
+  outcome,
+  role,
+  impact,
+  highlights,
+  thumbnail,
   tags,
   links,
   order
@@ -57,6 +72,19 @@ export async function getProjectBySlug(slug: string): Promise<SanityProjectDetai
   return client.fetch(PROJECT_BY_SLUG_QUERY, { slug }, { next: { revalidate: 60 } });
 }
 
+export async function getProjectNavigation(slug: string): Promise<{
+  previous: SanityProject | null;
+  next: SanityProject | null;
+}> {
+  const projects = await getAllProjects();
+  const index = projects.findIndex((project) => project.slug === slug);
+
+  return {
+    previous: index > 0 ? projects[index - 1] : null,
+    next: index >= 0 && index < projects.length - 1 ? projects[index + 1] : null,
+  };
+}
+
 export type SanityWorkEntry = {
   company: string;
   role: string;
@@ -65,11 +93,12 @@ export type SanityWorkEntry = {
   endDate?: string;
   present: boolean;
   bio: string;
+  achievements?: string[];
 };
 
 const WORK_ENTRIES_QUERY = /* groq */ `
   *[_type == "workEntry"] | order(order asc) {
-    company, role, location, startDate, endDate, present, bio
+    company, role, location, startDate, endDate, present, bio, achievements
   }
 `;
 
@@ -100,6 +129,6 @@ const SITE_SETTINGS_QUERY = /* groq */ `
   }
 `;
 
-export async function getSiteSettings(): Promise<SiteSettings | null> {
+export const getSiteSettings = cache(async (): Promise<SiteSettings | null> => {
   return client.fetch(SITE_SETTINGS_QUERY, {}, { next: { revalidate: 60 } });
-}
+});

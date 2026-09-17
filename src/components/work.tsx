@@ -1,5 +1,6 @@
 import { getWorkEntries } from "@/sanity/queries";
 import { formatDateRange } from "@/lib/format";
+import { EmptyState } from "@/components/empty-state";
 
 export async function Work() {
   const entries = await getWorkEntries();
@@ -10,19 +11,30 @@ export async function Work() {
       <h2 className="font-heading text-sm uppercase tracking-wide text-muted-foreground">Work</h2>
 
       <div className="flex flex-col gap-10">
-        {sorted.map((entry) => (
+        {sorted.length > 0 ? sorted.map((entry) => (
           <div key={`${entry.company}-${entry.startDate}`} className="flex flex-col gap-2">
             <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
               <p className="font-heading text-base font-medium">
                 {entry.role} <span className="text-muted-foreground">— {entry.company}</span>
               </p>
-              <p className="text-sm text-muted-foreground">
-                {formatDateRange(entry.startDate, entry.present ? "Present" : entry.endDate ?? "")}
-              </p>
-            </div>
+                <p className="text-sm text-muted-foreground">
+                  {formatDateRange(entry.startDate, entry.present ? "Present" : entry.endDate ?? "")}
+                </p>
+              </div>
+              {entry.location && <p className="text-xs text-muted-foreground">{entry.location}</p>}
             <p className="max-w-xl text-base leading-relaxed text-foreground/80">{entry.bio}</p>
+            {entry.achievements && entry.achievements.length > 0 && (
+              <ul className="mt-2 flex max-w-xl flex-col gap-3 text-sm leading-relaxed text-foreground/75">
+                {entry.achievements.map((achievement) => (
+                  <li key={achievement} className="flex gap-3">
+                    <span aria-hidden className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary/80" />
+                    <span>{achievement}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
-        ))}
+        )) : <EmptyState title="Work history is unavailable" description="The experience timeline could not be loaded right now." />}
       </div>
     </section>
   );

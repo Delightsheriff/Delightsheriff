@@ -21,7 +21,7 @@ function ContributionGraphFallback() {
 
 export default function Home() {
   return (
-    <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-16 px-6 py-20 sm:py-28">
+      <main className="page-shell mx-auto flex w-full max-w-2xl flex-1 flex-col gap-16 px-6 py-20 sm:py-28">
       <Hero />
       <Bio />
       <Suspense fallback={<ContributionGraphFallback />}>

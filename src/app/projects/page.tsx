@@ -3,6 +3,7 @@ import { getAllProjects } from "@/sanity/queries";
 import { ProjectRow } from "@/components/project-row";
 import { NavLink } from "@/components/nav-link";
 import { groupByCategory } from "@/lib/group-by-category";
+import { EmptyState } from "@/components/empty-state";
 
 const CATEGORY_LABELS: Record<string, string> = {
   web: "Web",
@@ -39,11 +40,10 @@ export default async function ProjectsPage() {
   };
 
   return (
-    <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-16 px-6 py-20 sm:py-28">
+    <main className="page-shell mx-auto flex w-full max-w-2xl flex-1 flex-col gap-16 px-6 py-20 sm:py-28">
       <script
         type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd).replace(/</g, "\\u003c") }}
       />
       <div className="flex flex-col gap-4">
         <NavLink href="/" direction="back">
@@ -52,7 +52,7 @@ export default async function ProjectsPage() {
         <h1 className="font-heading text-3xl font-semibold tracking-tight">All Projects</h1>
       </div>
 
-      {Object.entries(grouped).map(([category, items]) => (
+      {Object.entries(grouped).length > 0 ? Object.entries(grouped).map(([category, items]) => (
         <section key={category} className="flex flex-col border-t border-border pt-10">
           <h2 className="font-heading text-sm uppercase tracking-wide text-muted-foreground">
             {CATEGORY_LABELS[category] ?? category}
@@ -63,14 +63,17 @@ export default async function ProjectsPage() {
                 key={project.slug}
                 index={i + 1}
                 name={project.name}
-                description={project.description}
-                tags={project.tags}
+                  description={project.description}
+                  role={project.role}
+                  impact={project.impact}
+                  thumbnail={project.thumbnail}
+                  tags={project.tags}
                 href={`/projects/${project.slug}`}
               />
             ))}
           </div>
         </section>
-      ))}
+      )) : <section className="border-t border-border pt-10"><EmptyState title="No projects published yet" description="Projects will appear here once they are ready to share." /></section>}
     </main>
   );
 }
