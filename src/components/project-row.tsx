@@ -1,15 +1,20 @@
+import Image from "next/image";
+import Link from "next/link";
+import { urlFor } from "@/sanity/image";
+
 type ProjectRowProps = {
   index: number;
   name: string;
   description: string;
   role?: string;
   impact?: string;
+  thumbnail?: { asset: Parameters<typeof urlFor>[0]; alt?: string };
   tags: string[];
   href: string;
   external?: boolean;
 };
 
-export function ProjectRow({ index, name, description, role, impact, tags, href, external }: ProjectRowProps) {
+export function ProjectRow({ index, name, description, role, impact, thumbnail, tags, href, external }: ProjectRowProps) {
   const content = (
     <>
       <span className="font-heading text-sm text-muted-foreground/90 tabular-nums">
@@ -28,6 +33,16 @@ export function ProjectRow({ index, name, description, role, impact, tags, href,
         </div>
         {impact && <p className="mt-1 text-xs text-foreground/70">{impact}</p>}
       </div>
+
+      {thumbnail && (
+        <Image
+          src={urlFor(thumbnail.asset).width(240).height(150).fit("crop").url()}
+          alt={thumbnail.alt ?? `${name} preview`}
+          width={120}
+          height={75}
+          className="project-thumbnail hidden rounded-md object-cover outline outline-1 -outline-offset-1 outline-white/10 sm:block"
+        />
+      )}
 
       <span
         aria-hidden
@@ -51,4 +66,3 @@ export function ProjectRow({ index, name, description, role, impact, tags, href,
     </Link>
   );
 }
-import Link from "next/link";

@@ -25,6 +25,7 @@ export async function Projects() {
             description={project.description}
             role={project.role}
             impact={project.impact}
+            thumbnail={project.thumbnail}
             tags={project.tags}
             href={`/projects/${project.slug}`}
           />
