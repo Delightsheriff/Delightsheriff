@@ -184,22 +184,26 @@ export default async function ProjectDetailPage({ params }: PageProps) {
       )}
 
       <nav aria-label="Project navigation" className="grid grid-cols-2 gap-4 border-t border-border pt-6">
-        {navigation.previous ? (
-          <NavLink href={`/projects/${navigation.previous.slug}`} direction="back">
-            <span className="flex flex-col items-start gap-1">
-              <span>Previous</span>
-              <span className="text-foreground/80">{navigation.previous.name}</span>
-            </span>
-          </NavLink>
-        ) : <span />}
-        {navigation.next ? (
-          <NavLink href={`/projects/${navigation.next.slug}`} direction="forward">
-            <span className="flex flex-col items-end gap-1 text-right">
-              <span>Next</span>
-              <span className="text-foreground/80">{navigation.next.name}</span>
-            </span>
-          </NavLink>
-        ) : <span />}
+        <div className="flex justify-start">
+          {navigation.previous && (
+            <NavLink href={`/projects/${navigation.previous.slug}`} direction="back" className="items-start">
+              <span className="flex max-w-40 flex-col items-start gap-1 sm:max-w-56">
+                <span>Previous</span>
+                <span className="text-foreground/80">{navigation.previous.name}</span>
+              </span>
+            </NavLink>
+          )}
+        </div>
+        <div className="flex justify-end">
+          {navigation.next && (
+            <NavLink href={`/projects/${navigation.next.slug}`} direction="forward" className="items-start">
+              <span className="flex max-w-40 flex-col items-end gap-1 text-right sm:max-w-56">
+                <span>Next</span>
+                <span className="text-foreground/80">{navigation.next.name}</span>
+              </span>
+            </NavLink>
+          )}
+        </div>
       </nav>
     </main>
   );
