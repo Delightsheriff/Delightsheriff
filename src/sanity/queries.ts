@@ -72,6 +72,19 @@ export async function getProjectBySlug(slug: string): Promise<SanityProjectDetai
   return client.fetch(PROJECT_BY_SLUG_QUERY, { slug }, { next: { revalidate: 60 } });
 }
 
+export async function getProjectNavigation(slug: string): Promise<{
+  previous: SanityProject | null;
+  next: SanityProject | null;
+}> {
+  const projects = await getAllProjects();
+  const index = projects.findIndex((project) => project.slug === slug);
+
+  return {
+    previous: index > 0 ? projects[index - 1] : null,
+    next: index >= 0 && index < projects.length - 1 ? projects[index + 1] : null,
+  };
+}
+
 export type SanityWorkEntry = {
   company: string;
   role: string;
