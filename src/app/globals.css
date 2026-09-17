@@ -126,5 +126,44 @@
   }
   html {
     @apply font-sans;
+    scroll-behavior: smooth;
+    scroll-padding-top: 2rem;
+  }
+}
+
+@layer components {
+  .hero-shell {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding: 1.5rem;
+    border: 1px solid color-mix(in oklch, var(--border) 70%, transparent);
+    border-radius: 1.25rem;
+    background:
+      radial-gradient(circle at 85% 15%, color-mix(in oklch, var(--primary) 14%, transparent), transparent 34%),
+      linear-gradient(color-mix(in oklch, var(--foreground) 4%, transparent) 1px, transparent 1px),
+      linear-gradient(90deg, color-mix(in oklch, var(--foreground) 4%, transparent) 1px, transparent 1px),
+      var(--background);
+    background-size: auto, 28px 28px, 28px 28px, auto;
+  }
+
+  .pressable:active {
+    transform: scale(0.96);
+  }
+}
+
+@media (min-width: 640px) {
+  .hero-shell {
+    padding: 2.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .pressable {
+    transition: color 150ms ease, background-color 150ms ease, border-color 150ms ease;
   }
 }

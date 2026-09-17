@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import Link from "next/link";
 import { NowPlaying } from "@/components/now-playing";
 import { getSiteSettings } from "@/sanity/queries";
 
@@ -7,20 +8,36 @@ export async function Hero() {
   if (!settings) return null;
 
   return (
-    <section className="flex flex-col gap-4">
-      <p className="text-xs uppercase tracking-wide text-muted-foreground">
+    <section className="hero-shell flex flex-col gap-5">
+      <p className="flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-muted-foreground">
+        <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,0.7)]" />
         {settings.openToWorkLabel}
       </p>
 
-      <h1 className="font-heading text-4xl font-semibold tracking-tight sm:text-5xl">
+      <h1 className="max-w-2xl font-heading text-4xl font-semibold tracking-[-0.04em] sm:text-6xl">
         {settings.heroName}
       </h1>
 
-      <p className="text-lg text-muted-foreground">{settings.heroTitle}</p>
+      <p className="max-w-lg text-lg text-muted-foreground">{settings.heroTitle}</p>
 
-      <p className="max-w-xl text-base leading-relaxed text-foreground/80">{settings.tagline}</p>
+      <p className="max-w-xl text-base leading-relaxed text-foreground/80 sm:text-lg">{settings.tagline}</p>
 
-      <nav className="mt-2 flex flex-wrap gap-x-5 gap-y-2 text-sm">
+      <div className="flex flex-wrap items-center gap-3 pt-1">
+        <Link
+          href="#projects"
+          className="pressable inline-flex items-center rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-[0_8px_24px_-12px_var(--primary)] transition-[transform,background-color] duration-150 ease-out hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background"
+        >
+          View selected work <span aria-hidden className="ml-2">↘</span>
+        </Link>
+        <a
+          href={`mailto:${settings.email}`}
+          className="pressable inline-flex items-center rounded-full border border-border px-4 py-2 text-sm text-muted-foreground transition-[transform,color,border-color] duration-150 ease-out hover:border-foreground/40 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background"
+        >
+          Start a conversation
+        </a>
+      </div>
+
+      <nav aria-label="Social links" className="mt-1 flex flex-wrap gap-x-5 gap-y-2 text-sm">
         <a
           href={`mailto:${settings.email}`}
           className="text-muted-foreground underline decoration-border underline-offset-4 transition-colors hover:text-foreground hover:decoration-foreground"
