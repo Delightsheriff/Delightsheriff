@@ -24,10 +24,17 @@ export const workEntry = defineType({
     defineField({ name: "present", title: "Present (ongoing)", type: "boolean", initialValue: false }),
     defineField({
       name: "bio",
-      title: "Bio (prose, not bullets)",
+      title: "Summary",
       type: "text",
       rows: 6,
       validation: (r) => r.required(),
+    }),
+    defineField({
+      name: "achievements",
+      title: "Achievements",
+      type: "array",
+      of: [{ type: "string" }],
+      description: "Three to five concise, outcome-focused achievements. Start with a strong verb.",
     }),
     defineField({ name: "order", title: "Order", type: "number", initialValue: 0 }),
   ],

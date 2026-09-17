@@ -1,17 +1,19 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { cn } from "@/lib/utils";
 
 type NavLinkProps = {
   href: string;
   direction: "back" | "forward";
   children: ReactNode;
+  className?: string;
 };
 
-export function NavLink({ href, direction, children }: NavLinkProps) {
+export function NavLink({ href, direction, children, className }: NavLinkProps) {
   const arrow = (
     <span
       aria-hidden
-      className={`text-sm font-semibold transition-transform ${
+      className={`text-sm font-semibold text-foreground/80 transition-transform ${
         direction === "back" ? "group-hover:-translate-x-0.5" : "group-hover:translate-x-0.5"
       }`}
     >
@@ -22,7 +24,10 @@ export function NavLink({ href, direction, children }: NavLinkProps) {
   return (
     <Link
       href={href}
-      className="group inline-flex w-fit items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
+      className={cn(
+        "group inline-flex w-fit items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background",
+        className,
+      )}
     >
       {direction === "back" && arrow}
       <span className="underline decoration-border underline-offset-4 group-hover:decoration-foreground">
