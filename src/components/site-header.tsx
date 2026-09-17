@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { TrackedLink } from "@/components/tracked-link";
 
 type SiteHeaderProps = {
   name?: string;
@@ -35,14 +36,15 @@ export function SiteHeader({ name, email, resumeUrl }: SiteHeaderProps) {
             </a>
           )}
           {resumeUrl && (
-            <a
+            <TrackedLink
               href={resumeUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+              external
+              eventName="resume_click"
+              data={{ location: "header" }}
               className="hidden transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:inline"
             >
               Resume
-            </a>
+            </TrackedLink>
           )}
         </div>
       </nav>

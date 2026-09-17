@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { getSiteSettings } from "@/sanity/queries";
 import { SiteHeader } from "@/components/site-header";
+import { Analytics } from "@vercel/analytics/next";
 
 const outfitHeading = Outfit({subsets:['latin'],variable:'--font-heading'});
 
@@ -112,6 +113,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         />
         <SiteHeader name={settings?.heroName} email={settings?.email} resumeUrl={settings?.resumeUrl} />
         {children}
+        <Analytics />
       </body>
     </html>
   );
