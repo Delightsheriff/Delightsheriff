@@ -22,6 +22,16 @@ export async function Work() {
               </div>
               {entry.location && <p className="text-xs text-muted-foreground">{entry.location}</p>}
             <p className="max-w-xl text-base leading-relaxed text-foreground/80">{entry.bio}</p>
+            {entry.achievements && entry.achievements.length > 0 && (
+              <ul className="mt-2 flex max-w-xl flex-col gap-3 text-sm leading-relaxed text-foreground/75">
+                {entry.achievements.map((achievement) => (
+                  <li key={achievement} className="flex gap-3">
+                    <span aria-hidden className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary/80" />
+                    <span>{achievement}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         ))}
       </div>
