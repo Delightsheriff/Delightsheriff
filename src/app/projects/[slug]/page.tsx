@@ -6,6 +6,12 @@ import { getProjectBySlug } from "@/sanity/queries";
 import { urlFor } from "@/sanity/image";
 import { NavLink } from "@/components/nav-link";
 
+const CATEGORY_LABELS: Record<string, string> = {
+  web: "Web",
+  mobile: "Mobile",
+  api: "API",
+};
+
 type PageProps = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -69,13 +75,30 @@ export default async function ProjectDetailPage({ params }: PageProps) {
         <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
           <h1 className="font-heading text-3xl font-semibold tracking-tight">{project.name}</h1>
           <p className="text-sm text-muted-foreground">
-            {project.category} · {project.year}
+            {CATEGORY_LABELS[project.category] ?? project.category} · {project.year}
           </p>
         </div>
 
         <p className="max-w-xl text-base leading-relaxed text-foreground/80">
           {project.description}
         </p>
+
+        {(project.role || project.impact) && (
+          <dl className="grid grid-cols-1 gap-4 border-y border-border py-4 text-sm sm:grid-cols-2">
+            {project.role && (
+              <div>
+                <dt className="text-xs uppercase tracking-wide text-muted-foreground">Role</dt>
+                <dd className="mt-1 text-foreground/85">{project.role}</dd>
+              </div>
+            )}
+            {project.impact && (
+              <div>
+                <dt className="text-xs uppercase tracking-wide text-muted-foreground">Impact</dt>
+                <dd className="mt-1 text-foreground/85">{project.impact}</dd>
+              </div>
+            )}
+          </dl>
+        )}
 
         <div className="flex flex-wrap gap-5 text-sm">
           {[
@@ -103,6 +126,17 @@ export default async function ProjectDetailPage({ params }: PageProps) {
         <div className="flex max-w-xl flex-col gap-4 text-base leading-relaxed text-foreground/80 [&_p]:leading-relaxed">
           <PortableText value={project.body} />
         </div>
+      )}
+
+      {project.highlights && project.highlights.length > 0 && (
+        <ul className="flex max-w-xl flex-col gap-3 text-base leading-relaxed text-foreground/80">
+          {project.highlights.map((highlight) => (
+            <li key={highlight} className="flex gap-3">
+              <span aria-hidden className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+              <span>{highlight}</span>
+            </li>
+          ))}
+        </ul>
       )}
 
       {project.screenshots && project.screenshots.length > 0 && (

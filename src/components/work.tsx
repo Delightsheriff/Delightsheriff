@@ -16,10 +16,11 @@ export async function Work() {
               <p className="font-heading text-base font-medium">
                 {entry.role} <span className="text-muted-foreground">— {entry.company}</span>
               </p>
-              <p className="text-sm text-muted-foreground">
-                {formatDateRange(entry.startDate, entry.present ? "Present" : entry.endDate ?? "")}
-              </p>
-            </div>
+                <p className="text-sm text-muted-foreground">
+                  {formatDateRange(entry.startDate, entry.present ? "Present" : entry.endDate ?? "")}
+                </p>
+              </div>
+              {entry.location && <p className="text-xs text-muted-foreground">{entry.location}</p>}
             <p className="max-w-xl text-base leading-relaxed text-foreground/80">{entry.bio}</p>
           </div>
         ))}

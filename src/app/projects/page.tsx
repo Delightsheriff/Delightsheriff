@@ -63,8 +63,10 @@ export default async function ProjectsPage() {
                 key={project.slug}
                 index={i + 1}
                 name={project.name}
-                description={project.description}
-                tags={project.tags}
+                  description={project.description}
+                  role={project.role}
+                  impact={project.impact}
+                  tags={project.tags}
                 href={`/projects/${project.slug}`}
               />
             ))}
