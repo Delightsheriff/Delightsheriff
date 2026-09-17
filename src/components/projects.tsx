@@ -6,10 +6,10 @@ export async function Projects() {
   const projects = await getFeaturedProjects();
 
   return (
-    <section className="flex flex-col border-t border-border pt-10">
+    <section id="projects" className="scroll-mt-8 flex flex-col border-t border-border pt-10">
       <div className="flex items-baseline justify-between">
         <h2 className="font-heading text-sm uppercase tracking-wide text-muted-foreground">
-          Projects
+          Selected work
         </h2>
         <NavLink href="/projects" direction="forward">
           View all
