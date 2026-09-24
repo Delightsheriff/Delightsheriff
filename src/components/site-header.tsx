@@ -27,6 +27,12 @@ export function SiteHeader({ name, email, resumeUrl }: SiteHeaderProps) {
           >
             Projects
           </Link>
+          <Link
+            href="/blog"
+            className="transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            Blog
+          </Link>
           {email && (
             <a
               href={`mailto:${email}`}
