@@ -132,3 +132,44 @@ const SITE_SETTINGS_QUERY = /* groq */ `
 export const getSiteSettings = cache(async (): Promise<SiteSettings | null> => {
   return client.fetch(SITE_SETTINGS_QUERY, {}, { next: { revalidate: 60 } });
 });
+
+export type SanityPost = {
+  slug: string;
+  title: string;
+  publishedAt: string;
+  excerpt: string;
+  coverImage?: { asset: SanityImageSource; alt?: string };
+  tags?: string[];
+};
+
+export type SanityPostDetail = SanityPost & {
+  body: PortableTextBlock[];
+};
+
+const POST_FIELDS = /* groq */ `
+  "slug": slug.current,
+  title,
+  publishedAt,
+  excerpt,
+  coverImage,
+  tags
+`;
+
+const ALL_POSTS_QUERY = /* groq */ `
+  *[_type == "post"] | order(publishedAt desc) { ${POST_FIELDS} }
+`;
+
+const POST_BY_SLUG_QUERY = /* groq */ `
+  *[_type == "post" && slug.current == $slug][0] {
+    ${POST_FIELDS},
+    body
+  }
+`;
+
+export async function getAllPosts(): Promise<SanityPost[]> {
+  return client.fetch(ALL_POSTS_QUERY, {}, { next: { revalidate: 60 } });
+}
+
+export async function getPostBySlug(slug: string): Promise<SanityPostDetail | null> {
+  return client.fetch(POST_BY_SLUG_QUERY, { slug }, { next: { revalidate: 60 } });
+}
