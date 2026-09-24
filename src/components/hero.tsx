@@ -10,8 +10,7 @@ export async function Hero() {
 
   return (
     <section className="hero-shell flex flex-col gap-5">
-      <p className="flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-muted-foreground">
-        <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,0.7)]" />
+      <p className="text-xs uppercase tracking-[0.16em] text-muted-foreground">
         {settings.openToWorkLabel}
       </p>
 
