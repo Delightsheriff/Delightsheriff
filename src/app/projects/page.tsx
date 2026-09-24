@@ -9,6 +9,7 @@ const CATEGORY_LABELS: Record<string, string> = {
   web: "Web",
   mobile: "Mobile",
   api: "API",
+  macos: "macOS",
 };
 
 export const metadata: Metadata = {

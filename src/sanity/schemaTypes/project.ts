@@ -22,7 +22,7 @@ export const project = defineType({
       name: "category",
       title: "Category",
       type: "string",
-      options: { list: ["web", "mobile", "api"] },
+      options: { list: ["web", "mobile", "api", "macos"] },
       validation: (rule) => rule.required(),
     }),
     defineField({
