@@ -13,5 +13,12 @@ export function resolveRevalidatePaths(payload: WebhookPayload): string[] {
     }
   }
 
+  if (payload._type === "post") {
+    paths.add("/blog");
+    if (payload.slug?.current) {
+      paths.add(`/blog/${payload.slug.current}`);
+    }
+  }
+
   return [...paths];
 }

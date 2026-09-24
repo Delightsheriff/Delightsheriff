@@ -25,4 +25,16 @@ describe("resolveRevalidatePaths", () => {
   it("only revalidates the homepage for an unrecognized document type", () => {
     expect(resolveRevalidatePaths({ _type: "someFutureSchema" })).toEqual(["/"]);
   });
+
+  it("also revalidates the blog list for a post change", () => {
+    expect(resolveRevalidatePaths({ _type: "post" })).toEqual(["/", "/blog"]);
+  });
+
+  it("also revalidates the specific post page when a slug is present", () => {
+    expect(resolveRevalidatePaths({ _type: "post", slug: { current: "hello-world" } })).toEqual([
+      "/",
+      "/blog",
+      "/blog/hello-world",
+    ]);
+  });
 });
