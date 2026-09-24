@@ -45,7 +45,7 @@ export default async function BlogPage() {
               href={`/blog/${post.slug}`}
               eventName="post_open"
               data={{ post: post.title }}
-              className="group flex items-start justify-between gap-4 border-t border-border py-6 first:border-t-0 first:pt-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background"
+              className="group flex items-start justify-between gap-4 border-t border-border py-6 px-3 -mx-3 rounded-lg transition-colors duration-150 ease-out active:bg-foreground/[0.04] first:border-t-0 first:pt-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background"
             >
               <span className="flex flex-1 flex-col gap-1.5">
                 <span className="font-heading text-lg font-medium text-foreground/90 transition-colors group-hover:text-foreground">

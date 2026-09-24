@@ -54,7 +54,7 @@ export function ProjectRow({ index, name, description, role, impact, thumbnail, 
   );
 
   const className =
-    "group flex items-start gap-4 border-t border-border py-6 first:border-t-0 first:pt-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background sm:gap-6";
+    "group flex items-start gap-4 border-t border-border py-6 px-3 -mx-3 rounded-lg transition-colors duration-150 ease-out active:bg-foreground/[0.04] first:border-t-0 first:pt-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background sm:gap-6";
 
   return (
     <TrackedLink
