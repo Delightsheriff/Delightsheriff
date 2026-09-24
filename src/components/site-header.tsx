@@ -9,7 +9,7 @@ type SiteHeaderProps = {
 
 export function SiteHeader({ name, email, resumeUrl }: SiteHeaderProps) {
   return (
-    <header className="site-header sticky top-0 z-10 border-b border-border/60 bg-background/85 backdrop-blur-md">
+    <header className="site-header sticky top-0 z-10 border-b border-border/60 bg-background/70 backdrop-blur-lg backdrop-saturate-150 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
       <nav
         aria-label="Primary navigation"
         className="mx-auto flex w-full max-w-2xl items-center justify-between px-6 py-3"
