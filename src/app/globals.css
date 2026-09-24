@@ -206,6 +206,46 @@
   .glass:hover {
     background: color-mix(in oklab, var(--foreground) 9%, transparent);
   }
+
+  /* Same material, layered over an existing background color (e.g. bg-primary)
+     instead of replacing it — backdrop-filter blurs what's behind the element
+     regardless of the element's own fill. */
+  .glass-tint {
+    backdrop-filter: blur(16px) saturate(160%);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    border-color: color-mix(in oklab, var(--primary-foreground) 25%, transparent);
+  }
+
+  .avatar-duotone {
+    position: relative;
+  }
+
+  .avatar-duotone img {
+    filter: grayscale(1) contrast(1.05);
+    transition: filter 280ms ease-out;
+  }
+
+  .avatar-duotone::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--primary), oklch(0.7 0.15 280) 60%, transparent 100%);
+    mix-blend-mode: color;
+    opacity: 1;
+    transition: opacity 280ms ease-out;
+    pointer-events: none;
+  }
+
+  .avatar-duotone:hover img,
+  .avatar-duotone:focus-within img {
+    filter: grayscale(0) contrast(1);
+  }
+
+  .avatar-duotone:hover::after,
+  .avatar-duotone:focus-within::after {
+    opacity: 0;
+  }
 }
 
 @media (min-width: 640px) {
@@ -218,6 +258,11 @@
   .glass,
   .site-header {
     background: var(--secondary);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .glass-tint {
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
   }

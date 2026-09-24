@@ -1,8 +1,10 @@
 import { Suspense } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { NowPlaying } from "@/components/now-playing";
 import { getSiteSettings } from "@/sanity/queries";
 import { TrackedLink } from "@/components/tracked-link";
+import { urlFor } from "@/sanity/image";
 
 export async function Hero() {
   const settings = await getSiteSettings();
@@ -10,6 +12,18 @@ export async function Hero() {
 
   return (
     <section className="hero-shell flex flex-col gap-5">
+      {settings.showAvatar && settings.avatar && (
+        <div className="avatar-duotone h-16 w-16 shrink-0 overflow-hidden rounded-full border border-border">
+          <Image
+            src={urlFor(settings.avatar.asset).width(128).height(128).fit("crop").url()}
+            alt={settings.avatar.alt ?? settings.heroName ?? "Portrait"}
+            width={64}
+            height={64}
+            className="h-full w-full object-cover"
+          />
+        </div>
+      )}
+
       <p className="text-xs uppercase tracking-[0.16em] text-muted-foreground">
         {settings.openToWorkLabel}
       </p>
