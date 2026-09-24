@@ -120,12 +120,14 @@ export type SiteSettings = {
   skillGroups: SkillGroup[];
   footerLine: string;
   resumeUrl?: string;
+  showAvatar?: boolean;
+  avatar?: { asset: SanityImageSource; alt?: string };
 };
 
 const SITE_SETTINGS_QUERY = /* groq */ `
   *[_type == "siteSettings"][0] {
     heroName, heroTitle, openToWorkLabel, tagline, email, githubUrl, linkedinUrl,
-    bio, skillGroups, footerLine, resumeUrl
+    bio, skillGroups, footerLine, resumeUrl, showAvatar, avatar
   }
 `;
 

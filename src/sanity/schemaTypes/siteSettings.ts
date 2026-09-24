@@ -24,6 +24,23 @@ export const siteSettings = defineType({
         "resume everywhere automatically.",
     }),
     defineField({
+      name: "showAvatar",
+      title: "Hero — Show avatar",
+      type: "boolean",
+      initialValue: false,
+      description: "Toggle the hero photo on or off anytime without removing it.",
+    }),
+    defineField({
+      name: "avatar",
+      title: "Hero — Avatar photo",
+      type: "image",
+      options: { hotspot: true },
+      description:
+        "Set the crop/focal point here (drag the hotspot circle onto your face) — the site renders " +
+        "this as a small circle, so frame tightly.",
+      fields: [{ name: "alt", title: "Alt text", type: "string" }],
+    }),
+    defineField({
       name: "bio",
       title: "Bio paragraphs",
       type: "array",
