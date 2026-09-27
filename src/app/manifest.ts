@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Delight Amadi Sheriff — Full-Stack & Mobile Software Engineer",
+    name: "Delight Amadi Sheriff — Full-Stack Software Engineer",
     short_name: "Delight Sheriff",
     description:
       "Full-stack and mobile software engineer based in Nigeria, building chat, payments, and encrypted systems, shipped in production.",

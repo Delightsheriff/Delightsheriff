@@ -38,7 +38,7 @@ const SITE_KEYWORDS = [
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Delight Amadi Sheriff — Full-Stack & Mobile Software Engineer",
+    default: "Delight Amadi Sheriff — Full-Stack Software Engineer",
     template: "%s — Delight Amadi Sheriff",
   },
   description: SITE_DESCRIPTION,
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Delight Amadi Sheriff — Full-Stack & Mobile Software Engineer",
+    title: "Delight Amadi Sheriff — Full-Stack Software Engineer",
     description: SITE_DESCRIPTION,
     type: "website",
     url: SITE_URL,
@@ -69,7 +69,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Delight Amadi Sheriff — Full-Stack & Mobile Software Engineer",
+    title: "Delight Amadi Sheriff — Full-Stack Software Engineer",
     description: SITE_DESCRIPTION,
   },
 };

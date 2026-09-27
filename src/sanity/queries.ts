@@ -125,7 +125,7 @@ export type SiteSettings = {
 };
 
 const SITE_SETTINGS_QUERY = /* groq */ `
-  *[_type == "siteSettings"][0] {
+  *[_type == "siteSettings" && !(_id in path("drafts.**"))][0] {
     heroName, heroTitle, openToWorkLabel, tagline, email, githubUrl, linkedinUrl,
     bio, skillGroups, footerLine, resumeUrl, showAvatar, avatar
   }
