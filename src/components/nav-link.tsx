@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { track } from "@vercel/analytics";
 import { cn } from "@/lib/utils";
 
 type NavLinkProps = {
@@ -10,6 +13,10 @@ type NavLinkProps = {
 };
 
 export function NavLink({ href, direction, children, className }: NavLinkProps) {
+  function handleClick() {
+    track("navigation_click", { href, direction });
+  }
+
   const arrow = (
     <span
       aria-hidden
@@ -28,6 +35,7 @@ export function NavLink({ href, direction, children, className }: NavLinkProps) 
         "group inline-flex w-fit items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background",
         className,
       )}
+      onClick={handleClick}
     >
       {direction === "back" && arrow}
       <span className="underline decoration-border underline-offset-4 group-hover:decoration-foreground">
