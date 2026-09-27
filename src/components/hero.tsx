@@ -50,7 +50,7 @@ export async function Hero() {
           data={{ location: "hero" }}
           className="glass pressable inline-flex items-center rounded-full border px-4 py-2 text-sm text-muted-foreground transition-[transform,color,background-color,border-color] duration-150 ease-out hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background"
         >
-          Start a conversation
+          Talk about a project
         </TrackedLink>
       </div>
 

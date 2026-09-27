@@ -2,11 +2,35 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { PortableText } from "@portabletext/react";
+import type { SanityImageSource } from "@sanity/image-url";
 import { getPostBySlug } from "@/sanity/queries";
 import { urlFor } from "@/sanity/image";
 import { NavLink } from "@/components/nav-link";
 
 type PageProps = { params: Promise<{ slug: string }> };
+
+type PostImage = {
+  asset: SanityImageSource;
+  alt?: string;
+  caption?: string;
+};
+
+const portableTextComponents = {
+  types: {
+    image: ({ value }: { value: PostImage }) => (
+      <figure className="my-8 flex flex-col gap-2">
+        <Image
+          src={urlFor(value).width(1200).url()}
+          alt={value.alt ?? "Article image"}
+          width={1200}
+          height={800}
+          className="rounded-lg border border-border"
+        />
+        {value.caption && <figcaption className="text-sm text-muted-foreground">{value.caption}</figcaption>}
+      </figure>
+    ),
+  },
+};
 
 function formatDate(value: string): string {
   return new Date(value).toLocaleDateString("en-US", {
@@ -89,7 +113,7 @@ export default async function BlogPostPage({ params }: PageProps) {
       )}
 
       <div className="flex max-w-xl flex-col gap-4 text-base leading-relaxed text-foreground/80 [&_p]:leading-relaxed">
-        <PortableText value={post.body} />
+        <PortableText value={post.body} components={portableTextComponents} />
       </div>
 
       {post.tags && post.tags.length > 0 && (

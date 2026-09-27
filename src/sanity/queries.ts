@@ -4,6 +4,7 @@ import { cache } from "react";
 import { client } from "./client";
 
 export type SanityProject = {
+  updatedAt?: string;
   slug: string;
   name: string;
   category: string;
@@ -27,6 +28,7 @@ export type SanityProjectDetail = SanityProject & {
 };
 
 const PROJECT_FIELDS = /* groq */ `
+  "updatedAt": _updatedAt,
   "slug": slug.current,
   name,
   category,
@@ -136,6 +138,7 @@ export const getSiteSettings = cache(async (): Promise<SiteSettings | null> => {
 });
 
 export type SanityPost = {
+  updatedAt?: string;
   slug: string;
   title: string;
   publishedAt: string;
@@ -149,6 +152,7 @@ export type SanityPostDetail = SanityPost & {
 };
 
 const POST_FIELDS = /* groq */ `
+  "updatedAt": _updatedAt,
   "slug": slug.current,
   title,
   publishedAt,
