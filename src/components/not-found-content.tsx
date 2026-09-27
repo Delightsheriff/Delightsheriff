@@ -2,7 +2,7 @@ import { NavLink } from "@/components/nav-link";
 
 export function NotFoundContent() {
   return (
-    <main id="main-content" className="mx-auto flex w-full max-w-2xl flex-1 flex-col items-start justify-center gap-4 px-6 py-20">
+    <main id="main-content" tabIndex={-1} className="mx-auto flex w-full max-w-2xl flex-1 flex-col items-start justify-center gap-4 px-6 py-20">
       <p className="text-xs uppercase tracking-wide text-muted-foreground">404</p>
       <h1 className="font-heading text-3xl font-semibold tracking-tight">
         Nothing here.

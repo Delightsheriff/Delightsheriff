@@ -63,7 +63,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
   };
 
   return (
-    <main id="main-content" className="page-shell mx-auto flex w-full max-w-2xl flex-1 flex-col gap-10 px-6 py-20 sm:py-28">
+    <main id="main-content" tabIndex={-1} className="page-shell mx-auto flex w-full max-w-2xl flex-1 flex-col gap-10 px-6 py-20 sm:py-28">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(projectJsonLd).replace(/</g, "\\u003c") }}
