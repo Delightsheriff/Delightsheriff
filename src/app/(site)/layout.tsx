@@ -6,6 +6,9 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
 
   return (
     <>
+      <a href="#main-content" className="skip-link">
+        Skip to content
+      </a>
       <SiteHeader name={settings?.heroName} email={settings?.email} resumeUrl={settings?.resumeUrl} />
       {children}
     </>
