@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { TrackedLink } from "@/components/tracked-link";
 
 type SiteHeaderProps = {
@@ -14,32 +13,40 @@ export function SiteHeader({ name, email, resumeUrl }: SiteHeaderProps) {
         aria-label="Primary navigation"
         className="mx-auto flex w-full max-w-2xl items-center justify-between px-6 py-3"
       >
-        <Link
+        <TrackedLink
           href="/"
+          eventName="navigation_click"
+          data={{ href: "/", location: "header" }}
           className="font-heading text-sm font-medium tracking-tight text-foreground/90 transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           {name ?? "Delight Sheriff"}
-        </Link>
+        </TrackedLink>
         <div className="flex items-center gap-4 text-xs text-muted-foreground">
-          <Link
+          <TrackedLink
             href="/projects"
+            eventName="navigation_click"
+            data={{ href: "/projects", location: "header" }}
             className="transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             Projects
-          </Link>
-          <Link
+          </TrackedLink>
+          <TrackedLink
             href="/blog"
+            eventName="navigation_click"
+            data={{ href: "/blog", location: "header" }}
             className="transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             Blog
-          </Link>
+          </TrackedLink>
           {email && (
-            <a
+            <TrackedLink
               href={`mailto:${email}`}
+              eventName="contact_click"
+              data={{ location: "header" }}
               className="transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               Contact
-            </a>
+            </TrackedLink>
           )}
           {resumeUrl && (
             <TrackedLink

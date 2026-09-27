@@ -1,5 +1,4 @@
 import { Suspense } from "react";
-import Link from "next/link";
 import Image from "next/image";
 import { NowPlaying } from "@/components/now-playing";
 import { getSiteSettings } from "@/sanity/queries";
@@ -37,12 +36,14 @@ export async function Hero() {
       <p className="max-w-xl text-base leading-relaxed text-foreground/80 sm:text-lg">{settings.tagline}</p>
 
       <div className="flex flex-wrap items-center gap-3 pt-1">
-        <Link
+        <TrackedLink
           href="#projects"
+          eventName="section_jump"
+          data={{ section: "projects", location: "hero" }}
           className="glass-tint pressable inline-flex items-center rounded-full border bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-[0_8px_24px_-12px_var(--primary)] transition-[transform,background-color] duration-150 ease-out hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background"
         >
           View selected work <span aria-hidden className="ml-2">↘</span>
-        </Link>
+        </TrackedLink>
         <TrackedLink
           href={`mailto:${settings.email}`}
           eventName="contact_click"
@@ -62,22 +63,24 @@ export async function Hero() {
           >
             Email
           </TrackedLink>
-        <a
+        <TrackedLink
           href={settings.githubUrl}
-          target="_blank"
-          rel="noopener noreferrer"
+          external
+          eventName="social_click"
+          data={{ network: "github", location: "hero-links" }}
           className="text-muted-foreground underline decoration-border underline-offset-4 transition-colors hover:text-foreground hover:decoration-foreground"
         >
           GitHub
-        </a>
-        <a
+        </TrackedLink>
+        <TrackedLink
           href={settings.linkedinUrl}
-          target="_blank"
-          rel="noopener noreferrer"
+          external
+          eventName="social_click"
+          data={{ network: "linkedin", location: "hero-links" }}
           className="text-muted-foreground underline decoration-border underline-offset-4 transition-colors hover:text-foreground hover:decoration-foreground"
         >
           LinkedIn
-        </a>
+        </TrackedLink>
         {settings.resumeUrl && (
           <TrackedLink
             href={settings.resumeUrl}

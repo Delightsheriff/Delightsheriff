@@ -5,6 +5,7 @@ import { PortableText } from "@portabletext/react";
 import { getProjectBySlug, getProjectNavigation } from "@/sanity/queries";
 import { urlFor } from "@/sanity/image";
 import { NavLink } from "@/components/nav-link";
+import { TrackedLink } from "@/components/tracked-link";
 
 const CATEGORY_LABELS: Record<string, string> = {
   web: "Web",
@@ -109,15 +110,16 @@ export default async function ProjectDetailPage({ params }: PageProps) {
           ]
             .filter((link) => link.href)
             .map((link) => (
-              <a
+              <TrackedLink
                 key={link.label}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={link.href!}
+                external
+                eventName="project_destination_click"
+                data={{ project: project.name, destination: link.label }}
                 className="text-muted-foreground underline decoration-border underline-offset-4 transition-colors hover:text-foreground hover:decoration-foreground"
               >
                 {link.label}
-              </a>
+              </TrackedLink>
             ))}
         </div>
       </div>

@@ -1,6 +1,7 @@
 import { getContributions } from "@/lib/github";
 import { getSiteSettings } from "@/sanity/queries";
 import { EmptyState } from "@/components/empty-state";
+import { TrackedLink } from "@/components/tracked-link";
 
 function levelFor(count: number): number {
   if (count === 0) return 0;
@@ -33,14 +34,15 @@ export async function ContributionGraph() {
             {data ? `${data.totalContributions.toLocaleString()} in the last year` : "Activity unavailable"}
           </p>
           {settings?.githubUrl && (
-            <a
+            <TrackedLink
               href={settings.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+              external
+              eventName="social_click"
+              data={{ network: "github", location: "contributions" }}
               className="text-xs text-muted-foreground underline decoration-border underline-offset-4 transition-colors hover:text-foreground hover:decoration-foreground"
             >
               GitHub
-            </a>
+            </TrackedLink>
           )}
         </div>
       </div>

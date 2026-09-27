@@ -25,12 +25,12 @@ export async function Footer() {
           <TrackedLink href={`mailto:${settings.email}`} eventName="contact_click" data={{ location: "footer-links" }} className="text-muted-foreground transition-colors hover:text-foreground">
             Email
           </TrackedLink>
-        <a href={settings.githubUrl} target="_blank" rel="noopener noreferrer" className="text-muted-foreground transition-colors hover:text-foreground">
+        <TrackedLink href={settings.githubUrl} external eventName="social_click" data={{ network: "github", location: "footer-links" }} className="text-muted-foreground transition-colors hover:text-foreground">
           GitHub
-        </a>
-        <a href={settings.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-muted-foreground transition-colors hover:text-foreground">
+        </TrackedLink>
+        <TrackedLink href={settings.linkedinUrl} external eventName="social_click" data={{ network: "linkedin", location: "footer-links" }} className="text-muted-foreground transition-colors hover:text-foreground">
           LinkedIn
-        </a>
+        </TrackedLink>
         {settings.resumeUrl && (
           <TrackedLink href={settings.resumeUrl} external eventName="resume_click" data={{ location: "footer-links" }} className="text-muted-foreground transition-colors hover:text-foreground">
             Resume
