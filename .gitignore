@@ -44,3 +44,6 @@ BUILD_PLAN.md
 
 # one-off local scripts (may contain personal/content data)
 scripts/
+
+# private portfolio review notes
+/PORTFOLIO_REVIEW_PRIVATE.md
