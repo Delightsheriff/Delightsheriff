@@ -7,6 +7,7 @@ import { urlFor } from "@/sanity/image";
 import { NavLink } from "@/components/nav-link";
 import { TrackedLink } from "@/components/tracked-link";
 import { categoryLabel } from "@/lib/project-categories";
+import { ProjectDemo } from "@/components/project-demo";
 
 type PageProps = { params: Promise<{ slug: string }> };
 
@@ -118,6 +119,8 @@ export default async function ProjectDetailPage({ params }: PageProps) {
             ))}
         </div>
       </div>
+
+      {project.demo && <ProjectDemo demo={project.demo} title={project.name} />}
 
       {(project.challenge || project.contribution || project.outcome) && (
         <div className="flex max-w-xl flex-col gap-8 border-y border-border py-8">
