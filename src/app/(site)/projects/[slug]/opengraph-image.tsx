@@ -1,7 +1,6 @@
 import { ImageResponse } from "next/og";
 import { getProjectBySlug } from "@/sanity/queries";
-
-const CATEGORY_LABELS: Record<string, string> = { web: "Web", mobile: "Mobile", api: "API" };
+import { categoryLabel } from "@/lib/project-categories";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
@@ -45,7 +44,7 @@ export default async function OpengraphImage({ params }: { params: Promise<{ slu
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           {project && (
             <div style={{ display: "flex", fontSize: 24, color: "#9a9aa0" }}>
-              {CATEGORY_LABELS[project.category] ?? project.category} · {project.year}
+              {categoryLabel(project.category)} · {project.year}
             </div>
           )}
           <div style={{ display: "flex", fontSize: 64, fontWeight: 700, color: "#eff6ff" }}>

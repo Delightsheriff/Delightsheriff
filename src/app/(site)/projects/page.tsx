@@ -4,13 +4,7 @@ import { ProjectRow } from "@/components/project-row";
 import { NavLink } from "@/components/nav-link";
 import { groupByCategory } from "@/lib/group-by-category";
 import { EmptyState } from "@/components/empty-state";
-
-const CATEGORY_LABELS: Record<string, string> = {
-  web: "Web",
-  mobile: "Mobile",
-  api: "API",
-  macos: "macOS",
-};
+import { categoryLabel } from "@/lib/project-categories";
 
 export const metadata: Metadata = {
   title: "Projects",
@@ -56,7 +50,7 @@ export default async function ProjectsPage() {
       {Object.entries(grouped).length > 0 ? Object.entries(grouped).map(([category, items]) => (
         <section key={category} className="flex flex-col border-t border-border pt-10">
           <h2 className="font-heading text-sm uppercase tracking-wide text-muted-foreground">
-            {CATEGORY_LABELS[category] ?? category}
+            {categoryLabel(category)}
           </h2>
           <div className="mt-6 flex flex-col">
             {items.map((project, i) => (
