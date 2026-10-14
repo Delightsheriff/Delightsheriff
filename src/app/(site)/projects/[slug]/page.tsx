@@ -6,12 +6,7 @@ import { getProjectBySlug, getProjectNavigation } from "@/sanity/queries";
 import { urlFor } from "@/sanity/image";
 import { NavLink } from "@/components/nav-link";
 import { TrackedLink } from "@/components/tracked-link";
-
-const CATEGORY_LABELS: Record<string, string> = {
-  web: "Web",
-  mobile: "Mobile",
-  api: "API",
-};
+import { categoryLabel } from "@/lib/project-categories";
 
 type PageProps = { params: Promise<{ slug: string }> };
 
@@ -76,7 +71,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
         <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
           <h1 className="font-heading text-3xl font-semibold tracking-tight">{project.name}</h1>
           <p className="text-sm text-muted-foreground">
-            {CATEGORY_LABELS[project.category] ?? project.category} · {project.year}
+            {categoryLabel(project.category)} · {project.year}
           </p>
         </div>
 
