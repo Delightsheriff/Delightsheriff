@@ -121,6 +121,51 @@ export const project = defineType({
       ],
     }),
     defineField({
+      name: "demo",
+      title: "Demo recording",
+      type: "object",
+      description: "A short silent loop shown at the top of the case study. Keep it under ~5 MB.",
+      fields: [
+        defineField({
+          name: "video",
+          title: "Video",
+          type: "file",
+          options: { accept: "video/mp4,video/webm" },
+        }),
+        defineField({
+          name: "poster",
+          title: "Poster",
+          type: "image",
+          description: "A frame from the recording, at the same size. Its dimensions set the player's aspect ratio.",
+          validation: (rule) =>
+            rule.custom((poster, context) => {
+              const demo = context.parent as { video?: { asset?: unknown } } | undefined;
+              return demo?.video?.asset && !poster ? "Add a poster so the player can reserve its size" : true;
+            }),
+        }),
+        defineField({
+          name: "caption",
+          title: "Caption",
+          type: "string",
+        }),
+        defineField({
+          name: "frame",
+          title: "Frame",
+          type: "string",
+          description: "Use None when the recording already includes a device frame.",
+          options: {
+            list: [
+              { title: "None", value: "none" },
+              { title: "Phone", value: "phone" },
+              { title: "Browser", value: "browser" },
+            ],
+            layout: "radio",
+          },
+          initialValue: "none",
+        }),
+      ],
+    }),
+    defineField({
       name: "featured",
       title: "Featured (shows on homepage top 3)",
       type: "boolean",

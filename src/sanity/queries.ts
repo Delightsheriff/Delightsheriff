@@ -21,6 +21,21 @@ export type SanityProject = {
   tags: string[];
   links: { source?: string; live?: string; appStore?: string; playStore?: string };
   order: number;
+  hasDemo: boolean;
+};
+
+export type ProjectDemoFrame = "none" | "phone" | "browser";
+
+export type SanityProjectDemo = {
+  url: string;
+  mimeType: string;
+  size: number;
+  posterUrl: string;
+  width: number;
+  height: number;
+  lqip?: string;
+  caption?: string;
+  frame?: ProjectDemoFrame;
 };
 
 export type SanityProjectDetail = SanityProject & {
@@ -32,6 +47,7 @@ export type SanityProjectDetail = SanityProject & {
     dimensions?: { width: number; height: number };
     lqip?: string;
   }[];
+  demo: SanityProjectDemo | null;
 };
 
 const PROJECT_FIELDS = /* groq */ `
@@ -50,7 +66,8 @@ const PROJECT_FIELDS = /* groq */ `
   thumbnail,
   tags,
   links,
-  order
+  order,
+  "hasDemo": defined(demo.video.asset) && defined(demo.poster.asset)
 `;
 
 const FEATURED_PROJECTS_QUERY = /* groq */ `
@@ -71,7 +88,20 @@ const PROJECT_BY_SLUG_QUERY = /* groq */ `
       asset,
       "dimensions": asset->metadata.dimensions { width, height },
       "lqip": asset->metadata.lqip
-    }
+    },
+    "demo": select(
+      defined(demo.video.asset) && defined(demo.poster.asset) => demo {
+        "url": video.asset->url,
+        "mimeType": video.asset->mimeType,
+        "size": video.asset->size,
+        "posterUrl": poster.asset->url,
+        "width": poster.asset->metadata.dimensions.width,
+        "height": poster.asset->metadata.dimensions.height,
+        "lqip": poster.asset->metadata.lqip,
+        caption,
+        frame
+      }
+    )
   }
 `;
 
