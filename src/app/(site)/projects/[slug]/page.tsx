@@ -156,20 +156,28 @@ export default async function ProjectDetailPage({ params }: PageProps) {
 
       {project.screenshots && project.screenshots.length > 0 && (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {project.screenshots.map((shot) => (
-            <figure key={shot._key} className="flex flex-col gap-2">
-              <Image
-                src={urlFor(shot.asset).width(800).url()}
-                alt={shot.caption ?? project.name}
-                width={800}
-                height={800}
-                className="rounded-lg border border-border"
-              />
-              {shot.caption && (
-                <figcaption className="text-xs text-muted-foreground">{shot.caption}</figcaption>
-              )}
-            </figure>
-          ))}
+          {project.screenshots.map((shot) => {
+            const width = 800;
+            const height = shot.dimensions
+              ? Math.round((width * shot.dimensions.height) / shot.dimensions.width)
+              : width;
+            return (
+              <figure key={shot._key} className="flex flex-col gap-2">
+                <Image
+                  src={urlFor(shot.asset).width(width).url()}
+                  alt={shot.caption ?? project.name}
+                  width={width}
+                  height={height}
+                  placeholder={shot.lqip ? "blur" : "empty"}
+                  blurDataURL={shot.lqip}
+                  className="h-auto w-full rounded-lg border border-border"
+                />
+                {shot.caption && (
+                  <figcaption className="text-xs text-muted-foreground">{shot.caption}</figcaption>
+                )}
+              </figure>
+            );
+          })}
         </div>
       )}
 
