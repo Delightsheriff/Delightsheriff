@@ -1,6 +1,7 @@
 import type { PortableTextBlock } from "@portabletext/react";
 import type { SanityImageSource } from "@sanity/image-url";
 import { cache } from "react";
+import { sortByCategory } from "@/lib/project-categories";
 import { client } from "./client";
 
 export type SanityProject = {
@@ -51,7 +52,7 @@ const FEATURED_PROJECTS_QUERY = /* groq */ `
 `;
 
 const ALL_PROJECTS_QUERY = /* groq */ `
-  *[_type == "project"] | order(category asc, order asc) { ${PROJECT_FIELDS} }
+  *[_type == "project"] | order(order asc) { ${PROJECT_FIELDS} }
 `;
 
 const PROJECT_BY_SLUG_QUERY = /* groq */ `
@@ -66,8 +67,10 @@ export async function getFeaturedProjects(): Promise<SanityProject[]> {
   return client.fetch(FEATURED_PROJECTS_QUERY, {}, { next: { revalidate: 60 } });
 }
 
+// Sorted by CATEGORY_ORDER so /projects and prev/next navigation agree.
 export async function getAllProjects(): Promise<SanityProject[]> {
-  return client.fetch(ALL_PROJECTS_QUERY, {}, { next: { revalidate: 60 } });
+  const projects: SanityProject[] = await client.fetch(ALL_PROJECTS_QUERY, {}, { next: { revalidate: 60 } });
+  return sortByCategory(projects);
 }
 
 export async function getProjectBySlug(slug: string): Promise<SanityProjectDetail | null> {
