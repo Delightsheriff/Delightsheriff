@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Play } from "lucide-react";
 import { urlFor } from "@/sanity/image";
 import { TrackedLink } from "@/components/tracked-link";
 
@@ -12,9 +13,10 @@ type ProjectRowProps = {
   tags: string[];
   href: string;
   external?: boolean;
+  hasDemo?: boolean;
 };
 
-export function ProjectRow({ index, name, description, role, impact, thumbnail, tags, href, external }: ProjectRowProps) {
+export function ProjectRow({ index, name, description, role, impact, thumbnail, tags, href, external, hasDemo }: ProjectRowProps) {
   const content = (
     <>
       <span className="font-heading text-sm text-muted-foreground/90 tabular-nums">
@@ -22,8 +24,14 @@ export function ProjectRow({ index, name, description, role, impact, thumbnail, 
       </span>
 
       <div className="flex flex-1 flex-col gap-1.5">
-        <p className="font-heading text-lg font-medium text-foreground/90 transition-colors group-hover:text-foreground">
+        <p className="flex flex-wrap items-center gap-x-2.5 gap-y-1 font-heading text-lg font-medium text-foreground/90 transition-colors group-hover:text-foreground">
           {name}
+          {hasDemo && (
+            <span className="inline-flex items-center gap-1 rounded-full border border-border px-2 py-0.5 font-sans text-[0.6875rem] font-medium leading-none text-muted-foreground">
+              <Play aria-hidden className="size-2.5" fill="currentColor" />
+              Demo
+            </span>
+          )}
         </p>
         <p className="max-w-md text-sm leading-relaxed text-muted-foreground">{description}</p>
         <div className="mt-1 flex flex-wrap gap-x-2 gap-y-1 text-xs text-muted-foreground">

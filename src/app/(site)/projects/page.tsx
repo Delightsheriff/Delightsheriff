@@ -63,6 +63,7 @@ export default async function ProjectsPage() {
                   impact={project.impact}
                   thumbnail={project.thumbnail}
                   tags={project.tags}
+                  hasDemo={project.hasDemo}
                 href={`/projects/${project.slug}`}
               />
             ))}
