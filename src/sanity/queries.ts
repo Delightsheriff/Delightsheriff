@@ -25,7 +25,13 @@ export type SanityProject = {
 
 export type SanityProjectDetail = SanityProject & {
   body: PortableTextBlock[];
-  screenshots: { asset: SanityImageSource; caption?: string; _key: string }[];
+  screenshots: {
+    asset: SanityImageSource;
+    caption?: string;
+    _key: string;
+    dimensions?: { width: number; height: number };
+    lqip?: string;
+  }[];
 };
 
 const PROJECT_FIELDS = /* groq */ `
@@ -59,7 +65,13 @@ const PROJECT_BY_SLUG_QUERY = /* groq */ `
   *[_type == "project" && slug.current == $slug][0] {
     ${PROJECT_FIELDS},
     body,
-    screenshots
+    screenshots[] {
+      _key,
+      caption,
+      asset,
+      "dimensions": asset->metadata.dimensions { width, height },
+      "lqip": asset->metadata.lqip
+    }
   }
 `;
 
