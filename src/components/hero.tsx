@@ -1,6 +1,4 @@
-import { Suspense } from "react";
 import Image from "next/image";
-import { NowPlaying } from "@/components/now-playing";
 import { getSiteSettings } from "@/sanity/queries";
 import { TrackedLink } from "@/components/tracked-link";
 import { urlFor } from "@/sanity/image";
@@ -93,10 +91,6 @@ export async function Hero() {
           </TrackedLink>
         )}
       </nav>
-
-      <Suspense fallback={null}>
-        <NowPlaying />
-      </Suspense>
     </section>
   );
 }

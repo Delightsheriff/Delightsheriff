@@ -1,4 +1,6 @@
+import { Suspense } from "react";
 import { getSiteSettings } from "@/sanity/queries";
+import { NowPlaying } from "@/components/now-playing";
 import { toRoman } from "@/lib/roman";
 import { TrackedLink } from "@/components/tracked-link";
 
@@ -37,6 +39,10 @@ export async function Footer() {
           </TrackedLink>
         )}
       </nav>
+
+      <Suspense fallback={null}>
+        <NowPlaying />
+      </Suspense>
 
       <p className="text-xs text-muted-foreground">© {year} · {settings.heroName}</p>
     </footer>
