@@ -3,15 +3,15 @@ import { formatDateRange } from "@/lib/format";
 import { EmptyState } from "@/components/empty-state";
 
 export async function Work() {
+  // Shown in the order set in Sanity, so the current main role can lead.
   const entries = await getWorkEntries();
-  const sorted = [...entries].sort((a, b) => b.startDate.localeCompare(a.startDate));
 
   return (
     <section className="flex flex-col gap-8 border-t border-border pt-10">
       <h2 className="font-heading text-sm uppercase tracking-wide text-muted-foreground">Work</h2>
 
       <div className="flex flex-col gap-10">
-        {sorted.length > 0 ? sorted.map((entry) => (
+        {entries.length > 0 ? entries.map((entry) => (
           <div key={`${entry.company}-${entry.startDate}`} className="flex flex-col gap-2">
             <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
               <p className="font-heading text-base font-medium">
