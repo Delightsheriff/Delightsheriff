@@ -23,12 +23,12 @@ export default function Home() {
   return (
       <main id="main-content" tabIndex={-1} className="page-shell mx-auto flex w-full max-w-2xl flex-1 flex-col gap-16 px-6 py-20 sm:py-28">
       <Hero />
+      <Projects />
       <Bio />
       <Suspense fallback={<ContributionGraphFallback />}>
         <ContributionGraph />
       </Suspense>
       <Work />
-      <Projects />
       <Skills />
       <Footer />
     </main>
