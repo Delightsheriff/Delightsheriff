@@ -19,7 +19,7 @@ export type SanityProject = {
   highlights?: string[];
   thumbnail?: { asset: SanityImageSource; alt?: string };
   tags: string[];
-  links: { source?: string; live?: string; appStore?: string; playStore?: string };
+  links: { source?: string; live?: string; download?: string; appStore?: string; playStore?: string };
   order: number;
   hasDemo: boolean;
 };
@@ -216,6 +216,10 @@ const POST_BY_SLUG_QUERY = /* groq */ `
     body
   }
 `;
+
+export const hasPublishedPosts = cache(async (): Promise<boolean> => {
+  return client.fetch(`count(*[_type == "post"]) > 0`, {}, { next: { revalidate: 60 } });
+});
 
 export async function getAllPosts(): Promise<SanityPost[]> {
   return client.fetch(ALL_POSTS_QUERY, {}, { next: { revalidate: 60 } });
