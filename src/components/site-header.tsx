@@ -4,9 +4,11 @@ type SiteHeaderProps = {
   name?: string;
   email?: string;
   resumeUrl?: string;
+  // The Blog link is hidden until there's at least one post to read.
+  showBlog?: boolean;
 };
 
-export function SiteHeader({ name, email, resumeUrl }: SiteHeaderProps) {
+export function SiteHeader({ name, email, resumeUrl, showBlog }: SiteHeaderProps) {
   return (
     <header className="site-header sticky top-0 z-10 border-b border-border/60 bg-background/70 backdrop-blur-lg backdrop-saturate-150 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
       <nav
@@ -30,14 +32,16 @@ export function SiteHeader({ name, email, resumeUrl }: SiteHeaderProps) {
           >
             Projects
           </TrackedLink>
-          <TrackedLink
-            href="/blog"
-            eventName="navigation_click"
-            data={{ href: "/blog", location: "header" }}
-            className="transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          >
-            Blog
-          </TrackedLink>
+          {showBlog && (
+            <TrackedLink
+              href="/blog"
+              eventName="navigation_click"
+              data={{ href: "/blog", location: "header" }}
+              className="transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              Blog
+            </TrackedLink>
+          )}
           {email && (
             <TrackedLink
               href={`mailto:${email}`}
