@@ -8,11 +8,11 @@ import { categoryLabel } from "@/lib/project-categories";
 
 export const metadata: Metadata = {
   title: "Projects",
-  description: "Full-stack web and mobile projects. Real production systems, not demos.",
+  description: "Web, mobile and macOS projects I've designed and built.",
   alternates: { canonical: "/projects" },
   openGraph: {
     title: "Projects — Delight Amadi Sheriff",
-    description: "Full-stack web and mobile projects. Real production systems, not demos.",
+    description: "Web, mobile and macOS projects I've designed and built.",
     url: "/projects",
     type: "website",
   },
