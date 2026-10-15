@@ -29,6 +29,7 @@ export async function Projects() {
             thumbnail={project.thumbnail}
             tags={project.tags}
             hasDemo={project.hasDemo}
+            liveUrl={project.links?.live}
             href={`/projects/${project.slug}`}
           />
         )) : <EmptyState title="Projects are being refreshed" description="Selected work will be back shortly. In the meantime, get in touch to talk through recent builds." />}
