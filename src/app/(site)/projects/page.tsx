@@ -64,6 +64,7 @@ export default async function ProjectsPage() {
                   thumbnail={project.thumbnail}
                   tags={project.tags}
                   hasDemo={project.hasDemo}
+                  liveUrl={project.links?.live}
                 href={`/projects/${project.slug}`}
               />
             ))}
