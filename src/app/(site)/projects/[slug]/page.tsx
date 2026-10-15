@@ -100,6 +100,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
         <div className="flex flex-wrap gap-5 text-sm">
           {[
             { label: "Live", href: project.links?.live },
+            { label: "Download", href: project.links?.download },
             { label: "App Store", href: project.links?.appStore },
             { label: "Play Store", href: project.links?.playStore },
             { label: "Source", href: project.links?.source },
