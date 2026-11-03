@@ -11,7 +11,7 @@
 
 ---
 
-Software Engineer focused on building reliable, user-centric products end-to-end — from architecture decisions to polished UI. Comfortable across the entire product lifecycle: ideation, design, development, and deployment.
+Software Engineer focused on building reliable, user-centric products end-to-end, from architecture decisions to polished UI. Comfortable across the entire product lifecycle: ideation, design, development, and deployment.
 
 ### What I'm focusing on
 - 📱 Building cross-platform mobile experiences with React Native & Expo
