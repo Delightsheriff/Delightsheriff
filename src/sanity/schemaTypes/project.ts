@@ -168,7 +168,7 @@ export const project = defineType({
     }),
     defineField({
       name: "featured",
-      title: "Featured (shows on homepage top 3)",
+      title: "Featured (shows on the homepage under Selected work)",
       type: "boolean",
       initialValue: false,
     }),
