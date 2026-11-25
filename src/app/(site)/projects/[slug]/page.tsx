@@ -60,6 +60,16 @@ export default async function ProjectDetailPage({ params }: PageProps) {
     ...(project.links?.source && { codeRepository: project.links.source }),
   };
 
+  // Lead with the strongest visual: the demo if there is one, otherwise the first screenshot,
+  // otherwise the card thumbnail. A screenshot used up top isn't repeated in the gallery below.
+  const leadShot = !project.demo ? project.screenshots?.[0] : undefined;
+  const galleryShots = leadShot ? project.screenshots.slice(1) : (project.screenshots ?? []);
+  const leadImage = leadShot
+    ? { asset: leadShot.asset, alt: leadShot.caption ?? project.name, caption: leadShot.caption, lqip: leadShot.lqip }
+    : !project.demo && project.thumbnail
+      ? { asset: project.thumbnail.asset, alt: project.thumbnail.alt ?? `${project.name} preview`, caption: undefined, lqip: undefined }
+      : null;
+
   const destinations = [
     { label: "Live", href: project.links?.live },
     { label: "Download", href: project.links?.download },
@@ -131,6 +141,22 @@ export default async function ProjectDetailPage({ params }: PageProps) {
 
           {project.demo && <ProjectDemo demo={project.demo} title={project.name} />}
 
+          {leadImage && (
+            <figure className="flex flex-col gap-2">
+              <Image
+                src={urlFor(leadImage.asset).width(1600).url()}
+                alt={leadImage.alt}
+                width={1600}
+                height={1000}
+                priority
+                placeholder={leadImage.lqip ? "blur" : "empty"}
+                blurDataURL={leadImage.lqip}
+                className="h-auto w-full rounded-xl border border-border"
+              />
+              {leadImage.caption && <figcaption className="text-xs text-muted-foreground">{leadImage.caption}</figcaption>}
+            </figure>
+          )}
+
           {(project.challenge || project.contribution || project.outcome) && (
             <div className="flex max-w-[58ch] flex-col gap-8">
               {[
@@ -165,9 +191,9 @@ export default async function ProjectDetailPage({ params }: PageProps) {
             </ul>
           )}
 
-          {project.screenshots && project.screenshots.length > 0 && (
+          {galleryShots.length > 0 && (
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              {project.screenshots.map((shot) => {
+              {galleryShots.map((shot) => {
                 const width = 800;
                 const height = shot.dimensions
                   ? Math.round((width * shot.dimensions.height) / shot.dimensions.width)
