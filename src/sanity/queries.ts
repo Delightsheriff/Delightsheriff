@@ -9,6 +9,7 @@ export type SanityProject = {
   slug: string;
   name: string;
   category: string;
+  featured: boolean;
   year: number;
   description: string;
   challenge?: string;
@@ -55,6 +56,7 @@ const PROJECT_FIELDS = /* groq */ `
   "slug": slug.current,
   name,
   category,
+  "featured": featured == true,
   year,
   description,
   challenge,
@@ -109,6 +111,15 @@ export async function getFeaturedProjects(): Promise<SanityProject[]> {
   return client.fetch(FEATURED_PROJECTS_QUERY, {}, { next: { revalidate: 60 } });
 }
 
+// Home page: featured projects become tiles, the rest are listed. Both keep the order set in Sanity.
+export async function getHomeProjects(): Promise<{ featured: SanityProject[]; more: SanityProject[] }> {
+  const projects: SanityProject[] = await client.fetch(ALL_PROJECTS_QUERY, {}, { next: { revalidate: 60 } });
+  return {
+    featured: projects.filter((project) => project.featured),
+    more: projects.filter((project) => !project.featured),
+  };
+}
+
 // Sorted by CATEGORY_ORDER so /projects and prev/next navigation agree.
 export async function getAllProjects(): Promise<SanityProject[]> {
   const projects: SanityProject[] = await client.fetch(ALL_PROJECTS_QUERY, {}, { next: { revalidate: 60 } });
@@ -159,6 +170,7 @@ export type SiteSettings = {
   heroName: string;
   heroTitle: string;
   openToWorkLabel: string;
+  statusNote?: string;
   tagline: string;
   email: string;
   githubUrl: string;
@@ -173,7 +185,7 @@ export type SiteSettings = {
 
 const SITE_SETTINGS_QUERY = /* groq */ `
   *[_type == "siteSettings" && !(_id in path("drafts.**"))][0] {
-    heroName, heroTitle, openToWorkLabel, tagline, email, githubUrl, linkedinUrl,
+    heroName, heroTitle, openToWorkLabel, statusNote, tagline, email, githubUrl, linkedinUrl,
     bio, skillGroups, footerLine, resumeUrl, showAvatar, avatar
   }
 `;

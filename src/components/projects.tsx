@@ -1,39 +1,61 @@
-import { getFeaturedProjects } from "@/sanity/queries";
-import { ProjectRow } from "@/components/project-row";
-import { NavLink } from "@/components/nav-link";
+import { getHomeProjects } from "@/sanity/queries";
+import { Section } from "@/components/section";
+import { ProjectTile } from "@/components/project-tile";
+import { ProjectListItem } from "@/components/project-list-item";
 import { EmptyState } from "@/components/empty-state";
 
 export async function Projects() {
-  const projects = await getFeaturedProjects();
+  const { featured, more } = await getHomeProjects();
+  const total = featured.length + more.length;
 
   return (
-    <section id="projects" className="scroll-mt-8 flex flex-col border-t border-border pt-10">
-      <div className="flex items-baseline justify-between">
-        <h2 className="font-heading text-sm uppercase tracking-wide text-muted-foreground">
-          Selected work
-        </h2>
-        <NavLink href="/projects" direction="forward">
-          View all
-        </NavLink>
-      </div>
+    <Section id="projects" label="Projects" meta={total > 0 ? `${total} in total` : undefined}>
+      {total === 0 ? (
+        <EmptyState
+          title="Projects are being refreshed"
+          description="Selected work will be back shortly. In the meantime, get in touch to talk through recent builds."
+        />
+      ) : (
+        <>
+          {featured.length > 0 && (
+            <div className="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2">
+              {featured.map((project, i) => (
+                <ProjectTile
+                  key={project.slug}
+                  name={project.name}
+                  description={project.description}
+                  role={project.role}
+                  tags={project.tags}
+                  thumbnail={project.thumbnail}
+                  hasDemo={project.hasDemo}
+                  href={`/projects/${project.slug}`}
+                  liveUrl={project.links?.live}
+                  priority={i < 2}
+                />
+              ))}
+            </div>
+          )}
 
-      <div className="mt-6 flex flex-col">
-        {projects.length > 0 ? projects.map((project, i) => (
-          <ProjectRow
-            key={project.slug}
-            index={i + 1}
-            name={project.name}
-            description={project.description}
-            role={project.role}
-            impact={project.impact}
-            thumbnail={project.thumbnail}
-            tags={project.tags}
-            hasDemo={project.hasDemo}
-            liveUrl={project.links?.live}
-            href={`/projects/${project.slug}`}
-          />
-        )) : <EmptyState title="Projects are being refreshed" description="Selected work will be back shortly. In the meantime, get in touch to talk through recent builds." />}
-      </div>
-    </section>
+          {more.length > 0 && (
+            <div className="mt-16">
+              <h3 className="mb-2 font-mono text-xs font-normal text-muted-foreground">More work</h3>
+              <ul>
+                {more.map((project) => (
+                  <ProjectListItem
+                    key={project.slug}
+                    name={project.name}
+                    category={project.category}
+                    description={project.description}
+                    impact={project.impact}
+                    tags={project.tags}
+                    links={project.links ?? {}}
+                  />
+                ))}
+              </ul>
+            </div>
+          )}
+        </>
+      )}
+    </Section>
   );
 }
