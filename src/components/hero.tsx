@@ -49,7 +49,8 @@ export async function Hero() {
           <h1 className="enter enter-2 max-w-[24ch] text-balance text-[clamp(1.7rem,3.8vw,2.55rem)] font-medium leading-[1.22] tracking-[-0.028em]">
             {settings.heroName}.{" "}
             <span className="text-muted-foreground">
-              <span className="whitespace-nowrap">{settings.heroTitle}.</span> {settings.tagline}
+              {/* Non-breaking hyphen so "Full-Stack" never splits across lines. */}
+              {settings.heroTitle.replace(/-/g, "‑")}. {settings.tagline}
             </span>
           </h1>
 
