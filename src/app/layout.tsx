@@ -1,13 +1,9 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, DM_Sans, Outfit } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { getSiteSettings } from "@/sanity/queries";
 import { Analytics } from "@vercel/analytics/next";
-
-const outfitHeading = Outfit({subsets:['latin'],variable:'--font-heading'});
-
-const dmSans = DM_Sans({subsets:['latin'],variable:'--font-sans'});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -103,7 +99,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={cn("dark", "h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", dmSans.variable, outfitHeading.variable)}
+      className={cn("dark", "h-full", "font-sans", geistSans.variable, geistMono.variable)}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <script

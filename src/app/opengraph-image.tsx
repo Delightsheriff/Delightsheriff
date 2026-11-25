@@ -17,9 +17,7 @@ export default async function OpengraphImage() {
           flexDirection: "column",
           justifyContent: "space-between",
           padding: 80,
-           backgroundColor: "#090b0c",
-           backgroundImage: "linear-gradient(#ffffff08 1px, transparent 1px), linear-gradient(90deg, #ffffff08 1px, transparent 1px)",
-           backgroundSize: "40px 40px",
+          backgroundColor: "#0a0b0e",
         }}
       >
         <div
@@ -28,8 +26,8 @@ export default async function OpengraphImage() {
             width: 48,
             height: 48,
             borderRadius: 10,
-             background: "#193cb8",
-            color: "#eff6ff",
+             background: "#ecedf0",
+            color: "#0a0b0e",
             alignItems: "center",
             justifyContent: "center",
             fontSize: 20,
@@ -40,13 +38,13 @@ export default async function OpengraphImage() {
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-          <div style={{ display: "flex", fontSize: 64, fontWeight: 700, color: "#eff6ff" }}>
+          <div style={{ display: "flex", fontSize: 64, fontWeight: 700, color: "#ecedf0" }}>
             {settings?.heroName ?? "Delight Amadi Sheriff"}
           </div>
-          <div style={{ display: "flex", fontSize: 30, color: "#9a9aa0" }}>
+          <div style={{ display: "flex", fontSize: 30, color: "#959aa6" }}>
             {settings?.heroTitle ?? "Software Engineer"}
           </div>
-          <div style={{ display: "flex", fontSize: 22, color: "#c5c5ca", maxWidth: 900 }}>
+          <div style={{ display: "flex", fontSize: 22, color: "#ecedf0", maxWidth: 900 }}>
             {settings?.tagline ??
               "Full-stack and mobile engineer. I build production systems, not demos."}
           </div>

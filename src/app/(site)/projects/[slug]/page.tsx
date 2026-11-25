@@ -36,6 +36,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
+const LABEL = "font-mono text-xs font-normal text-muted-foreground";
+
 export default async function ProjectDetailPage({ params }: PageProps) {
   const { slug } = await params;
   const project = await getProjectBySlug(slug);
@@ -58,162 +60,193 @@ export default async function ProjectDetailPage({ params }: PageProps) {
     ...(project.links?.source && { codeRepository: project.links.source }),
   };
 
+  // Lead with the strongest visual: the demo if there is one, otherwise the first screenshot,
+  // otherwise the card thumbnail. A screenshot used up top isn't repeated in the gallery below.
+  const leadShot = !project.demo ? project.screenshots?.[0] : undefined;
+  const galleryShots = leadShot ? project.screenshots.slice(1) : (project.screenshots ?? []);
+  const leadImage = leadShot
+    ? { asset: leadShot.asset, alt: leadShot.caption ?? project.name, caption: leadShot.caption, lqip: leadShot.lqip }
+    : !project.demo && project.thumbnail
+      ? { asset: project.thumbnail.asset, alt: project.thumbnail.alt ?? `${project.name} preview`, caption: undefined, lqip: undefined }
+      : null;
+
+  const destinations = [
+    { label: "Live", href: project.links?.live },
+    { label: "Download", href: project.links?.download },
+    { label: "App Store", href: project.links?.appStore },
+    { label: "Play Store", href: project.links?.playStore },
+    { label: "Source", href: project.links?.source },
+  ].filter((link) => link.href);
+
   return (
-    <main id="main-content" tabIndex={-1} className="page-shell mx-auto flex w-full max-w-2xl flex-1 flex-col gap-10 px-6 py-20 sm:py-28">
+    <main id="main-content" tabIndex={-1} className="mx-auto w-full max-w-[960px] flex-1 px-6 py-24 sm:py-32">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(projectJsonLd).replace(/</g, "\\u003c") }}
       />
-      <div className="flex flex-col gap-4">
-        <NavLink href="/projects" direction="back">
-          All projects
-        </NavLink>
 
-        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-          <h1 className="font-heading text-3xl font-semibold tracking-tight">{project.name}</h1>
-          <p className="text-sm text-muted-foreground">
-            {categoryLabel(project.category)} · {project.year}
+      <div className="grid gap-5 md:grid-cols-[168px_minmax(0,1fr)] md:gap-x-12">
+        <div className="flex flex-col gap-4 md:sticky md:top-20 md:self-start">
+          <NavLink href="/#projects" direction="back">
+            All projects
+          </NavLink>
+          <p className={LABEL}>
+            {categoryLabel(project.category)} / {project.year}
           </p>
         </div>
 
-        <p className="max-w-xl text-base leading-relaxed text-foreground/80">
-          {project.description}
-        </p>
+        <div className="flex min-w-0 flex-col gap-12">
+          <div className="flex flex-col gap-5">
+            <h1 className="text-[clamp(1.9rem,4vw,2.75rem)] font-medium leading-[1.1] tracking-[-0.03em]">{project.name}</h1>
 
-        {(project.role || project.impact) && (
-          <dl className="grid grid-cols-1 gap-4 border-y border-border py-4 text-sm sm:grid-cols-2">
-            {project.role && (
-              <div>
-                <dt className="text-xs uppercase tracking-wide text-muted-foreground">Role</dt>
-                <dd className="mt-1 text-foreground/85">{project.role}</dd>
+            <p className="max-w-[58ch] text-[clamp(1.0625rem,1.6vw,1.1875rem)] leading-[1.6] text-muted-foreground [text-wrap:pretty]">
+              {project.description}
+            </p>
+
+            {(project.role || project.impact) && (
+              <dl className="grid grid-cols-1 gap-5 border-y border-border py-5 text-sm sm:grid-cols-2">
+                {project.role && (
+                  <div>
+                    <dt className={LABEL}>Role</dt>
+                    <dd className="mt-1.5 leading-relaxed">{project.role}</dd>
+                  </div>
+                )}
+                {project.impact && (
+                  <div>
+                    <dt className={LABEL}>Impact</dt>
+                    <dd className="mt-1.5 leading-relaxed">{project.impact}</dd>
+                  </div>
+                )}
+              </dl>
+            )}
+
+            {destinations.length > 0 && (
+              <div className="flex flex-wrap gap-x-6 gap-y-2 text-[15px]">
+                {destinations.map((link) => (
+                  <TrackedLink
+                    key={link.label}
+                    href={link.href!}
+                    external
+                    eventName="project_destination_click"
+                    data={{ project: project.name, destination: link.label }}
+                    className="link-u rounded-sm text-muted-foreground first:text-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background"
+                  >
+                    {link.label}
+                    <span aria-hidden> ↗</span>
+                  </TrackedLink>
+                ))}
               </div>
             )}
-            {project.impact && (
-              <div>
-                <dt className="text-xs uppercase tracking-wide text-muted-foreground">Impact</dt>
-                <dd className="mt-1 text-foreground/85">{project.impact}</dd>
-              </div>
-            )}
-          </dl>
-        )}
+          </div>
 
-        <div className="flex flex-wrap gap-5 text-sm">
-          {[
-            { label: "Live", href: project.links?.live },
-            { label: "Download", href: project.links?.download },
-            { label: "App Store", href: project.links?.appStore },
-            { label: "Play Store", href: project.links?.playStore },
-            { label: "Source", href: project.links?.source },
-          ]
-            .filter((link) => link.href)
-            .map((link) => (
-              <TrackedLink
-                key={link.label}
-                href={link.href!}
-                external
-                eventName="project_destination_click"
-                data={{ project: project.name, destination: link.label }}
-                className="text-muted-foreground underline decoration-border underline-offset-4 transition-colors hover:text-foreground hover:decoration-foreground"
-              >
-                {link.label}
-              </TrackedLink>
-            ))}
+          {project.demo && <ProjectDemo demo={project.demo} title={project.name} />}
+
+          {leadImage && (
+            <figure className="flex flex-col gap-2">
+              <Image
+                src={urlFor(leadImage.asset).width(1600).url()}
+                alt={leadImage.alt}
+                width={1600}
+                height={1000}
+                priority
+                placeholder={leadImage.lqip ? "blur" : "empty"}
+                blurDataURL={leadImage.lqip}
+                className="h-auto w-full rounded-xl border border-border"
+              />
+              {leadImage.caption && <figcaption className="text-xs text-muted-foreground">{leadImage.caption}</figcaption>}
+            </figure>
+          )}
+
+          {(project.challenge || project.contribution || project.outcome) && (
+            <div className="flex max-w-[58ch] flex-col gap-8">
+              {[
+                ["Challenge", project.challenge],
+                ["Contribution", project.contribution],
+                ["Outcome", project.outcome],
+              ].map(([label, text]) =>
+                text ? (
+                  <section key={label} className="flex flex-col gap-2">
+                    <h2 className={LABEL}>{label}</h2>
+                    <p className="text-base leading-relaxed [text-wrap:pretty]">{text}</p>
+                  </section>
+                ) : null,
+              )}
+            </div>
+          )}
+
+          {project.body && project.body.length > 0 && (
+            <div className="flex max-w-[58ch] flex-col gap-4 text-base leading-relaxed [text-wrap:pretty]">
+              <h2 className={LABEL}>Details</h2>
+              <PortableText value={project.body} />
+            </div>
+          )}
+
+          {project.highlights && project.highlights.length > 0 && (
+            <ul className="flex max-w-[58ch] flex-col gap-3 text-base leading-relaxed">
+              {project.highlights.map((highlight) => (
+                <li key={highlight} className="relative pl-[18px] before:absolute before:left-0 before:top-[0.8em] before:w-2 before:border-t before:border-muted-foreground">
+                  {highlight}
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {galleryShots.length > 0 && (
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              {galleryShots.map((shot) => {
+                const width = 800;
+                const height = shot.dimensions
+                  ? Math.round((width * shot.dimensions.height) / shot.dimensions.width)
+                  : width;
+                return (
+                  <figure key={shot._key} className="flex flex-col gap-2">
+                    <Image
+                      src={urlFor(shot.asset).width(width).url()}
+                      alt={shot.caption ?? project.name}
+                      width={width}
+                      height={height}
+                      placeholder={shot.lqip ? "blur" : "empty"}
+                      blurDataURL={shot.lqip}
+                      className="h-auto w-full rounded-xl border border-border"
+                    />
+                    {shot.caption && <figcaption className="text-xs text-muted-foreground">{shot.caption}</figcaption>}
+                  </figure>
+                );
+              })}
+            </div>
+          )}
+
+          {project.tags && project.tags.length > 0 && (
+            <section className="border-t border-border pt-6">
+              <h2 className={LABEL}>Stack</h2>
+              <p className="mt-2 text-sm leading-relaxed">{project.tags.join(", ")}</p>
+            </section>
+          )}
+
+          <nav aria-label="Project navigation" className="grid grid-cols-2 gap-4 border-t border-border pt-6">
+            <div className="flex justify-start">
+              {navigation.previous && (
+                <NavLink href={`/projects/${navigation.previous.slug}`} direction="back" className="items-start">
+                  <span className="flex max-w-40 flex-col items-start gap-1 sm:max-w-56">
+                    <span>Previous</span>
+                    <span className="text-foreground/80">{navigation.previous.name}</span>
+                  </span>
+                </NavLink>
+              )}
+            </div>
+            <div className="flex justify-end">
+              {navigation.next && (
+                <NavLink href={`/projects/${navigation.next.slug}`} direction="forward" className="items-start">
+                  <span className="flex max-w-40 flex-col items-end gap-1 text-right sm:max-w-56">
+                    <span>Next</span>
+                    <span className="text-foreground/80">{navigation.next.name}</span>
+                  </span>
+                </NavLink>
+              )}
+            </div>
+          </nav>
         </div>
       </div>
-
-      {project.demo && <ProjectDemo demo={project.demo} title={project.name} />}
-
-      {(project.challenge || project.contribution || project.outcome) && (
-        <div className="flex max-w-xl flex-col gap-8 border-y border-border py-8">
-          {[
-            ["Challenge", project.challenge],
-            ["Contribution", project.contribution],
-            ["Outcome", project.outcome],
-          ].map(([label, text]) =>
-            text ? (
-              <section key={label} className="flex flex-col gap-2">
-                <h2 className="font-heading text-xs uppercase tracking-[0.16em] text-muted-foreground">{label}</h2>
-                <p className="text-base leading-relaxed text-foreground/80">{text}</p>
-              </section>
-            ) : null,
-          )}
-        </div>
-      )}
-
-      {project.body && project.body.length > 0 && (
-        <div className="flex max-w-xl flex-col gap-4 text-base leading-relaxed text-foreground/80 [&_p]:leading-relaxed">
-          <h2 className="font-heading text-xs uppercase tracking-[0.16em] text-muted-foreground">Details</h2>
-          <PortableText value={project.body} />
-        </div>
-      )}
-
-      {project.highlights && project.highlights.length > 0 && (
-        <ul className="flex max-w-xl flex-col gap-3 text-base leading-relaxed text-foreground/80">
-          {project.highlights.map((highlight) => (
-            <li key={highlight} className="flex gap-3">
-              <span aria-hidden className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
-              <span>{highlight}</span>
-            </li>
-          ))}
-        </ul>
-      )}
-
-      {project.screenshots && project.screenshots.length > 0 && (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {project.screenshots.map((shot) => {
-            const width = 800;
-            const height = shot.dimensions
-              ? Math.round((width * shot.dimensions.height) / shot.dimensions.width)
-              : width;
-            return (
-              <figure key={shot._key} className="flex flex-col gap-2">
-                <Image
-                  src={urlFor(shot.asset).width(width).url()}
-                  alt={shot.caption ?? project.name}
-                  width={width}
-                  height={height}
-                  placeholder={shot.lqip ? "blur" : "empty"}
-                  blurDataURL={shot.lqip}
-                  className="h-auto w-full rounded-lg border border-border"
-                />
-                {shot.caption && (
-                  <figcaption className="text-xs text-muted-foreground">{shot.caption}</figcaption>
-                )}
-              </figure>
-            );
-          })}
-        </div>
-      )}
-
-      {project.tags && project.tags.length > 0 && (
-        <section className="border-t border-border pt-6">
-          <h2 className="font-heading text-xs uppercase tracking-[0.16em] text-muted-foreground">Stack</h2>
-          <p className="mt-3 text-sm text-muted-foreground">{project.tags.join(" · ")}</p>
-        </section>
-      )}
-
-      <nav aria-label="Project navigation" className="grid grid-cols-2 gap-4 border-t border-border pt-6">
-        <div className="flex justify-start">
-          {navigation.previous && (
-            <NavLink href={`/projects/${navigation.previous.slug}`} direction="back" className="items-start">
-              <span className="flex max-w-40 flex-col items-start gap-1 sm:max-w-56">
-                <span>Previous</span>
-                <span className="text-foreground/80">{navigation.previous.name}</span>
-              </span>
-            </NavLink>
-          )}
-        </div>
-        <div className="flex justify-end">
-          {navigation.next && (
-            <NavLink href={`/projects/${navigation.next.slug}`} direction="forward" className="items-start">
-              <span className="flex max-w-40 flex-col items-end gap-1 text-right sm:max-w-56">
-                <span>Next</span>
-                <span className="text-foreground/80">{navigation.next.name}</span>
-              </span>
-            </NavLink>
-          )}
-        </div>
-      </nav>
     </main>
   );
 }

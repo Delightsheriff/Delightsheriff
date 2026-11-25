@@ -140,10 +140,8 @@ export function ProjectDemo({ demo, title }: ProjectDemoProps) {
         style={{ maxWidth: `calc(${MAX_HEIGHT_REM}rem * ${ratio.toFixed(4)})` }}
       >
         {frame === "browser" && (
-          <div aria-hidden className="flex gap-1.5 border-b border-border px-3 py-2.5">
-            <span className="size-2.5 rounded-full bg-foreground/15" />
-            <span className="size-2.5 rounded-full bg-foreground/15" />
-            <span className="size-2.5 rounded-full bg-foreground/15" />
+          <div aria-hidden className="border-b border-border px-3 py-3">
+            <span className="block h-1.5 w-20 rounded-sm bg-foreground/15" />
           </div>
         )}
         {video}

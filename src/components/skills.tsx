@@ -1,25 +1,16 @@
-import { getSiteSettings } from "@/sanity/queries";
+import type { SkillGroup } from "@/sanity/queries";
 
-export async function Skills() {
-  const settings = await getSiteSettings();
-  if (!settings) return null;
+export function Skills({ groups }: { groups: SkillGroup[] }) {
+  if (groups.length === 0) return null;
 
   return (
-    <section className="flex flex-col border-t border-border pt-10">
-      <h2 className="font-heading text-sm uppercase tracking-wide text-muted-foreground">
-        Skills
-      </h2>
-
-      <div className="mt-6 grid grid-cols-1 gap-x-10 gap-y-6 sm:grid-cols-2">
-        {settings.skillGroups.map((group) => (
-          <div key={group.label} className="flex flex-col gap-1.5">
-            <p className="text-sm font-medium text-foreground/90">{group.label}</p>
-            <p className="text-sm leading-relaxed text-muted-foreground">
-              {group.items.join(", ")}
-            </p>
-          </div>
-        ))}
-      </div>
-    </section>
+    <dl className="mt-14 grid">
+      {groups.map((group) => (
+        <div key={group.label} className="grid gap-x-4 border-t border-border py-3 text-sm sm:grid-cols-[130px_minmax(0,1fr)]">
+          <dt className="font-mono text-xs leading-[1.9] text-muted-foreground">{group.label}</dt>
+          <dd className="leading-relaxed">{group.items.join(", ")}</dd>
+        </div>
+      ))}
+    </dl>
   );
 }
