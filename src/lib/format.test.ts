@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { currentMonth, formatDateRange, formatDuration, formatMonthYear, monthsBetween } from "./format";
+import { currentMonth, formatDateRange, formatDuration, formatLongDate, formatMonthYear, monthsBetween } from "./format";
 
 describe("format", () => {
   it("formats a month and year", () => {
@@ -26,5 +26,10 @@ describe("format", () => {
   it("returns the current month as YYYY-MM", () => {
     expect(currentMonth(new Date(2026, 10, 25))).toBe("2026-11");
     expect(currentMonth(new Date(2026, 0, 5))).toBe("2026-01");
+  });
+
+  it("writes a plain date out in full without shifting the day", () => {
+    expect(formatLongDate("2026-03-04")).toBe("March 4, 2026");
+    expect(formatLongDate("2026-01-01")).toBe("January 1, 2026");
   });
 });

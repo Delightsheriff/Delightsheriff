@@ -40,7 +40,7 @@ export function ProjectListItem({ name, category, description, impact, tags, lin
         {thumbnail ? (
           <Image
             src={urlFor(thumbnail.asset).width(640).height(400).fit("crop").url()}
-            alt={thumbnail.alt ?? `${name} preview`}
+            alt={thumbnail.alt ?? `Screenshot of ${name}, a ${categoryLabel(category).toLowerCase()} project by Delight Amadi Sheriff`}
             width={320}
             height={200}
             sizes="(min-width: 640px) 200px, 100vw"

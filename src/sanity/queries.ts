@@ -218,19 +218,23 @@ const POST_FIELDS = /* groq */ `
   tags
 `;
 
+// A post is public once its published date has arrived. Drafts never appear (they are not
+// visible to the public API), and a post dated in the future stays hidden until that day.
+const PUBLISHED = /* groq */ `publishedAt <= string::split(string(now()), "T")[0]`;
+
 const ALL_POSTS_QUERY = /* groq */ `
-  *[_type == "post"] | order(publishedAt desc) { ${POST_FIELDS} }
+  *[_type == "post" && ${PUBLISHED}] | order(publishedAt desc) { ${POST_FIELDS} }
 `;
 
 const POST_BY_SLUG_QUERY = /* groq */ `
-  *[_type == "post" && slug.current == $slug][0] {
+  *[_type == "post" && slug.current == $slug && ${PUBLISHED}][0] {
     ${POST_FIELDS},
     body
   }
 `;
 
 export const hasPublishedPosts = cache(async (): Promise<boolean> => {
-  return client.fetch(`count(*[_type == "post"]) > 0`, {}, { next: { revalidate: 60 } });
+  return client.fetch(`count(*[_type == "post" && ${PUBLISHED}]) > 0`, {}, { next: { revalidate: 60 } });
 });
 
 export async function getAllPosts(): Promise<SanityPost[]> {
@@ -239,4 +243,14 @@ export async function getAllPosts(): Promise<SanityPost[]> {
 
 export async function getPostBySlug(slug: string): Promise<SanityPostDetail | null> {
   return client.fetch(POST_BY_SLUG_QUERY, { slug }, { next: { revalidate: 60 } });
+}
+
+// Posts are listed newest first, so "newer" is the one before and "older" the one after.
+export async function getPostNavigation(slug: string): Promise<{ newer: SanityPost | null; older: SanityPost | null }> {
+  const posts = await getAllPosts();
+  const index = posts.findIndex((post) => post.slug === slug);
+  return {
+    newer: index > 0 ? posts[index - 1] : null,
+    older: index >= 0 && index < posts.length - 1 ? posts[index + 1] : null,
+  };
 }

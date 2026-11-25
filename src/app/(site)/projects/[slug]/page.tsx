@@ -8,6 +8,7 @@ import { NavLink } from "@/components/nav-link";
 import { TrackedLink } from "@/components/tracked-link";
 import { categoryLabel } from "@/lib/project-categories";
 import { ProjectDemo } from "@/components/project-demo";
+import { LLMS_TYPES, buildProjectGraph, jsonLd, projectDescription } from "@/lib/seo";
 
 type PageProps = { params: Promise<{ slug: string }> };
 
@@ -17,21 +18,26 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!project) return {};
 
   const url = `/projects/${slug}`;
+  const title = `${project.name}: ${categoryLabel(project.category)} case study`;
+  const description = projectDescription(project);
 
   return {
-    title: project.name,
-    description: project.description,
-    alternates: { canonical: url },
+    title,
+    description,
+    keywords: [project.name, ...project.tags, `${categoryLabel(project.category)} developer`, "case study"],
+    alternates: { canonical: url, types: LLMS_TYPES },
     openGraph: {
-      title: `${project.name} — Delight Amadi Sheriff`,
-      description: project.description,
+      title: `${project.name} | Delight Amadi Sheriff`,
+      description,
       url,
       type: "article",
+      authors: ["Delight Amadi Sheriff"],
+      tags: project.tags,
     },
     twitter: {
       card: "summary_large_image",
-      title: `${project.name} — Delight Amadi Sheriff`,
-      description: project.description,
+      title: `${project.name} | Delight Amadi Sheriff`,
+      description,
     },
   };
 }
@@ -44,21 +50,10 @@ export default async function ProjectDetailPage({ params }: PageProps) {
   if (!project) notFound();
   const navigation = await getProjectNavigation(slug);
 
-  const projectJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "SoftwareSourceCode",
-    name: project.name,
-    description: project.description,
-    url: `https://www.delightsheriff.com/projects/${slug}`,
-    datePublished: String(project.year),
-    programmingLanguage: project.tags,
-    author: {
-      "@type": "Person",
-      name: "Delight Amadi Sheriff",
-      url: "https://www.delightsheriff.com",
-    },
-    ...(project.links?.source && { codeRepository: project.links.source }),
-  };
+  const projectJsonLd = buildProjectGraph(
+    project,
+    project.thumbnail ? urlFor(project.thumbnail.asset).width(1200).url() : undefined,
+  );
 
   // Lead with the strongest visual: the demo if there is one, otherwise the first screenshot,
   // otherwise the card thumbnail. A screenshot used up top isn't repeated in the gallery below.
@@ -82,7 +77,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
     <main id="main-content" tabIndex={-1} className="mx-auto w-full max-w-[960px] flex-1 px-6 py-24 sm:py-32">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(projectJsonLd).replace(/</g, "\\u003c") }}
+        dangerouslySetInnerHTML={{ __html: jsonLd(projectJsonLd) }}
       />
 
       <div className="grid gap-5 md:grid-cols-[168px_minmax(0,1fr)] md:gap-x-12">
