@@ -4,6 +4,7 @@ import { categoryLabel } from "@/lib/project-categories";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+export const alt = "Case study by Delight Amadi Sheriff";
 
 export default async function OpengraphImage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

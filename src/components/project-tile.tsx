@@ -26,7 +26,7 @@ export function ProjectTile({ name, description, role, tags, thumbnail, hasDemo,
         {thumbnail ? (
           <Image
             src={urlFor(thumbnail.asset).width(1200).height(750).fit("crop").url()}
-            alt={thumbnail.alt ?? `${name} preview`}
+            alt={thumbnail.alt ?? `Screenshot of ${name}, a project by Delight Amadi Sheriff`}
             width={600}
             height={375}
             sizes="(min-width: 768px) 396px, 100vw"
