@@ -34,3 +34,14 @@ export function formatDuration(months: number): string {
 export function currentMonth(now: Date = new Date()): string {
   return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
 }
+
+// "March 4, 2026". Dates from the CMS are plain dates, so read them as UTC to avoid
+// showing the day before in timezones behind UTC.
+export function formatLongDate(value: string): string {
+  return new Date(value).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: "UTC",
+  });
+}
