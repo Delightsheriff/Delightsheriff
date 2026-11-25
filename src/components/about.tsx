@@ -5,6 +5,7 @@ import { Section } from "@/components/section";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { CountUp } from "@/components/count-up";
 import { Skills } from "@/components/skills";
+import { StackMarquee } from "@/components/stack-marquee";
 import { TrackedLink } from "@/components/tracked-link";
 
 async function ContributionLine({ githubUrl }: { githubUrl: string }) {
@@ -32,7 +33,11 @@ export async function About() {
   const settings = await getSiteSettings();
   if (!settings) return null;
 
+  // Short tool names only, so the band reads as a list of tools and not a list of sentences.
+  const tools = [...new Set(settings.skillGroups.flatMap((group) => group.items))].filter((item) => item.length <= 18);
+
   return (
+    <>
     <Section id="about" label="About">
       <div className="flex max-w-[58ch] flex-col gap-5">
         {settings.bio.map((paragraph, i) => (
@@ -50,5 +55,12 @@ export async function About() {
 
       <Skills groups={settings.skillGroups} />
     </Section>
+
+    {tools.length > 0 && (
+      <div className="border-t border-border py-12 sm:py-16">
+        <StackMarquee items={tools} />
+      </div>
+    )}
+    </>
   );
 }

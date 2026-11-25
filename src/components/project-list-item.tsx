@@ -2,6 +2,7 @@ import Image from "next/image";
 import { urlFor } from "@/sanity/image";
 import { TrackedLink } from "@/components/tracked-link";
 import { Spotlight } from "@/components/spotlight";
+import { Tilt } from "@/components/tilt";
 import { categoryLabel } from "@/lib/project-categories";
 
 type Links = { source?: string; live?: string; download?: string; appStore?: string; playStore?: string };
@@ -33,8 +34,9 @@ export function ProjectListItem({ name, category, description, impact, tags, lin
   const destinations = LINK_LABELS.filter(([key]) => links[key]);
 
   return (
-    <li className="spotlight-host zoom-host nudge-host group relative grid gap-x-6 gap-y-4 border-t border-border py-6 last:border-b has-[.row-link:focus-visible]:rounded-lg has-[.row-link:focus-visible]:ring-2 has-[.row-link:focus-visible]:ring-ring has-[.row-link:focus-visible]:ring-offset-4 has-[.row-link:focus-visible]:ring-offset-background sm:grid-cols-[200px_minmax(0,1fr)] md:gap-x-8">
-      <Spotlight className="aspect-[16/10] self-start overflow-hidden rounded-lg border border-border bg-card">
+    <li className="reveal spotlight-host zoom-host nudge-host group relative grid gap-x-6 gap-y-4 border-t border-border py-6 last:border-b has-[.row-link:focus-visible]:rounded-lg has-[.row-link:focus-visible]:ring-2 has-[.row-link:focus-visible]:ring-ring has-[.row-link:focus-visible]:ring-offset-4 has-[.row-link:focus-visible]:ring-offset-background sm:grid-cols-[200px_minmax(0,1fr)] md:gap-x-8">
+      <Tilt className="self-start" max={4} lift={0.01}>
+      <Spotlight className="glow-card aspect-[16/10] overflow-hidden rounded-lg border border-border bg-card">
         {thumbnail ? (
           <Image
             src={urlFor(thumbnail.asset).width(640).height(400).fit("crop").url()}
@@ -48,6 +50,7 @@ export function ProjectListItem({ name, category, description, impact, tags, lin
           <div className="flex h-full w-full items-end p-3 text-xs text-muted-foreground">{name}</div>
         )}
       </Spotlight>
+      </Tilt>
 
       <div className="min-w-0">
         <h3 className="flex flex-wrap items-baseline gap-x-2 text-base font-medium leading-snug tracking-[-0.01em]">

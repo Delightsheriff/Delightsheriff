@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { TrackedLink } from "@/components/tracked-link";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -21,11 +21,15 @@ const SECTIONS = [
 ];
 
 const LINK =
-  "transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm";
+  "relative z-10 rounded-full px-2.5 py-1 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
 
 export function SiteHeader({ name, resumeUrl, showBlog }: SiteHeaderProps) {
   const pathname = usePathname();
   const [active, setActive] = useState<string | null>(null);
+  const [hovered, setHovered] = useState<string | null>(null);
+  const nav = useRef<HTMLDivElement>(null);
+  const pill = useRef<HTMLSpanElement>(null);
+  const placed = useRef(false);
 
   // Highlight the section in view. Only meaningful on the home page.
   useEffect(() => {
@@ -46,6 +50,44 @@ export function SiteHeader({ name, resumeUrl, showBlog }: SiteHeaderProps) {
   }, [pathname]);
 
   const current = pathname === "/" ? active : null;
+  const target = hovered ?? current;
+
+  // One pill slides to whichever link is hovered, or rests on the section in view.
+  useEffect(() => {
+    const container = nav.current;
+    const el = pill.current;
+    if (!container || !el) return;
+
+    const link = target ? container.querySelector<HTMLElement>(`[data-nav="${target}"]`) : null;
+    if (!link || link.offsetParent === null) {
+      el.style.opacity = "0";
+      return;
+    }
+
+    const box = container.getBoundingClientRect();
+    const rect = link.getBoundingClientRect();
+    if (!placed.current) {
+      // First appearance: drop into place without sliding in from the corner.
+      el.style.transition = "opacity 200ms ease";
+      placed.current = true;
+    } else {
+      el.style.transition = "";
+    }
+    el.style.width = `${rect.width}px`;
+    el.style.height = `${rect.height}px`;
+    el.style.transform = `translate(${rect.left - box.left}px, ${rect.top - box.top}px)`;
+    el.style.opacity = "1";
+  }, [target]);
+
+  function linkProps(id: string) {
+    return {
+      "data-nav": id,
+      onPointerEnter: () => setHovered(id),
+      onPointerLeave: () => setHovered(null),
+      onFocus: () => setHovered(id),
+      onBlur: () => setHovered(null),
+    };
+  }
 
   return (
     <header className="sticky top-[env(safe-area-inset-top,0px)] z-40">
@@ -54,44 +96,52 @@ export function SiteHeader({ name, resumeUrl, showBlog }: SiteHeaderProps) {
           href="/"
           eventName="navigation_click"
           data={{ href: "/", location: "header" }}
-          className={cn("text-sm font-medium text-foreground", LINK)}
+          className="rounded-sm text-sm font-medium text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           {name ?? "Delight Sheriff"}
         </TrackedLink>
 
-        <div className="flex items-center gap-5 text-[13px] text-muted-foreground">
-          {SECTIONS.map((section) => (
-            <TrackedLink
-              key={section.id}
-              href={`/#${section.id}`}
-              eventName="navigation_click"
-              data={{ href: `/#${section.id}`, location: "header" }}
-              className={cn("hidden sm:inline hover:text-foreground", LINK, current === section.id && "text-foreground")}
-            >
-              {section.label}
-            </TrackedLink>
-          ))}
-          {showBlog && (
-            <TrackedLink
-              href="/blog"
-              eventName="navigation_click"
-              data={{ href: "/blog", location: "header" }}
-              className={cn("hidden sm:inline hover:text-foreground", LINK)}
-            >
-              Blog
-            </TrackedLink>
-          )}
-          {resumeUrl && (
-            <TrackedLink
-              href={resumeUrl}
-              external
-              eventName="resume_click"
-              data={{ location: "header" }}
-              className={cn("hidden md:inline hover:text-foreground", LINK)}
-            >
-              Resume
-            </TrackedLink>
-          )}
+        <div className="flex items-center gap-3 text-[13px] text-muted-foreground">
+          <div ref={nav} className="relative flex items-center">
+            <span
+              ref={pill}
+              aria-hidden
+              className="pointer-events-none absolute left-0 top-0 rounded-full bg-secondary opacity-0 transition-[transform,width,height,opacity] duration-300 ease-out-strong"
+            />
+            {SECTIONS.map((section) => (
+              <span key={section.id} {...linkProps(section.id)} className="hidden sm:inline">
+                <TrackedLink
+                  href={`/#${section.id}`}
+                  eventName="navigation_click"
+                  data={{ href: `/#${section.id}`, location: "header" }}
+                  className={cn(LINK, "inline-block", target === section.id && "text-foreground")}
+                >
+                  {section.label}
+                </TrackedLink>
+              </span>
+            ))}
+            {showBlog && (
+              <TrackedLink
+                href="/blog"
+                eventName="navigation_click"
+                data={{ href: "/blog", location: "header" }}
+                className={cn(LINK, "hidden sm:inline-block hover:text-foreground")}
+              >
+                Blog
+              </TrackedLink>
+            )}
+            {resumeUrl && (
+              <TrackedLink
+                href={resumeUrl}
+                external
+                eventName="resume_click"
+                data={{ location: "header" }}
+                className={cn(LINK, "hidden md:inline-block hover:text-foreground")}
+              >
+                Resume
+              </TrackedLink>
+            )}
+          </div>
           <ThemeToggle />
         </div>
       </nav>

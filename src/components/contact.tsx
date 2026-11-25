@@ -6,6 +6,7 @@ import { TrackedLink } from "@/components/tracked-link";
 import { DecryptedText } from "@/components/decrypted-text";
 import { CopyEmailButton } from "@/components/copy-email-button";
 import { NowPlaying } from "@/components/now-playing";
+import { Magnet } from "@/components/magnet";
 
 const LINK =
   "link-u text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background rounded-sm";
@@ -24,6 +25,7 @@ export async function Contact() {
         </p>
 
         <div className="mb-7 flex flex-wrap items-center gap-x-4 gap-y-2">
+          <Magnet pull={0.18}>
           <TrackedLink
             href={`mailto:${settings.email}`}
             eventName="contact_click"
@@ -32,7 +34,10 @@ export async function Contact() {
           >
             <DecryptedText text={settings.email} />
           </TrackedLink>
-          <CopyEmailButton email={settings.email} />
+          </Magnet>
+          <Magnet pull={0.35} range={60}>
+            <CopyEmailButton email={settings.email} />
+          </Magnet>
         </div>
 
         <nav aria-label="Contact links" className="flex flex-wrap gap-x-6 gap-y-2 text-[15px]">

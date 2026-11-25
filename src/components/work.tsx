@@ -19,7 +19,7 @@ export async function Work() {
             return (
               <article
                 key={`${entry.company}-${entry.startDate}`}
-                className="grid gap-x-8 gap-y-2 border-t border-border py-8 first:border-t-0 first:pt-0 sm:grid-cols-[150px_minmax(0,1fr)]"
+                className="reveal grid gap-x-8 gap-y-2 border-t border-border py-8 first:border-t-0 first:pt-0 sm:grid-cols-[150px_minmax(0,1fr)]"
               >
                 <div className="font-mono text-xs leading-[1.8] text-muted-foreground tabular-nums sm:pt-1">
                   <p className="text-foreground/80">

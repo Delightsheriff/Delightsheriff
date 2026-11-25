@@ -3,6 +3,7 @@ import { Section } from "@/components/section";
 import { ProjectTile } from "@/components/project-tile";
 import { ProjectListItem } from "@/components/project-list-item";
 import { EmptyState } from "@/components/empty-state";
+import { GlowGrid } from "@/components/glow-grid";
 
 export async function Projects() {
   const { featured, more } = await getHomeProjects();
@@ -18,7 +19,7 @@ export async function Projects() {
       ) : (
         <>
           {featured.length > 0 && (
-            <div className="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2">
+            <GlowGrid className="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2">
               {featured.map((project, i) => (
                 <ProjectTile
                   key={project.slug}
@@ -33,12 +34,13 @@ export async function Projects() {
                   priority={i < 2}
                 />
               ))}
-            </div>
+            </GlowGrid>
           )}
 
           {more.length > 0 && (
             <div className="mt-16">
               <h3 className="mb-2 font-mono text-xs font-normal text-muted-foreground">More work</h3>
+              <GlowGrid>
               <ul>
                 {more.map((project) => (
                   <ProjectListItem
@@ -54,6 +56,7 @@ export async function Projects() {
                   />
                 ))}
               </ul>
+              </GlowGrid>
             </div>
           )}
         </>
