@@ -9,6 +9,12 @@ export const siteSettings = defineType({
     defineField({ name: "heroName", title: "Hero — Name", type: "string" }),
     defineField({ name: "heroTitle", title: "Hero — Title", type: "string" }),
     defineField({ name: "openToWorkLabel", title: "Hero — Status label", type: "string" }),
+    defineField({
+      name: "statusNote",
+      title: "Hero — Status note",
+      type: "string",
+      description: 'A short line under the status label, e.g. "Nigeria, Liverpool fan". Leave empty to use the default.',
+    }),
     defineField({ name: "tagline", title: "Hero — Tagline / positioning line", type: "text", rows: 3 }),
     defineField({ name: "email", title: "Contact — Email", type: "string" }),
     defineField({ name: "githubUrl", title: "Contact — GitHub URL", type: "url" }),
