@@ -19,9 +19,7 @@ export default async function OpengraphImage({ params }: { params: Promise<{ slu
           flexDirection: "column",
           justifyContent: "space-between",
           padding: 80,
-           backgroundColor: "#090b0c",
-           backgroundImage: "linear-gradient(#ffffff08 1px, transparent 1px), linear-gradient(90deg, #ffffff08 1px, transparent 1px)",
-           backgroundSize: "40px 40px",
+          backgroundColor: "#0a0b0e",
         }}
       >
         <div
@@ -30,8 +28,8 @@ export default async function OpengraphImage({ params }: { params: Promise<{ slu
             width: 48,
             height: 48,
             borderRadius: 10,
-            background: "#193cb8",
-            color: "#eff6ff",
+            background: "#ecedf0",
+            color: "#0a0b0e",
             alignItems: "center",
             justifyContent: "center",
             fontSize: 20,
@@ -43,23 +41,23 @@ export default async function OpengraphImage({ params }: { params: Promise<{ slu
 
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           {project && (
-            <div style={{ display: "flex", fontSize: 24, color: "#9a9aa0" }}>
-              {categoryLabel(project.category)} · {project.year}
+            <div style={{ display: "flex", fontSize: 24, color: "#959aa6" }}>
+              {categoryLabel(project.category)} / {project.year}
             </div>
           )}
-          <div style={{ display: "flex", fontSize: 64, fontWeight: 700, color: "#eff6ff" }}>
+          <div style={{ display: "flex", fontSize: 64, fontWeight: 700, color: "#ecedf0" }}>
             {project?.name ?? "Project"}
           </div>
-          <div style={{ display: "flex", fontSize: 26, color: "#c5c5ca", maxWidth: 900 }}>
+          <div style={{ display: "flex", fontSize: 26, color: "#ecedf0", maxWidth: 900 }}>
             {project?.description ?? ""}
           </div>
           {project?.tags && project.tags.length > 0 && (
-            <div style={{ display: "flex", fontSize: 20, color: "#7a7a80", marginTop: 8 }}>
-              {project.tags.join(" · ")}
+            <div style={{ display: "flex", fontSize: 20, color: "#959aa6", marginTop: 8 }}>
+              {project.tags.join(", ")}
             </div>
           )}
           {project?.impact && (
-            <div style={{ display: "flex", fontSize: 20, color: "#75e0ae", marginTop: 8 }}>
+            <div style={{ display: "flex", fontSize: 20, color: "#ecedf0", marginTop: 8 }}>
               {project.impact}
             </div>
           )}

@@ -29,7 +29,7 @@ export default async function BlogPage() {
   const posts = await getAllPosts();
 
   return (
-      <main id="main-content" tabIndex={-1} className="page-shell mx-auto flex w-full max-w-2xl flex-1 flex-col gap-16 px-6 py-20 sm:py-28">
+      <main id="main-content" tabIndex={-1} className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-16 px-6 py-20 sm:py-28">
       <div className="flex flex-col gap-4">
         <NavLink href="/" direction="back">
           Back
@@ -60,7 +60,7 @@ export default async function BlogPage() {
               </span>
               <span
                 aria-hidden
-                className="project-arrow mt-1 shrink-0 text-muted-foreground transition-[color,opacity,transform] duration-150 ease-out group-hover:text-foreground group-hover:opacity-100"
+                className="mt-1 shrink-0 text-muted-foreground transition-[color,opacity,transform] duration-150 ease-out group-hover:text-foreground group-hover:opacity-100"
               >
                 →
               </span>
