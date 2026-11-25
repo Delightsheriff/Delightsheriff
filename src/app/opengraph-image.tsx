@@ -3,6 +3,7 @@ import { getSiteSettings } from "@/sanity/queries";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+export const alt = "Delight Amadi Sheriff, full-stack and React Native developer";
 
 export default async function OpengraphImage() {
   const settings = await getSiteSettings();
