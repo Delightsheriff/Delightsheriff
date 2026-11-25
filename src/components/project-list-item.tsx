@@ -3,6 +3,7 @@ import { urlFor } from "@/sanity/image";
 import { TrackedLink } from "@/components/tracked-link";
 import { Spotlight } from "@/components/spotlight";
 import { Tilt } from "@/components/tilt";
+import { BlurWords } from "@/components/blur-words";
 import { categoryLabel } from "@/lib/project-categories";
 
 type Links = { source?: string; live?: string; download?: string; appStore?: string; playStore?: string };
@@ -44,7 +45,7 @@ export function ProjectListItem({ name, category, description, impact, tags, lin
             width={320}
             height={200}
             sizes="(min-width: 640px) 200px, 100vw"
-            className="zoom-target h-full w-full object-cover transition-transform duration-500 ease-out-strong"
+            className="zoom-target img-scroll h-full w-full object-cover transition-transform duration-500 ease-out-strong"
           />
         ) : (
           <div className="flex h-full w-full items-end p-3 text-xs text-muted-foreground">{name}</div>
@@ -60,7 +61,7 @@ export function ProjectListItem({ name, category, description, impact, tags, lin
             data={{ project: name, destination: "detail", location: "project-list" }}
             className="row-link after:absolute after:inset-0 focus-visible:outline-none"
           >
-            {name}
+            <BlurWords text={name} scroll />
           </TrackedLink>
           <span aria-hidden className="nudge-target font-normal text-muted-foreground transition-[transform,color] duration-200 ease-out-strong">
             ↗
@@ -68,8 +69,13 @@ export function ProjectListItem({ name, category, description, impact, tags, lin
           <span className="ml-1 font-mono text-xs font-normal text-muted-foreground">{categoryLabel(category)}</span>
         </h3>
         <p className="mb-2 mt-1 max-w-[60ch] text-[15px] leading-relaxed text-muted-foreground [text-wrap:pretty]">
-          {description}
-          {impact && <span className="text-foreground"> {impact}.</span>}
+          <BlurWords text={description} start={name.split(" ").length} scroll />
+          {impact && (
+            <span className="text-foreground">
+              {" "}
+              <BlurWords text={`${impact}.`} start={name.split(" ").length + description.split(" ").length} scroll />
+            </span>
+          )}
         </p>
         <p className="font-mono text-xs leading-relaxed text-muted-foreground">{tags.join(", ")}</p>
         {destinations.length > 0 && (

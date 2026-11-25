@@ -1,9 +1,9 @@
 "use client";
 
-// This replaces the entire root layout on a catastrophic error, so it can't
-// rely on globals.css or the theme actually having loaded — plain inline
-// styles only, as a true last-resort fallback.
-export default function GlobalError({ reset }: { error: Error & { digest?: string }; reset: () => void }) {
+// This replaces the entire root layout on a catastrophic error, so it can't rely on
+// globals.css, the fonts or the design tokens having loaded. Plain inline styles only,
+// but it keeps the same shape and voice as the rest of the site.
+export default function GlobalError({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   return (
     <html lang="en">
       <body
@@ -12,38 +12,60 @@ export default function GlobalError({ reset }: { error: Error & { digest?: strin
           minHeight: "100vh",
           display: "flex",
           flexDirection: "column",
-          alignItems: "flex-start",
           justifyContent: "center",
-          gap: 16,
-          padding: "5rem 1.5rem",
-          maxWidth: 672,
-          marginInline: "auto",
+          padding: "7rem 1.5rem",
           background: "#0a0b0e",
           color: "#ecedf0",
-          fontFamily: "system-ui, sans-serif",
+          fontFamily: "ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif",
+          WebkitFontSmoothing: "antialiased",
         }}
       >
-        <p style={{ fontSize: 12, textTransform: "uppercase", letterSpacing: "0.05em", color: "#9a9aa0" }}>
-          Error
-        </p>
-        <h1 style={{ fontSize: 30, fontWeight: 600, margin: 0 }}>Something broke.</h1>
-        <p style={{ maxWidth: 400, lineHeight: 1.6, color: "#c5c5ca" }}>
-          That&apos;s on me, not you. Try again, or come back in a minute.
-        </p>
-        <button
-          onClick={reset}
-          style={{
-            fontSize: 14,
-            color: "#9a9aa0",
-            background: "none",
-            border: "none",
-            textDecoration: "underline",
-            cursor: "pointer",
-            padding: 0,
-          }}
-        >
-          Try again
-        </button>
+        <main style={{ width: "100%", maxWidth: 960, marginInline: "auto" }}>
+          <p style={{ margin: "0 0 1.5rem", fontFamily: "ui-monospace, Menlo, monospace", fontSize: 12, color: "#959aa6" }}>
+            Error
+          </p>
+          <h1
+            style={{
+              margin: 0,
+              maxWidth: "24ch",
+              fontSize: "clamp(1.7rem, 3.8vw, 2.55rem)",
+              fontWeight: 500,
+              lineHeight: 1.22,
+              letterSpacing: "-0.028em",
+              textWrap: "balance",
+            }}
+          >
+            Something broke.{" "}
+            <span style={{ color: "#959aa6" }}>That&apos;s on me, not you. Try again, or come back in a minute.</span>
+          </h1>
+          <div style={{ marginTop: "2rem", display: "flex", gap: "1.5rem", alignItems: "center", flexWrap: "wrap" }}>
+            <button
+              type="button"
+              onClick={reset}
+              style={{
+                border: 0,
+                borderRadius: 999,
+                background: "#ecedf0",
+                color: "#0a0b0e",
+                padding: "0.625rem 1.25rem",
+                fontSize: 14,
+                fontWeight: 500,
+                cursor: "pointer",
+              }}
+            >
+              Try again
+            </button>
+            {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- this replaces the root layout, so a full page load is what we want */}
+            <a href="/" style={{ color: "#959aa6", fontSize: 15 }}>
+              Back home
+            </a>
+          </div>
+          {error.digest && (
+            <p style={{ margin: "1.5rem 0 0", fontFamily: "ui-monospace, Menlo, monospace", fontSize: 12, color: "#959aa6" }}>
+              Reference {error.digest}
+            </p>
+          )}
+        </main>
       </body>
     </html>
   );

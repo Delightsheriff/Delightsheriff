@@ -202,6 +202,27 @@
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
   }
 
+  /* Skeleton: a quiet block with a slow light sweep across it. */
+  .skeleton {
+    background-color: var(--muted);
+    background-image: linear-gradient(
+      100deg,
+      transparent 30%,
+      color-mix(in srgb, var(--foreground) 7%, transparent) 50%,
+      transparent 70%
+    );
+    background-repeat: no-repeat;
+    background-size: 250% 100%;
+    background-position: 150% 0;
+    animation: shimmer 1.8s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    to {
+      background-position: -50% 0;
+    }
+  }
+
   .stack-track {
     display: flex;
     width: max-content;
@@ -293,6 +314,45 @@
    position by the browser. Browsers without scroll-driven animations just show the content. */
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
+    /* Each block (tile, row, role) owns one scroll timeline, and every word in it follows that
+       timeline with its own small delay. As the block scrolls in, the text resolves as a ripple
+       from the first word to the last, like the hero does on load. */
+    .reveal,
+    .words-host {
+      view-timeline: --words block;
+    }
+
+    .word-scroll {
+      display: inline-block;
+      animation: word-scroll linear both;
+      animation-timeline: --words;
+      animation-range:
+        entry calc(min(var(--i, 0), 70) * 0.55%)
+        entry calc(34% + min(var(--i, 0), 70) * 0.55%);
+    }
+
+    @keyframes word-scroll {
+      from {
+        opacity: 0;
+        filter: blur(8px);
+        transform: translateY(0.4em);
+      }
+    }
+
+    /* Project images sharpen out of a blur. Opacity and filter only, so hover zoom still works. */
+    .img-scroll {
+      animation: img-scroll linear both;
+      animation-timeline: --words;
+      animation-range: entry 0% entry 40%;
+    }
+
+    @keyframes img-scroll {
+      from {
+        opacity: 0;
+        filter: blur(14px);
+      }
+    }
+
     .reveal {
       animation: reveal linear both;
       animation-timeline: view();
@@ -302,7 +362,7 @@
     @keyframes reveal {
       from {
         opacity: 0;
-        transform: translateY(28px);
+        transform: translateY(18px);
       }
     }
   }
@@ -342,7 +402,8 @@
     scroll-behavior: auto;
   }
 
-  .word-in {
+  .word-in,
+  .skeleton {
     animation: none;
   }
 

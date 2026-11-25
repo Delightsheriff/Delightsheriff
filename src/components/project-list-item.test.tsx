@@ -32,15 +32,15 @@ describe("ProjectListItem", () => {
   it("shows the category label, impact and stack", () => {
     renderItem({ impact: "Per-app audio routing" });
 
-    expect(screen.getByText("macOS")).toBeInTheDocument();
-    expect(screen.getByText(/Per-app audio routing\./)).toBeInTheDocument();
+    expect(screen.getByText("macOS", { selector: "span.font-mono" })).toBeInTheDocument();
+    expect(screen.getByText((_, el) => el?.tagName === "P" && /Per-app audio routing\./.test(el.textContent ?? ""))).toBeInTheDocument();
     expect(screen.getByText("Swift, SwiftUI")).toBeInTheDocument();
   });
 
   it("opens the case study from the project name", () => {
     renderItem();
 
-    expect(screen.getByRole("link", { name: "Soundfork" })).toHaveAttribute("href", "/projects/soundfork");
+    expect(screen.getByRole("link", { name: /^\s*Soundfork\s*$/ })).toHaveAttribute("href", "/projects/soundfork");
     // The case study is the only link when there are no destinations.
     expect(screen.getAllByRole("link")).toHaveLength(1);
   });
@@ -48,8 +48,8 @@ describe("ProjectListItem", () => {
   it("stretches the case-study link over the row so the image opens it too", () => {
     renderItem();
 
-    expect(screen.getByRole("link", { name: "Soundfork" }).className).toContain("after:absolute");
-    expect(screen.getByRole("link", { name: "Soundfork" }).className).toContain("after:inset-0");
+    expect(screen.getByRole("link", { name: /^\s*Soundfork\s*$/ }).className).toContain("after:absolute");
+    expect(screen.getByRole("link", { name: /^\s*Soundfork\s*$/ }).className).toContain("after:inset-0");
   });
 
   it("keeps destination links separate, opening in a new tab", () => {
@@ -62,7 +62,7 @@ describe("ProjectListItem", () => {
     expect(screen.getByRole("link", { name: /source/i })).toHaveAttribute("href", "https://example.com/src");
     expect(screen.queryByRole("link", { name: /live/i })).not.toBeInTheDocument();
     // Not nested inside the case-study link.
-    expect(screen.getByRole("link", { name: "Soundfork" })).not.toContainElement(download);
+    expect(screen.getByRole("link", { name: /^\s*Soundfork\s*$/ })).not.toContainElement(download);
     expect(screen.getAllByRole("link")).toHaveLength(3);
   });
 
