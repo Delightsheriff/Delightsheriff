@@ -18,8 +18,8 @@ export default function GlobalError({ reset }: { error: Error & { digest?: strin
           padding: "5rem 1.5rem",
           maxWidth: 672,
           marginInline: "auto",
-          background: "#0a0a0c",
-          color: "#e5e5e7",
+          background: "#0a0b0e",
+          color: "#ecedf0",
           fontFamily: "system-ui, sans-serif",
         }}
       >
