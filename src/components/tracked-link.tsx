@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { track } from "@vercel/analytics";
+import { track } from "@/lib/analytics";
 
 type TrackedLinkProps = {
   href: string;

@@ -50,3 +50,10 @@ scripts/
 
 # private job application notes
 /JOB_APPLICATIONS_PRIVATE.md
+
+# cloudflare
+.open-next
+.wrangler
+.dev.vars
+dist
+.sanity

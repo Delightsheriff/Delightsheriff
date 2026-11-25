@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { getSiteSettings, getWorkEntries } from "@/sanity/queries";
-import { Analytics } from "@vercel/analytics/next";
+import { WebAnalytics } from "@/components/web-analytics";
 import { HOME_DESCRIPTION, HOME_TITLE, LLMS_TYPES, SEO_KEYWORDS, SITE_NAME, SITE_URL, buildSiteGraph, jsonLd } from "@/lib/seo";
 
 const geistSans = Geist({
@@ -85,7 +85,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(buildSiteGraph({ settings, work })) }} />
         {children}
-        <Analytics />
+        <WebAnalytics />
       </body>
     </html>
   );

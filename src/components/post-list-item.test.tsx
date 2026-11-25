@@ -6,7 +6,7 @@ vi.mock("@/sanity/image", () => ({
     width: () => ({ height: () => ({ fit: () => ({ url: () => "https://cdn.sanity.io/cover.png" }) }) }),
   })),
 }));
-vi.mock("@vercel/analytics", () => ({ track: vi.fn() }));
+vi.mock("@/lib/analytics", () => ({ track: vi.fn() }));
 
 const { PostListItem } = await import("./post-list-item");
 

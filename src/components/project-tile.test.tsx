@@ -6,7 +6,7 @@ vi.mock("@/sanity/image", () => ({
     width: () => ({ height: () => ({ fit: () => ({ url: () => "https://cdn.sanity.io/test.png" }) }) }),
   })),
 }));
-vi.mock("@vercel/analytics", () => ({ track: vi.fn() }));
+vi.mock("@/lib/analytics", () => ({ track: vi.fn() }));
 
 const { ProjectTile } = await import("./project-tile");
 
