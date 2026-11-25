@@ -33,6 +33,10 @@ I build reliable, user-centric products end to end, from architecture decisions 
 | Security | HMAC webhook verification, AES-256-GCM encryption, role-based access control |
 | Tools | Git, GitHub, Docker, Postman, Figma, Vitest, ESLint, Agile and Scrum |
 
+<div align="center">
+  <img src="https://github-readme-streak-stats.herokuapp.com/?user=delightsheriff&theme=tokyonight&hide_border=true" />
+</div>
+
 ## Selected work
 
 | Project | What it is |
