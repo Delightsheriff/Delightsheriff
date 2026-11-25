@@ -19,7 +19,8 @@ async function getAccessToken(): Promise<string | null> {
       "Content-Type": "application/x-www-form-urlencoded",
     },
     body: new URLSearchParams({ grant_type: "refresh_token", refresh_token: refreshToken }),
-    cache: "no-store",
+    // The token lasts an hour, so reuse it for a minute.
+    next: { revalidate: 60 },
   });
 
   if (!res.ok) return null;
@@ -34,7 +35,8 @@ export async function getNowPlaying(): Promise<NowPlaying | null> {
   try {
     const currentRes = await fetch("https://api.spotify.com/v1/me/player/currently-playing", {
       headers: { Authorization: `Bearer ${token}` },
-      cache: "no-store",
+      // A minute old is fine for "last played", and it lets the page itself be cached.
+      next: { revalidate: 60 },
     });
 
     // 204 = authenticated fine, nothing currently playing
@@ -53,7 +55,7 @@ export async function getNowPlaying(): Promise<NowPlaying | null> {
     // Fall back to most recently played track.
     const recentRes = await fetch(
       "https://api.spotify.com/v1/me/player/recently-played?limit=1",
-      { headers: { Authorization: `Bearer ${token}` }, cache: "no-store" }
+      { headers: { Authorization: `Bearer ${token}` }, next: { revalidate: 60 } }
     );
     if (!recentRes.ok) return null;
     const recentData = await recentRes.json();

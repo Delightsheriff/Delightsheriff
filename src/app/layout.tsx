@@ -78,6 +78,10 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={cn("dark", "h-full", "font-sans", geistSans.variable, geistMono.variable)}
     >
+      <head>
+        {/* Tells AI agents where this domain publishes its resources (ARD). */}
+        <link rel="ard" href="/.well-known/ard.json" />
+      </head>
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(buildSiteGraph({ settings, work })) }} />
         {children}

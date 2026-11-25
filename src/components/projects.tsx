@@ -31,7 +31,7 @@ export async function Projects() {
                   hasDemo={project.hasDemo}
                   href={`/projects/${project.slug}`}
                   liveUrl={project.links?.live}
-                  priority={i < 2}
+                  priority={i === 0}
                 />
               ))}
             </GlowGrid>
