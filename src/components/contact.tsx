@@ -7,7 +7,6 @@ import { DecryptedText } from "@/components/decrypted-text";
 import { CopyEmailButton } from "@/components/copy-email-button";
 import { NowPlaying } from "@/components/now-playing";
 import { Magnet } from "@/components/magnet";
-import { BlurWords } from "@/components/blur-words";
 
 const LINK =
   "link-u text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background rounded-sm";
@@ -21,8 +20,8 @@ export async function Contact() {
   return (
     <>
       <Section id="contact" label="Contact">
-        <p className="words-host mb-5 max-w-[46ch] text-[clamp(1.0625rem,1.6vw,1.1875rem)] leading-[1.65] [text-wrap:pretty]">
-          <BlurWords text={`${settings.footerLine} Happy to talk football as well as code.`} scroll />
+        <p className="mb-5 max-w-[46ch] text-[clamp(1.0625rem,1.6vw,1.1875rem)] leading-[1.65] [text-wrap:pretty]">
+          {settings.footerLine} Happy to talk football as well as code.
         </p>
 
         <div className="mb-7 flex flex-wrap items-center gap-x-4 gap-y-2">

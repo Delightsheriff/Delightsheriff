@@ -3,7 +3,6 @@ import { urlFor } from "@/sanity/image";
 import { TrackedLink } from "@/components/tracked-link";
 import { Spotlight } from "@/components/spotlight";
 import { Tilt } from "@/components/tilt";
-import { BlurWords } from "@/components/blur-words";
 
 type ProjectTileProps = {
   name: string;
@@ -21,7 +20,7 @@ type ProjectTileProps = {
 // target while the live-site link can sit on top of it as its own link (links can't nest).
 export function ProjectTile({ name, description, role, tags, thumbnail, hasDemo, href, liveUrl, priority }: ProjectTileProps) {
   return (
-    <article className="reveal spotlight-host zoom-host nudge-host group relative flex flex-col has-[.tile-link:focus-visible]:rounded-xl has-[.tile-link:focus-visible]:ring-2 has-[.tile-link:focus-visible]:ring-ring has-[.tile-link:focus-visible]:ring-offset-8 has-[.tile-link:focus-visible]:ring-offset-background">
+    <article className="spotlight-host zoom-host nudge-host group relative flex flex-col has-[.tile-link:focus-visible]:rounded-xl has-[.tile-link:focus-visible]:ring-2 has-[.tile-link:focus-visible]:ring-ring has-[.tile-link:focus-visible]:ring-offset-8 has-[.tile-link:focus-visible]:ring-offset-background">
       <Tilt className="mb-4">
         <Spotlight className="glow-card aspect-[16/10] overflow-hidden rounded-xl border border-border bg-card">
         {thumbnail ? (
@@ -32,7 +31,7 @@ export function ProjectTile({ name, description, role, tags, thumbnail, hasDemo,
             height={375}
             sizes="(min-width: 768px) 396px, 100vw"
             priority={priority}
-            className="zoom-target img-scroll h-full w-full object-cover transition-transform duration-500 ease-out-strong"
+            className="zoom-target h-full w-full object-cover transition-transform duration-500 ease-out-strong"
           />
         ) : (
           <div className="flex h-full w-full items-end p-5 text-sm text-muted-foreground">{name}</div>
@@ -47,7 +46,7 @@ export function ProjectTile({ name, description, role, tags, thumbnail, hasDemo,
           data={{ project: name, destination: "detail" }}
           className="tile-link after:absolute after:inset-0 focus-visible:outline-none"
         >
-          <BlurWords text={name} scroll />
+          {name}
         </TrackedLink>
         <span aria-hidden className="nudge-target font-normal text-muted-foreground transition-[transform,color] duration-200 ease-out-strong">
           ↗
@@ -60,11 +59,11 @@ export function ProjectTile({ name, description, role, tags, thumbnail, hasDemo,
       </h3>
 
       <p className="mb-2.5 mt-1.5 line-clamp-3 text-[15px] leading-relaxed text-muted-foreground [text-wrap:pretty]">
-        <BlurWords text={description} start={name.split(" ").length} scroll />
+        {description}
       </p>
 
       <p className="font-mono text-xs leading-relaxed text-muted-foreground">
-        <BlurWords text={[role, tags.join(", ")].filter(Boolean).join(" / ")} start={name.split(" ").length + 6} scroll />
+        {[role, tags.join(", ")].filter(Boolean).join(" / ")}
       </p>
 
       {liveUrl && (

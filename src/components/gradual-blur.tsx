@@ -4,9 +4,6 @@ export function GradualBlur() {
   return (
     <div className="gradual-blur" aria-hidden>
       <i />
-      <i />
-      <i />
-      <i />
     </div>
   );
 }

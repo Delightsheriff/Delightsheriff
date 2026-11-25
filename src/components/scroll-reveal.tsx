@@ -21,9 +21,12 @@ export function ScrollReveal({ text, className }: { text: string; className?: st
       frame = 0;
       if (!el) return;
       const vh = window.innerHeight;
+      const box = el.getBoundingClientRect();
+      // Off screen: nothing to update, and no reason to touch the DOM.
+      if (box.bottom < -80 || box.top > vh + 80) return;
       const start = vh * 0.92;
       const end = vh * 0.5;
-      const progress = clamp((start - el.getBoundingClientRect().top) / (start - end));
+      const progress = clamp((start - box.top) / (start - end));
       spans.forEach((span, i) => {
         span.style.opacity = (0.2 + 0.8 * clamp(progress * spans.length * 1.15 - i)).toFixed(2);
       });

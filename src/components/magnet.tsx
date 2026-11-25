@@ -17,7 +17,9 @@ export function Magnet({ children, className, range = 90, pull = 0.25 }: MagnetP
   const ref = useRef<HTMLDivElement>(null);
 
   const apply = useCallback(([x, y]: number[]) => {
-    if (ref.current) ref.current.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0)`;
+    if (!ref.current) return;
+    // Back at rest: drop the transform entirely so the browser can release the GPU layer.
+    ref.current.style.transform = Math.abs(x) < 0.05 && Math.abs(y) < 0.05 ? "" : `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0)`;
   }, []);
   const move = useSmoothTarget(apply, 2, 0.16);
 
@@ -43,7 +45,7 @@ export function Magnet({ children, className, range = 90, pull = 0.25 }: MagnetP
   }, [move, range, pull]);
 
   return (
-    <div ref={ref} className={className} style={{ willChange: "transform" }}>
+    <div ref={ref} className={className}>
       {children}
     </div>
   );
