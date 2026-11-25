@@ -29,7 +29,9 @@ export async function Hero() {
     <section className="py-20 sm:py-28 md:py-36">
       <div className="grid gap-6 md:grid-cols-[168px_minmax(0,1fr)] md:gap-x-12">
         <div className="enter font-mono text-xs leading-relaxed text-muted-foreground md:pt-3">
-          <p className="text-foreground">{settings.openToWorkLabel}</p>
+          <p className="font-sans text-base font-semibold tracking-[-0.01em] text-foreground md:font-mono md:text-xs md:font-normal md:tracking-normal">
+            {settings.openToWorkLabel}
+          </p>
           <p>{settings.statusNote || DEFAULT_STATUS_NOTE}</p>
         </div>
 
