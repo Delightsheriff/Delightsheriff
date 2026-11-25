@@ -2,6 +2,7 @@ import Image from "next/image";
 import { urlFor } from "@/sanity/image";
 import { TrackedLink } from "@/components/tracked-link";
 import { Spotlight } from "@/components/spotlight";
+import { Tilt } from "@/components/tilt";
 
 type ProjectTileProps = {
   name: string;
@@ -19,8 +20,9 @@ type ProjectTileProps = {
 // target while the live-site link can sit on top of it as its own link (links can't nest).
 export function ProjectTile({ name, description, role, tags, thumbnail, hasDemo, href, liveUrl, priority }: ProjectTileProps) {
   return (
-    <article className="spotlight-host zoom-host nudge-host group relative flex flex-col has-[.tile-link:focus-visible]:rounded-xl has-[.tile-link:focus-visible]:ring-2 has-[.tile-link:focus-visible]:ring-ring has-[.tile-link:focus-visible]:ring-offset-8 has-[.tile-link:focus-visible]:ring-offset-background">
-      <Spotlight className="mb-4 aspect-[16/10] overflow-hidden rounded-xl border border-border bg-card">
+    <article className="reveal spotlight-host zoom-host nudge-host group relative flex flex-col has-[.tile-link:focus-visible]:rounded-xl has-[.tile-link:focus-visible]:ring-2 has-[.tile-link:focus-visible]:ring-ring has-[.tile-link:focus-visible]:ring-offset-8 has-[.tile-link:focus-visible]:ring-offset-background">
+      <Tilt className="mb-4">
+        <Spotlight className="glow-card aspect-[16/10] overflow-hidden rounded-xl border border-border bg-card">
         {thumbnail ? (
           <Image
             src={urlFor(thumbnail.asset).width(1200).height(750).fit("crop").url()}
@@ -34,7 +36,8 @@ export function ProjectTile({ name, description, role, tags, thumbnail, hasDemo,
         ) : (
           <div className="flex h-full w-full items-end p-5 text-sm text-muted-foreground">{name}</div>
         )}
-      </Spotlight>
+        </Spotlight>
+      </Tilt>
 
       <h3 className="flex items-center gap-1.5 text-[17px] font-medium leading-snug tracking-[-0.015em]">
         <TrackedLink
