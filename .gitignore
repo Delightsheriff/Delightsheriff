@@ -55,3 +55,5 @@ scripts/
 .open-next
 .wrangler
 .dev.vars
+dist
+.sanity
