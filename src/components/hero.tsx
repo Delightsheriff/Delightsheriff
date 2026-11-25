@@ -3,7 +3,7 @@ import { getSiteSettings } from "@/sanity/queries";
 import { TrackedLink } from "@/components/tracked-link";
 import { urlFor } from "@/sanity/image";
 
-const DEFAULT_STATUS_NOTE = "Nigeria, Liverpool fan";
+const DEFAULT_STATUS_NOTE = "Remote, worldwide. Liverpool fan";
 
 export async function Hero() {
   const settings = await getSiteSettings();

@@ -13,7 +13,7 @@ export const siteSettings = defineType({
       name: "statusNote",
       title: "Hero — Status note",
       type: "string",
-      description: 'A short line under the status label, e.g. "Nigeria, Liverpool fan". Leave empty to use the default.',
+      description: 'A short line under the status label, e.g. "Remote, worldwide. Liverpool fan". Leave empty to use the default.',
     }),
     defineField({ name: "tagline", title: "Hero — Tagline / positioning line", type: "text", rows: 3 }),
     defineField({ name: "email", title: "Contact — Email", type: "string" }),
