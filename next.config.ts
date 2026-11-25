@@ -1,7 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Only for the Docker build, which runs the site as a plain Node server.
+  ...(process.env.BUILD_STANDALONE ? { output: "standalone" as const } : {}),
   images: {
+    loader: "custom",
+    loaderFile: "./src/lib/sanity-image-loader.ts",
     remotePatterns: [{ protocol: "https", hostname: "cdn.sanity.io" }],
     // AVIF is much smaller than WebP for screenshots. Project images never change under the same URL.
     formats: ["image/avif", "image/webp"],

@@ -3,7 +3,7 @@ import { cleanup, fireEvent, render, screen, within } from "@testing-library/rea
 
 const pathname = vi.hoisted(() => ({ value: "/" }));
 vi.mock("next/navigation", () => ({ usePathname: () => pathname.value }));
-vi.mock("@vercel/analytics", () => ({ track: vi.fn() }));
+vi.mock("@/lib/analytics", () => ({ track: vi.fn() }));
 
 const { SiteHeader } = await import("./site-header");
 
