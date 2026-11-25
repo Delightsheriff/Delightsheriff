@@ -191,17 +191,6 @@
     z-index: 2;
   }
 
-  /* Soft film grain over the whole page. Static, so there is nothing to animate. */
-  .grain {
-    position: fixed;
-    inset: 0;
-    z-index: 20;
-    pointer-events: none;
-    opacity: 0.045;
-    mix-blend-mode: overlay;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-  }
-
   /* Skeleton: a quiet block with a slow light sweep across it. */
   .skeleton {
     background-color: var(--muted);
@@ -261,32 +250,11 @@
   .gradual-blur > i {
     position: absolute;
     inset: 0 0 auto;
-    -webkit-mask-image: linear-gradient(to bottom, #000 30%, transparent);
-    mask-image: linear-gradient(to bottom, #000 30%, transparent);
-  }
-
-  .gradual-blur > i:nth-child(1) {
-    height: 100%;
-    -webkit-backdrop-filter: blur(1px);
-    backdrop-filter: blur(1px);
-  }
-
-  .gradual-blur > i:nth-child(2) {
     height: 70%;
-    -webkit-backdrop-filter: blur(2px);
-    backdrop-filter: blur(2px);
-  }
-
-  .gradual-blur > i:nth-child(3) {
-    height: 48%;
     -webkit-backdrop-filter: blur(4px);
     backdrop-filter: blur(4px);
-  }
-
-  .gradual-blur > i:nth-child(4) {
-    height: 30%;
-    -webkit-backdrop-filter: blur(8px);
-    backdrop-filter: blur(8px);
+    -webkit-mask-image: linear-gradient(to bottom, #000 30%, transparent);
+    mask-image: linear-gradient(to bottom, #000 30%, transparent);
   }
 
   /* Spotlight: a soft light that follows the pointer across a surface. */
@@ -307,64 +275,6 @@
     opacity: 0;
     transition: opacity 300ms ease;
     pointer-events: none;
-  }
-}
-
-/* Scroll reveal: as an element enters the viewport it rises and fades in, tied to scroll
-   position by the browser. Browsers without scroll-driven animations just show the content. */
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    /* Each block (tile, row, role) owns one scroll timeline, and every word in it follows that
-       timeline with its own small delay. As the block scrolls in, the text resolves as a ripple
-       from the first word to the last, like the hero does on load. */
-    .reveal,
-    .words-host {
-      view-timeline: --words block;
-    }
-
-    .word-scroll {
-      display: inline-block;
-      animation: word-scroll linear both;
-      animation-timeline: --words;
-      animation-range:
-        entry calc(min(var(--i, 0), 70) * 0.55%)
-        entry calc(34% + min(var(--i, 0), 70) * 0.55%);
-    }
-
-    @keyframes word-scroll {
-      from {
-        opacity: 0;
-        filter: blur(8px);
-        transform: translateY(0.4em);
-      }
-    }
-
-    /* Project images sharpen out of a blur. Opacity and filter only, so hover zoom still works. */
-    .img-scroll {
-      animation: img-scroll linear both;
-      animation-timeline: --words;
-      animation-range: entry 0% entry 40%;
-    }
-
-    @keyframes img-scroll {
-      from {
-        opacity: 0;
-        filter: blur(14px);
-      }
-    }
-
-    .reveal {
-      animation: reveal linear both;
-      animation-timeline: view();
-      animation-range: entry 0% entry 38%;
-    }
-
-    @keyframes reveal {
-      from {
-        opacity: 0;
-        transform: translateY(18px);
-      }
-    }
   }
 }
 

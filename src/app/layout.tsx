@@ -107,7 +107,6 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd).replace(/</g, "\\u003c") }}
         />
         {children}
-        <div className="grain" aria-hidden />
         <Analytics />
       </body>
     </html>

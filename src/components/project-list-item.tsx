@@ -3,7 +3,6 @@ import { urlFor } from "@/sanity/image";
 import { TrackedLink } from "@/components/tracked-link";
 import { Spotlight } from "@/components/spotlight";
 import { Tilt } from "@/components/tilt";
-import { BlurWords } from "@/components/blur-words";
 import { categoryLabel } from "@/lib/project-categories";
 
 type Links = { source?: string; live?: string; download?: string; appStore?: string; playStore?: string };
@@ -35,7 +34,7 @@ export function ProjectListItem({ name, category, description, impact, tags, lin
   const destinations = LINK_LABELS.filter(([key]) => links[key]);
 
   return (
-    <li className="reveal spotlight-host zoom-host nudge-host group relative grid gap-x-6 gap-y-4 border-t border-border py-6 last:border-b has-[.row-link:focus-visible]:rounded-lg has-[.row-link:focus-visible]:ring-2 has-[.row-link:focus-visible]:ring-ring has-[.row-link:focus-visible]:ring-offset-4 has-[.row-link:focus-visible]:ring-offset-background sm:grid-cols-[200px_minmax(0,1fr)] md:gap-x-8">
+    <li className="spotlight-host zoom-host nudge-host group relative grid gap-x-6 gap-y-4 border-t border-border py-6 last:border-b has-[.row-link:focus-visible]:rounded-lg has-[.row-link:focus-visible]:ring-2 has-[.row-link:focus-visible]:ring-ring has-[.row-link:focus-visible]:ring-offset-4 has-[.row-link:focus-visible]:ring-offset-background sm:grid-cols-[200px_minmax(0,1fr)] md:gap-x-8">
       <Tilt className="self-start" max={4} lift={0.01}>
       <Spotlight className="glow-card aspect-[16/10] overflow-hidden rounded-lg border border-border bg-card">
         {thumbnail ? (
@@ -45,7 +44,7 @@ export function ProjectListItem({ name, category, description, impact, tags, lin
             width={320}
             height={200}
             sizes="(min-width: 640px) 200px, 100vw"
-            className="zoom-target img-scroll h-full w-full object-cover transition-transform duration-500 ease-out-strong"
+            className="zoom-target h-full w-full object-cover transition-transform duration-500 ease-out-strong"
           />
         ) : (
           <div className="flex h-full w-full items-end p-3 text-xs text-muted-foreground">{name}</div>
@@ -61,7 +60,7 @@ export function ProjectListItem({ name, category, description, impact, tags, lin
             data={{ project: name, destination: "detail", location: "project-list" }}
             className="row-link after:absolute after:inset-0 focus-visible:outline-none"
           >
-            <BlurWords text={name} scroll />
+            {name}
           </TrackedLink>
           <span aria-hidden className="nudge-target font-normal text-muted-foreground transition-[transform,color] duration-200 ease-out-strong">
             ↗
@@ -69,13 +68,8 @@ export function ProjectListItem({ name, category, description, impact, tags, lin
           <span className="ml-1 font-mono text-xs font-normal text-muted-foreground">{categoryLabel(category)}</span>
         </h3>
         <p className="mb-2 mt-1 max-w-[60ch] text-[15px] leading-relaxed text-muted-foreground [text-wrap:pretty]">
-          <BlurWords text={description} start={name.split(" ").length} scroll />
-          {impact && (
-            <span className="text-foreground">
-              {" "}
-              <BlurWords text={`${impact}.`} start={name.split(" ").length + description.split(" ").length} scroll />
-            </span>
-          )}
+          {description}
+          {impact && <span className="text-foreground"> {impact}.</span>}
         </p>
         <p className="font-mono text-xs leading-relaxed text-muted-foreground">{tags.join(", ")}</p>
         {destinations.length > 0 && (

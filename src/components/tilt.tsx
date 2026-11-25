@@ -17,9 +17,12 @@ export function Tilt({ children, className, max = 5, lift = 0.012 }: TiltProps) 
   const ref = useRef<HTMLDivElement>(null);
 
   const apply = useCallback(([rx, ry, scale]: number[]) => {
-    if (ref.current) {
-      ref.current.style.transform = `perspective(900px) rotateX(${rx.toFixed(3)}deg) rotateY(${ry.toFixed(3)}deg) scale(${(1 + scale).toFixed(4)})`;
-    }
+    if (!ref.current) return;
+    // Back at rest: drop the transform entirely so the browser can release the GPU layer.
+    const resting = Math.abs(rx) < 0.01 && Math.abs(ry) < 0.01 && Math.abs(scale) < 0.0005;
+    ref.current.style.transform = resting
+      ? ""
+      : `perspective(900px) rotateX(${rx.toFixed(3)}deg) rotateY(${ry.toFixed(3)}deg) scale(${(1 + scale).toFixed(4)})`;
   }, []);
   const move = useSmoothTarget(apply, 3);
 
@@ -35,7 +38,6 @@ export function Tilt({ children, className, max = 5, lift = 0.012 }: TiltProps) 
     <div
       ref={ref}
       className={className}
-      style={{ willChange: "transform" }}
       onPointerMove={onPointerMove}
       onPointerLeave={() => move([0, 0, 0])}
     >
