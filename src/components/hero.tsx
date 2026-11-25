@@ -1,25 +1,8 @@
 import Image from "next/image";
-import type { CSSProperties } from "react";
 import { getSiteSettings } from "@/sanity/queries";
 import { TrackedLink } from "@/components/tracked-link";
 import { urlFor } from "@/sanity/image";
-
-// Each word blurs into place in turn. Pure CSS, so the text is there without JavaScript.
-function Words({ text, start, className }: { text: string; start: number; className?: string }) {
-  const words = text.split(" ");
-  return (
-    <>
-      {words.map((word, i) => (
-        <span key={i}>
-          <span className={`word-in ${className ?? ""}`} style={{ "--i": start + i } as CSSProperties}>
-            {word}
-          </span>
-          {i < words.length - 1 ? " " : ""}
-        </span>
-      ))}
-    </>
-  );
-}
+import { BlurWords } from "@/components/blur-words";
 
 const DEFAULT_STATUS_NOTE = "Remote, worldwide. Liverpool fan";
 
@@ -65,10 +48,10 @@ export async function Hero() {
           )}
 
           <h1 className="max-w-[24ch] text-balance text-[clamp(1.7rem,3.8vw,2.55rem)] font-medium leading-[1.22] tracking-[-0.028em]">
-            <Words text={`${settings.heroName}.`} start={0} />{" "}
+            <BlurWords text={`${settings.heroName}.`} />{" "}
             <span className="text-muted-foreground">
               {/* Non-breaking hyphen so "Full-Stack" never splits across lines. */}
-              <Words
+              <BlurWords
                 text={`${settings.heroTitle.replace(/-/g, "\u2011")}. ${settings.tagline}`}
                 start={settings.heroName.split(" ").length}
               />

@@ -23,7 +23,7 @@ describe("ProjectTile", () => {
   it("links the tile to the case study", () => {
     render(<ProjectTile {...tile} />);
 
-    expect(screen.getByRole("link", { name: "IFEM Education" })).toHaveAttribute("href", "/projects/ifem-education");
+    expect(screen.getByRole("link", { name: /^\s*IFEM\s*Education\s*$/ })).toHaveAttribute("href", "/projects/ifem-education");
     expect(screen.getAllByRole("link")).toHaveLength(1);
   });
 
@@ -34,13 +34,15 @@ describe("ProjectTile", () => {
     expect(live).toHaveAttribute("href", "https://www.ifemeducation.com");
     expect(live).toHaveAttribute("target", "_blank");
     expect(live).toHaveAttribute("rel", "noopener noreferrer");
-    expect(screen.getByRole("link", { name: "IFEM Education" })).not.toContainElement(live);
+    expect(screen.getByRole("link", { name: /^\s*IFEM\s*Education\s*$/ })).not.toContainElement(live);
   });
 
   it("separates role and stack without dots", () => {
     render(<ProjectTile {...tile} role="Designer and developer" />);
 
-    expect(screen.getByText("Designer and developer / Next.js, Sanity")).toBeInTheDocument();
+    // Words are separate elements (they animate one by one), so match the combined text.
+    const meta = screen.getByText((_, el) => el?.tagName === "P" && el.textContent === "Designer and developer / Next.js, Sanity");
+    expect(meta).toBeInTheDocument();
   });
 
   it("shows the thumbnail when there is one and a text fallback when there is not", () => {
