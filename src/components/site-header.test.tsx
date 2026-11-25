@@ -25,23 +25,23 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-const openMenu = () => fireEvent.click(screen.getByRole("button", { name: "Menu" }));
+const openMenu = () => fireEvent.click(screen.getByRole("button", { name: "Open menu" }));
 const menu = () => screen.getByRole("navigation", { name: "Menu" });
 
 describe("SiteHeader mobile menu", () => {
   it("is closed until the button is pressed", () => {
     render(<SiteHeader name="Delight" />);
 
-    const button = screen.getByRole("button", { name: "Menu" });
+    const button = screen.getByRole("button", { name: "Open menu" });
     expect(button).toHaveAttribute("aria-expanded", "false");
     expect(screen.queryByRole("navigation", { name: "Menu" })).not.toBeInTheDocument();
   });
 
-  it("opens with every section and turns the button into Close", () => {
+  it("opens with every section and turns the button into Close menu", () => {
     render(<SiteHeader name="Delight" />);
     openMenu();
 
-    expect(screen.getByRole("button", { name: "Close" })).toHaveAttribute("aria-expanded", "true");
+    expect(screen.getByRole("button", { name: "Close menu" })).toHaveAttribute("aria-expanded", "true");
     for (const label of ["Projects", "Experience", "About", "Contact"]) {
       expect(within(menu()).getByRole("link", { name: label })).toBeInTheDocument();
     }
@@ -61,7 +61,7 @@ describe("SiteHeader mobile menu", () => {
     fireEvent.keyDown(window, { key: "Escape" });
 
     expect(screen.queryByRole("navigation", { name: "Menu" })).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Menu" })).toHaveFocus();
+    expect(screen.getByRole("button", { name: "Open menu" })).toHaveFocus();
   });
 
   it("closes when any link in it is tapped", () => {
@@ -79,6 +79,68 @@ describe("SiteHeader mobile menu", () => {
     const resume = within(menu()).getByRole("link", { name: /Resume/ });
     expect(resume).toHaveAttribute("href", "https://docs.example.com/resume");
     expect(resume).toHaveAttribute("target", "_blank");
+  });
+});
+
+describe("SiteHeader menu animation", () => {
+  const panel = () => document.getElementById("mobile-menu")!;
+
+  it("stays in the page so it can animate, but is hidden and unreachable while closed", () => {
+    render(<SiteHeader name="Delight" />);
+
+    expect(panel()).toHaveAttribute("aria-hidden", "true");
+    expect(panel()).toHaveAttribute("inert");
+    expect(panel().className).toContain("grid-rows-[0fr]");
+    expect(panel().className).toContain("invisible");
+  });
+
+  it("becomes reachable and grows when opened", () => {
+    render(<SiteHeader name="Delight" />);
+    openMenu();
+
+    expect(panel()).toHaveAttribute("aria-hidden", "false");
+    expect(panel()).not.toHaveAttribute("inert");
+    expect(panel().className).toContain("grid-rows-[1fr]");
+  });
+
+  it("brings the links in one after another when opening", () => {
+    render(<SiteHeader name="Delight" showBlog resumeUrl="https://docs.example.com/r" />);
+    openMenu();
+
+    const delays = within(menu())
+      .getAllByRole("link")
+      .map((link) => Number.parseInt((link.parentElement as HTMLElement).style.transitionDelay, 10));
+    expect(delays).toHaveLength(6);
+    for (let i = 1; i < delays.length; i++) expect(delays[i]).toBeGreaterThan(delays[i - 1]);
+  });
+
+  it("drops the delays when closing so it closes quickly", () => {
+    render(<SiteHeader name="Delight" />);
+    openMenu();
+    fireEvent.keyDown(window, { key: "Escape" });
+
+    const links = panel().querySelectorAll("nav a");
+    expect(links.length).toBeGreaterThan(0);
+    for (const link of links) expect((link.parentElement as HTMLElement).style.transitionDelay).toBe("0ms");
+    expect(panel().className).toContain("duration-[240ms]");
+  });
+
+  it("keeps the page still behind the open menu and releases it after", () => {
+    render(<SiteHeader name="Delight" />);
+    openMenu();
+    expect(document.body.style.overflow).toBe("hidden");
+
+    fireEvent.keyDown(window, { key: "Escape" });
+    expect(document.body.style.overflow).toBe("");
+  });
+
+  it("closes when the dimmed page behind it is tapped", () => {
+    const { container } = render(<SiteHeader name="Delight" />);
+    openMenu();
+    const dim = container.querySelector('div[aria-hidden="true"].fixed') as HTMLElement;
+    fireEvent.click(dim);
+
+    expect(screen.getByRole("button", { name: "Open menu" })).toHaveAttribute("aria-expanded", "false");
   });
 });
 
