@@ -1,13 +1,9 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, DM_Sans, Outfit } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { getSiteSettings } from "@/sanity/queries";
 import { Analytics } from "@vercel/analytics/next";
-
-const outfitHeading = Outfit({subsets:['latin'],variable:'--font-heading'});
-
-const dmSans = DM_Sans({subsets:['latin'],variable:'--font-sans'});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,6 +14,9 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
+// Runs before first paint. Midnight is the default; Paper only when the visitor chose it.
+const THEME_SCRIPT = `(function(){try{var t=localStorage.getItem("theme");document.documentElement.classList.toggle("dark",t!=="light")}catch(e){}})()`;
 
 const SITE_DESCRIPTION =
   "Full-stack and mobile software engineer based in Nigeria, building chat, payments, and encrypted systems, shipped in production.";
@@ -103,8 +102,12 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={cn("dark", "h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", dmSans.variable, outfitHeading.variable)}
+      suppressHydrationWarning
+      className={cn("dark", "h-full", "font-sans", geistSans.variable, geistMono.variable)}
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+      </head>
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <script
           type="application/ld+json"

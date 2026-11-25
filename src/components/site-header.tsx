@@ -1,55 +1,84 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { TrackedLink } from "@/components/tracked-link";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { cn } from "@/lib/utils";
 
 type SiteHeaderProps = {
   name?: string;
-  email?: string;
   resumeUrl?: string;
   // The Blog link is hidden until there's at least one post to read.
   showBlog?: boolean;
 };
 
-export function SiteHeader({ name, email, resumeUrl, showBlog }: SiteHeaderProps) {
+const SECTIONS = [
+  { id: "projects", label: "Projects" },
+  { id: "experience", label: "Experience" },
+  { id: "about", label: "About" },
+  { id: "contact", label: "Contact" },
+];
+
+const LINK =
+  "transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm";
+
+export function SiteHeader({ name, resumeUrl, showBlog }: SiteHeaderProps) {
+  const pathname = usePathname();
+  const [active, setActive] = useState<string | null>(null);
+
+  // Highlight the section in view. Only meaningful on the home page.
+  useEffect(() => {
+    if (pathname !== "/") return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) setActive(entry.target.id);
+        }
+      },
+      { rootMargin: "-40% 0px -55% 0px" },
+    );
+    for (const { id } of SECTIONS) {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    }
+    return () => observer.disconnect();
+  }, [pathname]);
+
+  const current = pathname === "/" ? active : null;
+
   return (
-    <header className="site-header sticky top-0 z-10 border-b border-border/60 bg-background/70 backdrop-blur-lg backdrop-saturate-150 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
-      <nav
-        aria-label="Primary navigation"
-        className="mx-auto flex w-full max-w-2xl items-center justify-between px-6 py-3"
-      >
+    <header className="sticky top-[env(safe-area-inset-top,0px)] z-40">
+      <nav aria-label="Primary navigation" className="mx-auto flex h-14 w-full max-w-[960px] items-center justify-between gap-4 px-6">
         <TrackedLink
           href="/"
           eventName="navigation_click"
           data={{ href: "/", location: "header" }}
-          className="font-heading text-sm font-medium tracking-tight text-foreground/90 transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className={cn("text-sm font-medium text-foreground", LINK)}
         >
           {name ?? "Delight Sheriff"}
         </TrackedLink>
-        <div className="flex items-center gap-4 text-xs text-muted-foreground">
-          <TrackedLink
-            href="/projects"
-            eventName="navigation_click"
-            data={{ href: "/projects", location: "header" }}
-            className="transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          >
-            Projects
-          </TrackedLink>
+
+        <div className="flex items-center gap-5 text-[13px] text-muted-foreground">
+          {SECTIONS.map((section) => (
+            <TrackedLink
+              key={section.id}
+              href={`/#${section.id}`}
+              eventName="navigation_click"
+              data={{ href: `/#${section.id}`, location: "header" }}
+              className={cn("hidden sm:inline hover:text-foreground", LINK, current === section.id && "text-foreground")}
+            >
+              {section.label}
+            </TrackedLink>
+          ))}
           {showBlog && (
             <TrackedLink
               href="/blog"
               eventName="navigation_click"
               data={{ href: "/blog", location: "header" }}
-              className="transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className={cn("hidden sm:inline hover:text-foreground", LINK)}
             >
               Blog
-            </TrackedLink>
-          )}
-          {email && (
-            <TrackedLink
-              href={`mailto:${email}`}
-              eventName="contact_click"
-              data={{ location: "header" }}
-              className="transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            >
-              Contact
             </TrackedLink>
           )}
           {resumeUrl && (
@@ -58,11 +87,12 @@ export function SiteHeader({ name, email, resumeUrl, showBlog }: SiteHeaderProps
               external
               eventName="resume_click"
               data={{ location: "header" }}
-              className="hidden transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:inline"
+              className={cn("hidden md:inline hover:text-foreground", LINK)}
             >
               Resume
             </TrackedLink>
           )}
+          <ThemeToggle />
         </div>
       </nav>
     </header>
