@@ -29,8 +29,9 @@ export function ProjectTile({ name, description, role, tags, thumbnail, hasDemo,
             alt={thumbnail.alt ?? `Screenshot of ${name}, a project by Delight Amadi Sheriff`}
             width={600}
             height={375}
-            sizes="(min-width: 768px) 396px, 100vw"
+            sizes="(min-width: 768px) 396px, calc(100vw - 48px)"
             priority={priority}
+            fetchPriority={priority ? "high" : "auto"}
             className="zoom-target h-full w-full object-cover transition-transform duration-500 ease-out-strong"
           />
         ) : (
