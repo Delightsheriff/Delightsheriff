@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { TrackedLink } from "@/components/tracked-link";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { cn } from "@/lib/utils";
 
 type SiteHeaderProps = {
@@ -142,7 +141,6 @@ export function SiteHeader({ name, resumeUrl, showBlog }: SiteHeaderProps) {
               </TrackedLink>
             )}
           </div>
-          <ThemeToggle />
         </div>
       </nav>
     </header>
