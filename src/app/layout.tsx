@@ -81,6 +81,8 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       <head>
         {/* Tells AI agents where this domain publishes its resources (ARD). */}
         <link rel="ard" href="/.well-known/ard.json" />
+        {/* Images load from the Sanity CDN, so open that connection before the first image is requested. */}
+        <link rel="preconnect" href="https://cdn.sanity.io" />
       </head>
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(buildSiteGraph({ settings, work })) }} />
