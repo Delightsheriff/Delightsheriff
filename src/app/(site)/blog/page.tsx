@@ -1,78 +1,60 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { getAllPosts } from "@/sanity/queries";
 import { NavLink } from "@/components/nav-link";
-import { TrackedLink } from "@/components/tracked-link";
-import { EmptyState } from "@/components/empty-state";
+import { PostListItem } from "@/components/post-list-item";
+import { BLOG_DESCRIPTION, LLMS_TYPES, buildBlogGraph, jsonLd } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Blog",
-  description: "Notes on building software, mostly the parts that don't make it into a README.",
-  alternates: { canonical: "/blog" },
+  description: BLOG_DESCRIPTION,
+  alternates: { canonical: "/blog", types: LLMS_TYPES },
   openGraph: {
-    title: "Blog — Delight Amadi Sheriff",
-    description: "Notes on building software, mostly the parts that don't make it into a README.",
+    title: "Blog | Delight Amadi Sheriff",
+    description: BLOG_DESCRIPTION,
     url: "/blog",
     type: "website",
   },
 };
 
-function formatDate(value: string): string {
-  return new Date(value).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    timeZone: "UTC",
-  });
-}
-
 export default async function BlogPage() {
   const posts = await getAllPosts();
 
-  return (
-      <main id="main-content" tabIndex={-1} className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-16 px-6 py-20 sm:py-28">
-      <div className="flex flex-col gap-4">
-        <NavLink href="/" direction="back">
-          Back
-        </NavLink>
-        <h1 className="font-heading text-3xl font-semibold tracking-tight">Blog</h1>
-      </div>
+  // Until the first post is published, the blog does not exist: no page, no nav link, no sitemap entry.
+  if (posts.length === 0) notFound();
 
-      {posts.length > 0 ? (
-        <div className="flex flex-col">
-          {posts.map((post) => (
-            <TrackedLink
-              key={post.slug}
-              href={`/blog/${post.slug}`}
-              eventName="post_open"
-              data={{ post: post.title }}
-              className="group flex items-start justify-between gap-4 border-t border-border py-6 px-3 -mx-3 rounded-lg transition-colors duration-150 ease-out active:bg-foreground/[0.04] first:border-t-0 first:pt-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background"
-            >
-              <span className="flex flex-1 flex-col gap-1.5">
-                <span className="font-heading text-lg font-medium text-foreground/90 transition-colors group-hover:text-foreground">
-                  {post.title}
-                </span>
-                <span className="max-w-md text-sm leading-relaxed text-muted-foreground">
-                  {post.excerpt}
-                </span>
-                <span className="mt-1 text-xs text-muted-foreground">
-                  {formatDate(post.publishedAt)}
-                </span>
-              </span>
-              <span
-                aria-hidden
-                className="mt-1 shrink-0 text-muted-foreground transition-[color,opacity,transform] duration-150 ease-out group-hover:text-foreground group-hover:opacity-100"
-              >
-                →
-              </span>
-            </TrackedLink>
-          ))}
+  return (
+    <main id="main-content" tabIndex={-1} className="mx-auto w-full max-w-[960px] flex-1 px-6 py-24 sm:py-32">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(buildBlogGraph(posts)) }} />
+
+      <div className="grid gap-5 md:grid-cols-[168px_minmax(0,1fr)] md:gap-x-12">
+        <div className="flex flex-col gap-4 md:sticky md:top-20 md:self-start">
+          <NavLink href="/" direction="back">
+            Home
+          </NavLink>
         </div>
-      ) : (
-        <EmptyState
-          title="Nothing published yet"
-          description="I'm still writing the first post. Check back soon, or follow along on GitHub in the meantime."
-        />
-      )}
+
+        <div className="min-w-0">
+          <h1 className="text-[clamp(1.9rem,4vw,2.75rem)] font-medium leading-[1.1] tracking-[-0.03em]">Blog</h1>
+          <p className="mt-4 max-w-[48ch] text-[clamp(1.0625rem,1.6vw,1.1875rem)] leading-[1.6] text-muted-foreground [text-wrap:pretty]">
+            {BLOG_DESCRIPTION}
+          </p>
+
+          <ul className="mt-14">
+            {posts.map((post) => (
+              <PostListItem
+                key={post.slug}
+                slug={post.slug}
+                title={post.title}
+                excerpt={post.excerpt}
+                publishedAt={post.publishedAt}
+                tags={post.tags}
+                coverImage={post.coverImage}
+              />
+            ))}
+          </ul>
+        </div>
+      </div>
     </main>
   );
 }
