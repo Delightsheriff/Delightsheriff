@@ -1,18 +1,20 @@
-import type { SanityProject, SanityWorkEntry, SiteSettings } from "@/sanity/queries";
-import { formatDateRange } from "@/lib/format";
+import type { SanityPost, SanityProject, SanityWorkEntry, SiteSettings } from "@/sanity/queries";
+import { formatDateRange, formatLongDate } from "@/lib/format";
 import { categoryLabel } from "@/lib/project-categories";
-import { ALTERNATE_NAMES, SITE_NAME, SITE_URL, X_URL, projectUrl } from "@/lib/seo";
+import { ALTERNATE_NAMES, SITE_NAME, SITE_URL, X_URL, postUrl, projectUrl } from "@/lib/seo";
 
 type LlmsData = {
   settings: SiteSettings;
   work: SanityWorkEntry[];
   projects: SanityProject[];
+  // Published posts, newest first. Optional: the section only appears when there are some.
+  posts?: SanityPost[];
 };
 
 // A plain-text profile for AI assistants and answer engines (the llms.txt convention).
 // It is built from the same CMS content as the site, so it never drifts out of date.
 // `full` adds the detail: every achievement, highlight and skill.
-export function buildLlms({ settings, work, projects }: LlmsData, full: boolean): string {
+export function buildLlms({ settings, work, projects, posts = [] }: LlmsData, full: boolean): string {
   const lines: string[] = [];
   const push = (...items: string[]) => lines.push(...items);
 
@@ -50,6 +52,12 @@ export function buildLlms({ settings, work, projects }: LlmsData, full: boolean)
     }
   }
   push("");
+
+  if (posts.length > 0) {
+    push("## Writing", "");
+    for (const post of posts) push(`- [${post.title}](${postUrl(post.slug)}) (${formatLongDate(post.publishedAt)}): ${post.excerpt}`);
+    push("");
+  }
 
   push("## Experience", "");
   for (const entry of work) {
