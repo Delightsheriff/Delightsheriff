@@ -9,8 +9,6 @@ type TrackedLinkProps = {
   eventName: string;
   data?: Record<string, string | number | boolean | null>;
   external?: boolean;
-  // A mouse shortcut that duplicates a visible link: out of the tab order and the accessibility tree.
-  decorative?: boolean;
   className?: string;
   children: ReactNode;
 };
@@ -20,21 +18,19 @@ export function TrackedLink({
   eventName,
   data,
   external,
-  decorative,
   className,
   children,
 }: TrackedLinkProps) {
-  const hidden = decorative ? ({ tabIndex: -1, "aria-hidden": true } as const) : {};
   function handleClick() {
     track(eventName, data);
   }
 
   return external ? (
-    <a href={href} target="_blank" rel="noopener noreferrer" className={className} onClick={handleClick} {...hidden}>
+    <a href={href} target="_blank" rel="noopener noreferrer" className={className} onClick={handleClick}>
       {children}
     </a>
   ) : (
-    <Link href={href} className={className} onClick={handleClick} {...hidden}>
+    <Link href={href} className={className} onClick={handleClick}>
       {children}
     </Link>
   );

@@ -49,6 +49,7 @@ export async function Projects() {
                     impact={project.impact}
                     tags={project.tags}
                     links={project.links ?? {}}
+                    href={`/projects/${project.slug}`}
                     thumbnail={project.thumbnail}
                   />
                 ))}
