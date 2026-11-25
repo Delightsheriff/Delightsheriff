@@ -58,7 +58,7 @@ The site is a single page: hero, projects, experience, about, contact. Every pro
 
 ## Highlights
 
-- **Content lives in a CMS.** Projects, work history, skills, bio and posts are edited in Sanity Studio at `/studio`, with no redeploy needed.
+- **Content lives in a CMS.** Projects, work history, skills, bio and posts are edited in Sanity Studio (hosted by Sanity), with no redeploy needed.
 - **One theme, designed carefully.** A dark theme, Geist type, a consistent label-gutter layout, and motion that stays light and respects reduced-motion settings.
 - **Fast.** Pages are statically generated and refreshed in the background, images are served as AVIF or WebP, and the first project images load with high priority.
 - **Accessible.** Skip link, keyboard-friendly menus, visible focus, and contrast checked against WCAG.
@@ -71,10 +71,10 @@ The site is a single page: hero, projects, experience, about, contact. Every pro
 | --- | --- |
 | Framework | Next.js 16 (App Router), React 19, TypeScript |
 | Styling | Tailwind CSS v4 with design tokens, shadcn/ui primitives |
-| Content | Sanity (content lake, Studio embedded at `/studio`, Portable Text for articles) |
-| Hosting | Vercel (production from `main`, a preview for every pull request) |
+| Content | Sanity (content lake, hosted Studio, Portable Text for articles) |
+| Hosting | Cloudflare Workers via OpenNext (deploys from `main`), portable to any Node host, see [docs/hosting.md](docs/hosting.md) |
 | Testing | Vitest and Testing Library |
-| Extras | GitHub contributions, Spotify "last played", Vercel Analytics |
+| Extras | GitHub contributions, Spotify "last played", Cloudflare Web Analytics |
 
 ## Getting started
 
@@ -120,7 +120,6 @@ src/
   app/
     (site)/            home page, project case studies, blog, loading and error states
     api/revalidate/    signed webhook that refreshes pages
-    studio/            embedded Sanity Studio
     llms.txt/          plain-text profile for AI assistants (also llms-full.txt)
     .well-known/       ARD manifest for AI agents
     robots.ts, sitemap.ts, manifest.ts, icon.tsx, opengraph-image.tsx
@@ -137,7 +136,7 @@ src/
 
 ## Deployment
 
-Every push to `main` deploys to production on Vercel, and each pull request gets a preview build. After deploying, run the home page and a case study through Google's Rich Results Test and the Schema Markup Validator.
+Every push to `main` runs the tests and deploys to Cloudflare Workers through GitHub Actions. After deploying, run the home page and a case study through Google's Rich Results Test and the Schema Markup Validator.
 
 ---
 
