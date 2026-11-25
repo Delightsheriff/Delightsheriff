@@ -17,71 +17,61 @@ const item = {
   category: "macos",
   description: "A macOS menu-bar app.",
   tags: ["Swift", "SwiftUI"],
+  href: "/projects/soundfork",
 };
+
+function renderItem(props: Partial<React.ComponentProps<typeof ProjectListItem>> = {}) {
+  return render(
+    <ul>
+      <ProjectListItem {...item} links={{}} {...props} />
+    </ul>,
+  );
+}
 
 describe("ProjectListItem", () => {
   it("shows the category label, impact and stack", () => {
-    render(
-      <ul>
-        <ProjectListItem {...item} impact="Per-app audio routing" links={{}} />
-      </ul>,
-    );
+    renderItem({ impact: "Per-app audio routing" });
 
     expect(screen.getByText("macOS")).toBeInTheDocument();
     expect(screen.getByText(/Per-app audio routing\./)).toBeInTheDocument();
     expect(screen.getByText("Swift, SwiftUI")).toBeInTheDocument();
   });
 
-  it("links only the destinations that exist, opening in a new tab", () => {
-    render(
-      <ul>
-        <ProjectListItem {...item} links={{ download: "https://example.com/dl", source: "https://example.com/src" }} />
-      </ul>,
-    );
+  it("opens the case study from the project name", () => {
+    renderItem();
 
-    const links = screen.getAllByRole("link");
-    expect(links).toHaveLength(2);
-    expect(screen.getByRole("link", { name: /download/i })).toHaveAttribute("href", "https://example.com/dl");
-    expect(screen.getByRole("link", { name: /source/i })).toHaveAttribute("target", "_blank");
+    expect(screen.getByRole("link", { name: "Soundfork" })).toHaveAttribute("href", "/projects/soundfork");
+    // The case study is the only link when there are no destinations.
+    expect(screen.getAllByRole("link")).toHaveLength(1);
+  });
+
+  it("stretches the case-study link over the row so the image opens it too", () => {
+    renderItem();
+
+    expect(screen.getByRole("link", { name: "Soundfork" }).className).toContain("after:absolute");
+    expect(screen.getByRole("link", { name: "Soundfork" }).className).toContain("after:inset-0");
+  });
+
+  it("keeps destination links separate, opening in a new tab", () => {
+    renderItem({ links: { download: "https://example.com/dl", source: "https://example.com/src" } });
+
+    const download = screen.getByRole("link", { name: /download/i });
+    expect(download).toHaveAttribute("href", "https://example.com/dl");
+    expect(download).toHaveAttribute("target", "_blank");
+    expect(download).toHaveAttribute("rel", "noopener noreferrer");
+    expect(screen.getByRole("link", { name: /source/i })).toHaveAttribute("href", "https://example.com/src");
     expect(screen.queryByRole("link", { name: /live/i })).not.toBeInTheDocument();
+    // Not nested inside the case-study link.
+    expect(screen.getByRole("link", { name: "Soundfork" })).not.toContainElement(download);
+    expect(screen.getAllByRole("link")).toHaveLength(3);
   });
 
-  it("renders no links when there are none", () => {
-    render(
-      <ul>
-        <ProjectListItem {...item} links={{}} />
-      </ul>,
-    );
-
-    expect(screen.queryAllByRole("link")).toHaveLength(0);
-  });
-
-  it("shows a thumbnail that shortcuts to the first destination without adding a tab stop", () => {
-    const { container } = render(
-      <ul>
-        <ProjectListItem
-          {...item}
-          thumbnail={{ asset: {} as never, alt: "Soundfork menu bar" }}
-          links={{ download: "https://example.com/dl", source: "https://example.com/src" }}
-        />
-      </ul>,
-    );
-
+  it("shows the thumbnail when there is one and no image when there is not", () => {
+    const { unmount } = renderItem({ thumbnail: { asset: {} as never, alt: "Soundfork menu bar" } });
     expect(screen.getByAltText("Soundfork menu bar")).toBeInTheDocument();
-    const shortcut = container.querySelector('a[aria-hidden="true"]');
-    expect(shortcut).toHaveAttribute("href", "https://example.com/dl");
-    expect(shortcut).toHaveAttribute("tabindex", "-1");
-    // Assistive tech still sees only the two real links.
-    expect(screen.getAllByRole("link")).toHaveLength(2);
-  });
+    unmount();
 
-  it("falls back to the name when there is no thumbnail", () => {
-    render(
-      <ul>
-        <ProjectListItem {...item} links={{}} />
-      </ul>,
-    );
-
+    renderItem();
     expect(screen.queryByRole("img")).not.toBeInTheDocument();
   });
 });
