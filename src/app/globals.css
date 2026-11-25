@@ -149,8 +149,8 @@
   /* Hero words: each one resolves out of a blur, left to right. Visible without JavaScript. */
   .word-in {
     display: inline-block;
-    animation: word-in 800ms var(--ease-out-strong) backwards;
-    animation-delay: calc(var(--i, 0) * 45ms + 120ms);
+    animation: word-in 600ms var(--ease-out-strong) backwards;
+    animation-delay: calc(var(--i, 0) * 28ms + 60ms);
   }
 
   @keyframes word-in {

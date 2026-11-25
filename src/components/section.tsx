@@ -18,7 +18,7 @@ export function Section({ id, label, meta, children, className }: SectionProps) 
         <h2 className="text-[1.75rem] font-semibold leading-none tracking-[-0.035em] text-foreground md:sticky md:top-20 md:self-start md:pt-1.5 md:font-mono md:text-xs md:font-normal md:leading-snug md:tracking-normal md:text-muted-foreground">
           {label}
           {meta && (
-            <span className="mt-2 block font-mono text-xs font-normal leading-snug tracking-normal text-muted-foreground md:mt-1 md:opacity-70">
+            <span className="mt-2 block font-mono text-xs font-normal leading-snug tracking-normal text-muted-foreground md:mt-1">
               {meta}
             </span>
           )}
