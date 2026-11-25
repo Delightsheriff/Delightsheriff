@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 type SiteHeaderProps = {
   name?: string;
   resumeUrl?: string;
-  // The Blog link is hidden until there's at least one post to read.
+  // The Blog link is hidden until there's at least one published post to read.
   showBlog?: boolean;
 };
 
@@ -22,13 +22,22 @@ const SECTIONS = [
 const LINK =
   "relative z-10 rounded-full px-2.5 py-1 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
 
+const MENU_LINK =
+  "flex items-baseline justify-between border-b border-border py-4 text-[1.75rem] font-semibold leading-none tracking-[-0.035em] text-foreground transition-colors duration-200 hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
+
 export function SiteHeader({ name, resumeUrl, showBlog }: SiteHeaderProps) {
   const pathname = usePathname();
   const [active, setActive] = useState<string | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
+  // The menu remembers the page it was opened on, so moving to another page closes it.
+  const [openedOn, setOpenedOn] = useState<string | null>(null);
   const nav = useRef<HTMLDivElement>(null);
   const pill = useRef<HTMLSpanElement>(null);
+  const menuButton = useRef<HTMLButtonElement>(null);
   const placed = useRef(false);
+
+  const menuOpen = openedOn === pathname;
+  const closeMenu = () => setOpenedOn(null);
 
   // Highlight the section in view. Only meaningful on the home page.
   useEffect(() => {
@@ -47,6 +56,18 @@ export function SiteHeader({ name, resumeUrl, showBlog }: SiteHeaderProps) {
     }
     return () => observer.disconnect();
   }, [pathname]);
+
+  // Escape closes the menu and hands focus back to the button.
+  useEffect(() => {
+    if (!menuOpen) return;
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key !== "Escape") return;
+      setOpenedOn(null);
+      menuButton.current?.focus();
+    }
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [menuOpen]);
 
   const current = pathname === "/" ? active : null;
   const target = hovered ?? current;
@@ -101,14 +122,14 @@ export function SiteHeader({ name, resumeUrl, showBlog }: SiteHeaderProps) {
         </TrackedLink>
 
         <div className="flex items-center gap-3 text-[13px] text-muted-foreground">
-          <div ref={nav} className="relative flex items-center">
+          <div ref={nav} className="relative hidden items-center sm:flex">
             <span
               ref={pill}
               aria-hidden
               className="pointer-events-none absolute left-0 top-0 rounded-full bg-secondary opacity-0 transition-[transform,width,height,opacity] duration-300 ease-out-strong"
             />
             {SECTIONS.map((section) => (
-              <span key={section.id} {...linkProps(section.id)} className="hidden sm:inline">
+              <span key={section.id} {...linkProps(section.id)}>
                 <TrackedLink
                   href={`/#${section.id}`}
                   eventName="navigation_click"
@@ -124,7 +145,7 @@ export function SiteHeader({ name, resumeUrl, showBlog }: SiteHeaderProps) {
                 href="/blog"
                 eventName="navigation_click"
                 data={{ href: "/blog", location: "header" }}
-                className={cn(LINK, "hidden sm:inline-block hover:text-foreground")}
+                className={cn(LINK, "inline-block hover:text-foreground", pathname.startsWith("/blog") && "text-foreground")}
               >
                 Blog
               </TrackedLink>
@@ -141,8 +162,68 @@ export function SiteHeader({ name, resumeUrl, showBlog }: SiteHeaderProps) {
               </TrackedLink>
             )}
           </div>
+
+          <button
+            ref={menuButton}
+            type="button"
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
+            onClick={() => setOpenedOn(menuOpen ? null : pathname)}
+            className="press rounded-full border border-border px-3.5 py-1.5 text-[13px] font-medium text-foreground transition-colors duration-200 hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:hidden"
+          >
+            {menuOpen ? "Close" : "Menu"}
+          </button>
         </div>
       </nav>
+
+      {menuOpen && (
+        <div id="mobile-menu" className="enter absolute inset-x-0 top-full border-b border-border bg-background sm:hidden">
+          <nav
+            aria-label="Menu"
+            className="mx-auto flex max-w-[960px] flex-col px-6 pb-8 pt-2"
+            // Tapping any link, anywhere in its row, closes the menu.
+            onClick={(event) => {
+              if ((event.target as HTMLElement).closest("a")) closeMenu();
+            }}
+          >
+            {SECTIONS.map((section) => (
+              <TrackedLink
+                key={section.id}
+                href={`/#${section.id}`}
+                eventName="navigation_click"
+                data={{ href: `/#${section.id}`, location: "mobile-menu" }}
+                className={MENU_LINK}
+              >
+                {section.label}
+              </TrackedLink>
+            ))}
+            {showBlog && (
+              <TrackedLink
+                href="/blog"
+                eventName="navigation_click"
+                data={{ href: "/blog", location: "mobile-menu" }}
+                className={MENU_LINK}
+              >
+                Blog
+              </TrackedLink>
+            )}
+            {resumeUrl && (
+              <TrackedLink
+                href={resumeUrl}
+                external
+                eventName="resume_click"
+                data={{ location: "mobile-menu" }}
+                className={MENU_LINK}
+              >
+                Resume
+                <span aria-hidden className="text-base font-normal text-muted-foreground">
+                  ↗
+                </span>
+              </TrackedLink>
+            )}
+          </nav>
+        </div>
+      )}
     </header>
   );
 }

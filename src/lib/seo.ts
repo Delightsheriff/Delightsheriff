@@ -1,4 +1,4 @@
-import type { SanityProject, SanityWorkEntry, SiteSettings } from "@/sanity/queries";
+import type { SanityPost, SanityPostDetail, SanityProject, SanityWorkEntry, SiteSettings } from "@/sanity/queries";
 import { categoryLabel } from "@/lib/project-categories";
 
 // One place for everything search engines and AI assistants should agree on.
@@ -197,6 +197,84 @@ export function buildProjectGraph(project: SanityProject, image?: string) {
         itemListElement: [
           { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
           { "@type": "ListItem", position: 2, name: project.name, item: url },
+        ],
+      },
+    ],
+  };
+}
+
+export const BLOG_DESCRIPTION = "Notes on building software, mostly the parts that don't make it into a README.";
+
+export function postUrl(slug: string): string {
+  return `${SITE_URL}/blog/${slug}`;
+}
+
+const BLOG_ID = `${SITE_URL}/blog#blog`;
+
+// The blog index: a Blog with its posts. Only built when there are published posts.
+export function buildBlogGraph(posts: SanityPost[]) {
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Blog",
+        "@id": BLOG_ID,
+        url: `${SITE_URL}/blog`,
+        name: `Blog by ${SITE_NAME}`,
+        description: BLOG_DESCRIPTION,
+        inLanguage: "en",
+        author: { "@id": PERSON_ID },
+        publisher: { "@id": PERSON_ID },
+        isPartOf: { "@id": WEBSITE_ID },
+        blogPost: posts.map((post) => ({
+          "@type": "BlogPosting",
+          "@id": `${postUrl(post.slug)}#post`,
+          headline: post.title,
+          url: postUrl(post.slug),
+          datePublished: post.publishedAt,
+        })),
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+          { "@type": "ListItem", position: 2, name: "Blog", item: `${SITE_URL}/blog` },
+        ],
+      },
+    ],
+  };
+}
+
+// One article, credited to the person and part of the blog.
+export function buildPostGraph(post: SanityPostDetail, options: { image?: string; words: number }) {
+  const url = postUrl(post.slug);
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BlogPosting",
+        "@id": `${url}#post`,
+        url,
+        mainEntityOfPage: { "@type": "WebPage", "@id": url },
+        headline: post.title,
+        description: post.excerpt,
+        datePublished: post.publishedAt,
+        ...(post.updatedAt && { dateModified: post.updatedAt }),
+        inLanguage: "en",
+        wordCount: options.words,
+        author: { "@id": PERSON_ID },
+        publisher: { "@id": PERSON_ID },
+        isPartOf: { "@id": BLOG_ID },
+        ...(post.tags && post.tags.length > 0 && { keywords: post.tags.join(", ") }),
+        ...(options.image && { image: options.image }),
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+          { "@type": "ListItem", position: 2, name: "Blog", item: `${SITE_URL}/blog` },
+          { "@type": "ListItem", position: 3, name: post.title, item: url },
         ],
       },
     ],

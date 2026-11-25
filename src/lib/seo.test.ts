@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { SanityProject, SanityWorkEntry, SiteSettings } from "@/sanity/queries";
+import type { SanityPost, SanityPostDetail, SanityProject, SanityWorkEntry, SiteSettings } from "@/sanity/queries";
 import {
   HOME_DESCRIPTION,
   HOME_TITLE,
@@ -7,7 +7,9 @@ import {
   PROFILE_ID,
   SITE_URL,
   WEBSITE_ID,
+  buildBlogGraph,
   buildHomeGraph,
+  buildPostGraph,
   buildProjectGraph,
   buildSiteGraph,
   jsonLd,
@@ -164,5 +166,58 @@ describe("jsonLd", () => {
   it("keeps the home description inside search snippet length", () => {
     expect(HOME_DESCRIPTION.length).toBeLessThanOrEqual(160);
     expect(HOME_TITLE.length).toBeLessThanOrEqual(60);
+  });
+});
+
+const post: SanityPost = {
+  slug: "hmac-webhooks",
+  title: "Verifying webhooks with HMAC",
+  publishedAt: "2026-12-01",
+  updatedAt: "2026-12-02T10:00:00Z",
+  excerpt: "How to check a signature in constant time.",
+  tags: ["Security", "Paystack"],
+};
+
+describe("buildBlogGraph", () => {
+  const graph = buildBlogGraph([post, { ...post, slug: "other", title: "Other" }]);
+  const blog = byType(graph, "Blog");
+
+  it("credits the person and lists every post", () => {
+    expect(blog.author).toEqual({ "@id": PERSON_ID });
+    expect(blog.blogPost).toHaveLength(2);
+    expect((blog.blogPost as Node[])[0]).toMatchObject({ headline: "Verifying webhooks with HMAC", url: `${SITE_URL}/blog/hmac-webhooks` });
+  });
+
+  it("adds a breadcrumb back to the home page", () => {
+    expect(byType(graph, "BreadcrumbList").itemListElement).toHaveLength(2);
+  });
+});
+
+describe("buildPostGraph", () => {
+  const detail: SanityPostDetail = { ...post, body: [] };
+
+  it("describes the article, its dates, length and keywords", () => {
+    const node = nodes(buildPostGraph(detail, { words: 850, image: "https://cdn.example.com/c.png" }))[0];
+    expect(node).toMatchObject({
+      "@type": "BlogPosting",
+      headline: "Verifying webhooks with HMAC",
+      datePublished: "2026-12-01",
+      dateModified: "2026-12-02T10:00:00Z",
+      wordCount: 850,
+      keywords: "Security, Paystack",
+      image: "https://cdn.example.com/c.png",
+      author: { "@id": PERSON_ID },
+    });
+  });
+
+  it("leaves out image and keywords when there are none", () => {
+    const node = nodes(buildPostGraph({ ...detail, tags: undefined }, { words: 10 }))[0];
+    expect(node).not.toHaveProperty("image");
+    expect(node).not.toHaveProperty("keywords");
+  });
+
+  it("puts the post at the end of a three step breadcrumb", () => {
+    const crumbs = byType(buildPostGraph(detail, { words: 1 }), "BreadcrumbList").itemListElement as Node[];
+    expect(crumbs.map((c) => c.name)).toEqual(["Home", "Blog", "Verifying webhooks with HMAC"]);
   });
 });

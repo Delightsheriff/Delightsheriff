@@ -83,4 +83,24 @@ describe("buildLlms", () => {
     expect(full.endsWith("\n\n")).toBe(false);
     expect(full).not.toMatch(/\n{3,}/);
   });
+
+  it("has no Writing section until there are posts", () => {
+    expect(short).not.toContain("## Writing");
+    expect(buildLlms({ settings, work, projects, posts: [] }, false)).not.toContain("## Writing");
+  });
+
+  it("lists published posts with their dates once there are some", () => {
+    const text = buildLlms(
+      {
+        settings,
+        work,
+        projects,
+        posts: [{ slug: "hmac", title: "Verifying webhooks", publishedAt: "2026-12-01", excerpt: "Constant time.", tags: [] }],
+      },
+      false,
+    );
+    expect(text).toContain("## Writing");
+    expect(text).toContain("[Verifying webhooks](https://www.delightsheriff.com/blog/hmac) (December 1, 2026): Constant time.");
+    expect(text.indexOf("## Writing")).toBeLessThan(text.indexOf("## Experience"));
+  });
 });
