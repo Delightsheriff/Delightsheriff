@@ -15,9 +15,13 @@ export function Section({ id, label, meta, children, className }: SectionProps) 
   return (
     <section id={id} className={cn("border-t border-border py-16 sm:py-24", className)}>
       <div className="grid gap-5 md:grid-cols-[168px_minmax(0,1fr)] md:gap-x-12">
-        <h2 className="font-mono text-xs font-normal leading-snug text-muted-foreground md:sticky md:top-20 md:self-start md:pt-1.5">
+        <h2 className="text-[1.75rem] font-semibold leading-none tracking-[-0.035em] text-foreground md:sticky md:top-20 md:self-start md:pt-1.5 md:font-mono md:text-xs md:font-normal md:leading-snug md:tracking-normal md:text-muted-foreground">
           {label}
-          {meta && <span className="mt-1 block opacity-70">{meta}</span>}
+          {meta && (
+            <span className="mt-2 block font-mono text-xs font-normal leading-snug tracking-normal text-muted-foreground md:mt-1 md:opacity-70">
+              {meta}
+            </span>
+          )}
         </h2>
         <div className="min-w-0">{children}</div>
       </div>
