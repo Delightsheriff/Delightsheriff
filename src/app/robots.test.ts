@@ -11,7 +11,7 @@ describe("robots", () => {
   it("welcomes everyone to the public site and keeps Studio and the API private", () => {
     const everyone = rules.find((rule) => rule.userAgent === "*")!;
     expect(everyone.allow).toBe("/");
-    expect(everyone.disallow).toEqual(["/api/"]);
+    expect(everyone.disallow).toEqual(["/api/", "/studio"]);
   });
 
   it("names the search engines and the main AI assistants", () => {
@@ -22,7 +22,7 @@ describe("robots", () => {
 
   it("repeats the private paths for named crawlers, since they ignore the * group", () => {
     const named = rules.find((rule) => Array.isArray(rule.userAgent))!;
-    expect(named.disallow).toEqual(["/api/"]);
+    expect(named.disallow).toEqual(["/api/", "/studio"]);
   });
 
   it("points at the sitemap", () => {

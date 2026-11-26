@@ -3,7 +3,7 @@ import { SITE_URL } from "@/lib/seo";
 
 // Search engines and AI assistants are welcome everywhere public. A crawler with its own group
 // ignores the "*" group, so the private paths are repeated for every group.
-const PRIVATE_PATHS = ["/api/"];
+const PRIVATE_PATHS = ["/api/", "/studio"];
 
 const SEARCH_AND_AI_CRAWLERS = [
   // Search

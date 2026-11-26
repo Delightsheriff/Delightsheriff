@@ -58,7 +58,7 @@ The site is a single page: hero, projects, experience, about, contact. Every pro
 
 ## Highlights
 
-- **Content lives in a CMS.** Projects, work history, skills, bio and posts are edited in Sanity Studio (hosted by Sanity), with no redeploy needed.
+- **Content lives in a CMS.** Projects, work history, skills, bio and posts are edited in Sanity Studio at `/studio`. Publishing starts a deploy, so edits go live without a code change.
 - **One theme, designed carefully.** A dark theme, Geist type, a consistent label-gutter layout, and motion that stays light and respects reduced-motion settings.
 - **Fast.** Pages are statically generated and refreshed in the background, images are served as AVIF or WebP, and the first project images load with high priority.
 - **Accessible.** Skip link, keyboard-friendly menus, visible focus, and contrast checked against WCAG.
@@ -71,7 +71,7 @@ The site is a single page: hero, projects, experience, about, contact. Every pro
 | --- | --- |
 | Framework | Next.js 16 (App Router), React 19, TypeScript |
 | Styling | Tailwind CSS v4 with design tokens, shadcn/ui primitives |
-| Content | Sanity (content lake, hosted Studio, Portable Text for articles) |
+| Content | Sanity (content lake, Studio at `/studio`, Portable Text for articles) |
 | Hosting | Cloudflare Workers via OpenNext (deploys from `main`), portable to any Node host, see [docs/hosting.md](docs/hosting.md) |
 | Testing | Vitest and Testing Library |
 | Extras | GitHub contributions, Spotify "last played", Cloudflare Web Analytics |
