@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { getPostBySlug, getPostNavigation } from "@/sanity/queries";
+import { getAllPosts, getPostBySlug, getPostNavigation } from "@/sanity/queries";
 import { urlFor } from "@/sanity/image";
 import { NavLink } from "@/components/nav-link";
 import { PostBody } from "@/components/post-body";
@@ -10,6 +10,14 @@ import { readingMinutes, wordCount } from "@/lib/reading-time";
 import { LLMS_TYPES, SITE_NAME, buildPostGraph, jsonLd } from "@/lib/seo";
 
 type PageProps = { params: Promise<{ slug: string }> };
+
+// Every published post is built at deploy time. Any other slug is a plain 404.
+export const dynamicParams = false;
+
+export async function generateStaticParams() {
+  const posts = await getAllPosts();
+  return posts.map(({ slug }) => ({ slug }));
+}
 
 const LABEL = "font-mono text-xs font-normal text-muted-foreground";
 

@@ -1,11 +1,9 @@
 import { defineCloudflareConfig } from "@opennextjs/cloudflare";
-import kvIncrementalCache from "@opennextjs/cloudflare/overrides/incremental-cache/kv-incremental-cache";
-import doQueue from "@opennextjs/cloudflare/overrides/queue/do-queue";
-import kvNextTagCache from "@opennextjs/cloudflare/overrides/tag-cache/kv-next-tag-cache";
+import staticAssetsIncrementalCache from "@opennextjs/cloudflare/overrides/incremental-cache/static-assets-incremental-cache";
 
-// Cloudflare-only: where cached pages live (Workers KV). The site itself does not import this.
+// Cloudflare-only. Every page is built at deploy time and read back from the Worker's static
+// assets, so there is no KV, queue or tag cache. Content changes need a new deploy.
 export default defineCloudflareConfig({
-  incrementalCache: kvIncrementalCache,
-  queue: doQueue,
-  tagCache: kvNextTagCache,
+  incrementalCache: staticAssetsIncrementalCache,
+  enableCacheInterception: true,
 });

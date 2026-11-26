@@ -5,5 +5,7 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: true, // read-only queries — fine to use the fast, cached CDN
+  // Pages are built once per deploy, often seconds after a publish, so read the live API.
+  // The CDN could still be serving the old content at that moment.
+  useCdn: false,
 });

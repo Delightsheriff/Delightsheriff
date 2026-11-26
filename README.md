@@ -100,7 +100,6 @@ pnpm dev                           # http://localhost:3000
 | Variable | Needed for |
 | --- | --- |
 | `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET` | **Required.** Which Sanity project and dataset to read |
-| `SANITY_REVALIDATE_SECRET` | The webhook that refreshes pages when content is published |
 | `SANITY_API_WRITE_TOKEN` | Local content scripts only. Never used by the site |
 | `GITHUB_TOKEN` | The contribution count in About. Any token works, no scopes needed. Hidden if unset |
 | `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`, `SPOTIFY_REFRESH_TOKEN` | The "last played" line in Contact. Hidden if unset |
@@ -110,8 +109,8 @@ pnpm dev                           # http://localhost:3000
 
 Sanity holds four document types: **Site Settings** (hero, status note, bio, skills), **Project**, **Work Entry** and **Blog Post**. Queries live in `src/sanity/queries.ts`.
 
-- Pages are cached and refreshed about once a minute. When content is published, a Sanity webhook calls `/api/revalidate`, which checks the request signature and refreshes the affected pages straight away.
-- A post is public once its published date arrives. Until there is one, the blog has no page, no navigation link, no sitemap entry and no line in the AI profile.
+- Pages are built once, at deploy time. Publishing in Sanity can start a new deploy through a webhook (see [docs/hosting.md](docs/hosting.md)), so edits appear when the deploy finishes. The only live value is the Spotify line, which the browser loads from `/api/now-playing`.
+- A post is public from the first deploy on or after its published date. A daily deploy covers posts dated ahead. Until there is one, the blog has no page, no navigation link, no sitemap entry and no line in the AI profile.
 
 ## Project structure
 
@@ -119,7 +118,7 @@ Sanity holds four document types: **Site Settings** (hero, status note, bio, ski
 src/
   app/
     (site)/            home page, project case studies, blog, loading and error states
-    api/revalidate/    signed webhook that refreshes pages
+    api/now-playing/   the Spotify line, loaded by the browser
     llms.txt/          plain-text profile for AI assistants (also llms-full.txt)
     .well-known/       ARD manifest for AI agents
     robots.ts, sitemap.ts, manifest.ts, icon.tsx, opengraph-image.tsx
@@ -136,7 +135,7 @@ src/
 
 ## Deployment
 
-Every push to `main` runs the tests and deploys to Cloudflare Workers through GitHub Actions. After deploying, run the home page and a case study through Google's Rich Results Test and the Schema Markup Validator.
+Every push to `main`, a daily schedule and (once connected) a Sanity publish run the tests and deploy to Cloudflare Workers through GitHub Actions. After deploying, run the home page and a case study through Google's Rich Results Test and the Schema Markup Validator.
 
 ---
 

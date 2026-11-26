@@ -23,9 +23,6 @@ importers:
       '@sanity/vision':
         specifier: ^6.24.0
         version: 6.24.0(e737724da548a8976adf112013fc2f53)
-      '@sanity/webhook':
-        specifier: ^4.0.4
-        version: 4.0.4
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1

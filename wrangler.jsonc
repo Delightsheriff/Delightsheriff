@@ -11,13 +11,7 @@
   "services": [
     { "binding": "WORKER_SELF_REFERENCE", "service": "delightsheriff-portfolio" }
   ],
-  // Page cache and tag cache (ISR), both on Workers KV. No database needed.
-  "kv_namespaces": [
-    { "binding": "NEXT_INC_CACHE_KV", "id": "d3d12d10569145a3b5ee31ac6e7f3a49" },
-    { "binding": "NEXT_TAG_CACHE_KV", "id": "59fb52a213e149d7b9b30ab9e17c43ab" }
-  ],
-  "durable_objects": {
-    "bindings": [{ "name": "NEXT_CACHE_DO_QUEUE", "class_name": "DOQueueHandler" }]
-  },
+  // The site is static and binds no storage. This migration was applied by an earlier deploy
+  // and stays listed as history. Nothing calls the class any more.
   "migrations": [{ "tag": "v1", "new_sqlite_classes": ["DOQueueHandler"] }]
 }
