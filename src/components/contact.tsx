@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import { getSiteSettings } from "@/sanity/queries";
 import { toRoman } from "@/lib/roman";
 import { Section } from "@/components/section";
@@ -55,9 +54,7 @@ export async function Contact() {
         </nav>
 
         <div className="mt-14 text-[13px]">
-          <Suspense fallback={null}>
-            <NowPlaying />
-          </Suspense>
+          <NowPlaying />
         </div>
       </Section>
 

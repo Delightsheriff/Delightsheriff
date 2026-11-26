@@ -43,7 +43,6 @@ export async function getContributions(): Promise<ContributionData | null> {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ query: QUERY, variables: { login: GITHUB_USERNAME } }),
-      next: { revalidate: 60 * 60 * 6 }, // 6h — this doesn't need to be real-time
     });
 
     if (!res.ok) return null;

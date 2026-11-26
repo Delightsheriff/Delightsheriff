@@ -1,7 +1,7 @@
 import { getAllProjects } from "@/sanity/queries";
 import { buildArdManifest } from "@/lib/ard";
 
-export const revalidate = 3600;
+export const dynamic = "force-static";
 
 // Tells AI agents and registries what this domain publishes. See lib/ard.ts.
 export async function GET() {

@@ -1,8 +1,22 @@
-import { getNowPlaying } from "@/lib/spotify";
+"use client";
+
+import { useEffect, useState } from "react";
+import type { NowPlaying as Track } from "@/lib/spotify";
 import { TrackedLink } from "@/components/tracked-link";
 
-export async function NowPlaying() {
-  const track = await getNowPlaying();
+export function NowPlaying() {
+  const [track, setTrack] = useState<Track | null>(null);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch("/api/now-playing", { signal: controller.signal })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => setTrack(data?.track ?? null))
+      // The line is a nice extra, so a failed request just leaves it out.
+      .catch(() => {});
+    return () => controller.abort();
+  }, []);
+
   if (!track) return null;
 
   return (

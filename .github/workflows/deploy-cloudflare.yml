@@ -1,21 +1,32 @@
 name: Deploy to Cloudflare
 
+# The site is static, so a deploy is also how content gets published.
 on:
   push:
     branches: [main]
+  # Sent by the Sanity publish webhook. See docs/hosting.md.
+  repository_dispatch:
+    types: [sanity-publish]
+  # Daily: refreshes the GitHub contribution count and shows posts whose publish date has arrived.
+  schedule:
+    - cron: "17 5 * * *"
   workflow_dispatch:
 
+permissions:
+  contents: read
+
+# A running deploy is left to finish. If several are waiting, only the newest one runs.
 concurrency:
   group: deploy
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: pnpm
@@ -29,3 +40,6 @@ jobs:
           NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_SANITY_PROJECT_ID }}
           NEXT_PUBLIC_SANITY_DATASET: ${{ secrets.NEXT_PUBLIC_SANITY_DATASET }}
           NEXT_PUBLIC_CF_ANALYTICS_TOKEN: ${{ secrets.NEXT_PUBLIC_CF_ANALYTICS_TOKEN }}
+          # The contribution count is read at build time. Add a CONTRIBUTIONS_TOKEN secret if the
+          # built-in token reports a different number from your profile.
+          GITHUB_TOKEN: ${{ secrets.CONTRIBUTIONS_TOKEN || github.token }}

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { PortableText } from "@portabletext/react";
-import { getProjectBySlug, getProjectNavigation } from "@/sanity/queries";
+import { getAllProjects, getProjectBySlug, getProjectNavigation } from "@/sanity/queries";
 import { urlFor } from "@/sanity/image";
 import { NavLink } from "@/components/nav-link";
 import { TrackedLink } from "@/components/tracked-link";
@@ -11,6 +11,14 @@ import { ProjectDemo } from "@/components/project-demo";
 import { LLMS_TYPES, buildProjectGraph, jsonLd, projectDescription } from "@/lib/seo";
 
 type PageProps = { params: Promise<{ slug: string }> };
+
+// Every case study is built at deploy time. Any other slug is a plain 404.
+export const dynamicParams = false;
+
+export async function generateStaticParams() {
+  const projects = await getAllProjects();
+  return projects.map(({ slug }) => ({ slug }));
+}
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;

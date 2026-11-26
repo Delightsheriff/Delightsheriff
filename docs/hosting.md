@@ -7,9 +7,9 @@ files are listed below, so moving elsewhere means deleting those and picking ano
 
 | File | Purpose |
 | --- | --- |
-| `wrangler.jsonc` | Worker name, KV caches, Durable Object |
-| `open-next.config.ts` | Where cached pages are stored (Workers KV) |
-| `.github/workflows/deploy-cloudflare.yml` | Deploys on every push to `main` |
+| `wrangler.jsonc` | Worker name, domain and static assets |
+| `open-next.config.ts` | Serves the prebuilt pages from static assets |
+| `.github/workflows/deploy-cloudflare.yml` | Deploys on pushes to `main`, Sanity publishes and daily |
 | `src/components/web-analytics.tsx` | Cloudflare Web Analytics (optional) |
 
 ## Deploy by hand
@@ -19,18 +19,43 @@ pnpm cf:deploy       # build and deploy
 pnpm cf:preview      # build and run locally in the Workers runtime
 ```
 
-Secrets (`GITHUB_TOKEN`, `SPOTIFY_*`, `SANITY_REVALIDATE_SECRET`) live in the Worker. Set one with
-`pnpm exec wrangler secret put NAME`.
+`SPOTIFY_*` secrets live in the Worker, because the browser asks for that line while the site is
+running. Set one with `pnpm exec wrangler secret put NAME`. `GITHUB_TOKEN` is only needed by the
+build.
 
 ## Content (Sanity)
 
-Content is read from Sanity at request time, so Cloudflare needs only the project ID and dataset.
+The site is static: every page is built at deploy time, with no KV and no timed refresh. Content
+changes appear after the next deploy. A build therefore needs the Sanity project ID and dataset.
+
 The Studio is no longer part of the site (it was too large for the free Worker plan). Run
 `pnpm studio:deploy` once to host it on Sanity at `https://delightsheriff.sanity.studio`.
 After a Studio change that adds fields, run it again.
 
-The publish webhook in Sanity must call `https://www.delightsheriff.com/api/revalidate` with the same
-secret as `SANITY_REVALIDATE_SECRET`.
+### Deploy on publish
+
+1. In GitHub, create a fine-grained personal access token limited to this repository, with
+   **Contents: Read and write**. That is what the repository dispatch API requires. The token can
+   change the repository's code, so keep it only in the Sanity webhook and give it an expiry date.
+2. In Sanity (manage → API → Webhooks), edit the publish webhook:
+
+| Field | Value |
+| --- | --- |
+| URL | `https://api.github.com/repos/Delightsheriff/Delightsheriff/dispatches` |
+| Dataset | `production` |
+| Trigger on | Create, Update, Delete |
+| Filter | `_type in ["siteSettings", "project", "workEntry", "post"]` |
+| Projection | `{"event_type": "sanity-publish"}` |
+| HTTP method | `POST` |
+| HTTP headers | `Authorization: Bearer <token>` and `Accept: application/vnd.github+json` |
+| Drafts | Off |
+| Secret | Leave empty |
+
+If an old webhook calls `/api/revalidate`, remove it. That endpoint no longer exists. Until the new
+webhook is set up, publish by running the **Deploy to Cloudflare** workflow by hand.
+
+GitHub turns off scheduled workflows in a public repository after 60 days without activity. If that
+happens, enable the workflow again on the Actions tab.
 
 ## Moving to another host
 

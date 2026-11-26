@@ -108,12 +108,12 @@ const PROJECT_BY_SLUG_QUERY = /* groq */ `
 `;
 
 export async function getFeaturedProjects(): Promise<SanityProject[]> {
-  return client.fetch(FEATURED_PROJECTS_QUERY, {}, { next: { revalidate: 60 } });
+  return client.fetch(FEATURED_PROJECTS_QUERY);
 }
 
 // Home page: featured projects become tiles, the rest are listed. Both keep the order set in Sanity.
 export async function getHomeProjects(): Promise<{ featured: SanityProject[]; more: SanityProject[] }> {
-  const projects: SanityProject[] = await client.fetch(ALL_PROJECTS_QUERY, {}, { next: { revalidate: 60 } });
+  const projects: SanityProject[] = await client.fetch(ALL_PROJECTS_QUERY, {});
   return {
     featured: projects.filter((project) => project.featured),
     more: projects.filter((project) => !project.featured),
@@ -122,12 +122,12 @@ export async function getHomeProjects(): Promise<{ featured: SanityProject[]; mo
 
 // Sorted by CATEGORY_ORDER so /projects and prev/next navigation agree.
 export async function getAllProjects(): Promise<SanityProject[]> {
-  const projects: SanityProject[] = await client.fetch(ALL_PROJECTS_QUERY, {}, { next: { revalidate: 60 } });
+  const projects: SanityProject[] = await client.fetch(ALL_PROJECTS_QUERY, {});
   return sortByCategory(projects);
 }
 
 export async function getProjectBySlug(slug: string): Promise<SanityProjectDetail | null> {
-  return client.fetch(PROJECT_BY_SLUG_QUERY, { slug }, { next: { revalidate: 60 } });
+  return client.fetch(PROJECT_BY_SLUG_QUERY, { slug });
 }
 
 export async function getProjectNavigation(slug: string): Promise<{
@@ -161,7 +161,7 @@ const WORK_ENTRIES_QUERY = /* groq */ `
 `;
 
 export async function getWorkEntries(): Promise<SanityWorkEntry[]> {
-  return client.fetch(WORK_ENTRIES_QUERY, {}, { next: { revalidate: 60 } });
+  return client.fetch(WORK_ENTRIES_QUERY, {});
 }
 
 export type SkillGroup = { label: string; items: string[] };
@@ -191,7 +191,7 @@ const SITE_SETTINGS_QUERY = /* groq */ `
 `;
 
 export const getSiteSettings = cache(async (): Promise<SiteSettings | null> => {
-  return client.fetch(SITE_SETTINGS_QUERY, {}, { next: { revalidate: 60 } });
+  return client.fetch(SITE_SETTINGS_QUERY, {});
 });
 
 export type SanityPost = {
@@ -234,15 +234,15 @@ const POST_BY_SLUG_QUERY = /* groq */ `
 `;
 
 export const hasPublishedPosts = cache(async (): Promise<boolean> => {
-  return client.fetch(`count(*[_type == "post" && ${PUBLISHED}]) > 0`, {}, { next: { revalidate: 60 } });
+  return client.fetch(`count(*[_type == "post" && ${PUBLISHED}]) > 0`, {});
 });
 
 export async function getAllPosts(): Promise<SanityPost[]> {
-  return client.fetch(ALL_POSTS_QUERY, {}, { next: { revalidate: 60 } });
+  return client.fetch(ALL_POSTS_QUERY, {});
 }
 
 export async function getPostBySlug(slug: string): Promise<SanityPostDetail | null> {
-  return client.fetch(POST_BY_SLUG_QUERY, { slug }, { next: { revalidate: 60 } });
+  return client.fetch(POST_BY_SLUG_QUERY, { slug });
 }
 
 // Posts are listed newest first, so "newer" is the one before and "older" the one after.
