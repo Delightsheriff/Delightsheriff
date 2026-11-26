@@ -8,6 +8,7 @@ files are listed below, so moving elsewhere means deleting those and picking ano
 | File | Purpose |
 | --- | --- |
 | `wrangler.jsonc` | Worker name, domain and static assets |
+| `cloudflare-worker.mjs` | Serves the Studio page for addresses under `/studio` |
 | `open-next.config.ts` | Serves the prebuilt pages from static assets |
 | `.github/workflows/deploy-cloudflare.yml` | Deploys on pushes to `main`, Sanity publishes and daily |
 | `src/components/web-analytics.tsx` | Cloudflare Web Analytics (optional) |
@@ -28,9 +29,12 @@ build.
 The site is static: every page is built at deploy time, with no KV and no timed refresh. Content
 changes appear after the next deploy. A build therefore needs the Sanity project ID and dataset.
 
-The Studio is no longer part of the site (it was too large for the free Worker plan). Run
-`pnpm studio:deploy` once to host it on Sanity at `https://delightsheriff.sanity.studio`.
-After a Studio change that adds fields, run it again.
+The Studio is at `https://www.delightsheriff.com/studio`. `pnpm build` writes it into
+`public/studio` as static files (`pnpm studio:build`), so it does not add to the Worker's size
+limit. A Studio or schema change goes live with the next deploy.
+
+Sign-in only works from addresses allowed in Sanity (manage → API → CORS origins, with
+credentials), so `https://www.delightsheriff.com` must be listed there.
 
 ### Deploy on publish
 

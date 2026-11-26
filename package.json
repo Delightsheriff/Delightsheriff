@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "pnpm studio:build && next build",
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
@@ -13,7 +13,7 @@
     "cf:preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "cf:deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "studio:dev": "sanity dev",
-    "studio:deploy": "sanity deploy"
+    "studio:build": "sanity build public/studio -y"
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",

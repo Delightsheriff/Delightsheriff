@@ -57,3 +57,6 @@ scripts/
 .dev.vars
 dist
 .sanity
+
+# the Studio build, recreated by `pnpm studio:build`
+/public/studio/

@@ -18,6 +18,7 @@ const eslintConfig = defineConfig([
     ".sanity/**",
     ".vercel/**",
     "dist/**",
+    "public/studio/**",
   ]),
 ]);
 
